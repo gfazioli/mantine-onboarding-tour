@@ -6,9 +6,10 @@ const getComponentPath = (componentPath: string) =>
 
 generateDeclarations({
   componentsPaths: [
-    getComponentPath('FocusReveal.tsx'),
-    getComponentPath('FocusRevealGroup/FocusRevealGroup.tsx'),
-    getComponentPath('FocusRevealPopoverContent/FocusRevealPopoverContent.tsx'),
+    getComponentPath('OnboardingTour.tsx'),
+    getComponentPath('OnboardingTourTarget/OnboardingTourTarget.tsx'),
+    getComponentPath('OnboardingTourFocusReveal/OnboardingTourFocusReveal.tsx'),
+    getComponentPath('OnboardingTourFocusRevealGroup/OnboardingTourFocusRevealGroup.tsx'),
   ],
   tsConfigPath: path.join(process.cwd(), 'tsconfig.json'),
   outputPath: path.join(process.cwd(), 'docs'),

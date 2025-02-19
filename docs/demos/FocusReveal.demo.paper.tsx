@@ -1,11 +1,11 @@
 import { useRef } from 'react';
-import { FocusReveal, FocusRevealProps } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Paper, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
 import { Testimonials } from './Testimonials';
 
-function Wrapper(props: Partial<FocusRevealProps>) {
+function Wrapper() {
   const [focused, { close, open }] = useDisclosure(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -29,14 +29,13 @@ function Wrapper(props: Partial<FocusRevealProps>) {
         <Divider my={400} label="Divider" />
 
         <Center>
-          <FocusReveal
+          <OnboardingTour.FocusReveal
             scrollableRef={scrollRef as React.RefObject<HTMLDivElement>}
             focused={focused}
-            {...props}
             onBlur={close}
           >
             <Testimonials testimonial={0} />
-          </FocusReveal>
+          </OnboardingTour.FocusReveal>
         </Center>
       </Paper>
     </Stack>
@@ -45,7 +44,7 @@ function Wrapper(props: Partial<FocusRevealProps>) {
 
 const code = `
 import { useRef } from 'react';
-import { FocusReveal, FocusRevealProps } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Paper, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -73,14 +72,13 @@ function Demo() {
         <Divider my={400} label="Divider" />
 
         <Center>
-          <FocusReveal
+          <OnboardingTour.FocusReveal
             scrollableRef={scrollRef as React.RefObject<HTMLDivElement>}
             focused={focused}
-            {...props}
             onBlur={close}
           >
             <Testimonials testimonial={0} />
-          </FocusReveal>
+          </OnboardingTour.FocusReveal>
         </Center>
       </Paper>
     </Stack>
@@ -88,7 +86,7 @@ function Demo() {
 }
 `;
 
-export const paper: MantineDemo = {
+export const focusRevealPaper: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,

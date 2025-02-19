@@ -1,20 +1,20 @@
 {
-  "name": "@gfazioli/mantine-focus-reveal",
+  "name": "@gfazioli/mantine-onboarding-tour",
   "version": "0.1.0",
-  "description": "A Mantine component enables you to create a focus-reveal effect using overlays, popovers, and onboarding tours, which enhances element visibility and interactivity.",
-  "homepage": "https://gfazioli.github.io/mantine-focus-reveal/",
+  "description": "A Mantine component enables you to create a onboarding-tour effect using overlays, popovers, and onboarding tours, which enhances element visibility and interactivity.",
+  "homepage": "https://gfazioli.github.io/mantine-onboarding-tour/",
   "packageManager": "yarn@4.0.1",
   "license": "MIT",
   "author": "Giovambattista Fazioli <giovambattista.fazioli@gmail.com>",
   "keywords": [
-    "mantine",
     "extension",
-    "react-component",
-    "react",
-    "typescript",
-    "focus-reveal",
+    "mantine",
     "onboarding",
-    "tour"
+    "onboarding-tour",
+    "react",
+    "react-component",
+    "tour",
+    "typescript"
   ],
   "main": "./dist/cjs/index.cjs",
   "module": "./dist/esm/index.mjs",
@@ -33,7 +33,7 @@
     "./styles.css": "./dist/styles.css",
     "./styles.layer.css": "./dist/styles.layer.css"
   },
-  "repository": "https://github.com/gfazioli/mantine-focus-reveal.git",
+  "repository": "https://github.com/gfazioli/mantine-onboarding-tour.git",
   "peerDependencies": {
     "@mantine/core": ">=7.0.0",
     "@mantine/hooks": ">=7.0.0",
@@ -41,5 +41,5 @@
     "react": "^18.x || ^19.x",
     "react-dom": "^18.x || ^19.x"
   },
-  "bugs": "https://github.com/gfazioli/mantine-focus-reveal/issues"
+  "bugs": "https://github.com/gfazioli/mantine-onboarding-tour/issues"
 }

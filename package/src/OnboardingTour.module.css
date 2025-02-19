@@ -1,0 +1,28 @@
+.popoverContent {
+  --onboarding-tour-popover-content-stepper-icon-size: 16px;
+}
+
+.popoverContent {
+  position: relative;
+}
+
+.closeButton {
+  position: absolute;
+  right: -8px;
+  top: -4px;
+}
+
+/* Stepper */
+.stepIcon {
+  border-width: 2px;
+  min-width: var(--onboarding-tour-popover-content-stepper-icon-size);
+  width: var(--onboarding-tour-popover-content-stepper-icon-size);
+  min-height: var(--onboarding-tour-popover-content-stepper-icon-size);
+  height: var(--onboarding-tour-popover-content-stepper-icon-size);
+  font-size: 0;
+}
+
+.separator {
+  margin: 0 0px;
+  height: 4px;
+}

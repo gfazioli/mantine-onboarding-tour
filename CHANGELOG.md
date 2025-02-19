@@ -1,6 +1,6 @@
 # Changelog
 
-The following is a list of notable changes to the Mantine FocusReveal component.  
+The following is a list of notable changes to the Mantine OnboardingTour component.  
 Minor versions that are not listed in the changelog are bug fixes and small improvements.
 
 ## 2.0.4 (2024-09-29)

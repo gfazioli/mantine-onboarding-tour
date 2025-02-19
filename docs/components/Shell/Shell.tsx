@@ -1,4 +1,5 @@
 import React from 'react';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import cx from 'clsx';
 import {
   ActionIcon,
@@ -36,17 +37,19 @@ export function Shell({ children }: ShellProps) {
     <AppShell header={{ height: 60 }}>
       <AppShell.Header className={cx(RemoveScroll.classNames.zeroRight, classes.header)}>
         <Container size="lg" px="md" className={classes.inner}>
-          <Group>
-            <a
-              href="https://mantine.dev/"
-              target="_blank"
-              className={cx('mantine-focus-auto', classes.logo)}
-              rel="noreferrer"
-            >
-              <MantineLogo size={30} type="mark" />
-            </a>
-            <Title order={2}>{packageName}</Title>
-          </Group>
+          <OnboardingTour.Target id="page-header-title">
+            <Group>
+              <a
+                href="https://mantine.dev/"
+                target="_blank"
+                className={cx('mantine-focus-auto', classes.logo)}
+                rel="noreferrer"
+              >
+                <MantineLogo size={30} type="mark" />
+              </a>
+              <Title order={2}>{packageName}</Title>
+            </Group>
+          </OnboardingTour.Target>
           <Group gap={10}>
             <iframe
               src="https://github.com/sponsors/gfazioli/button"

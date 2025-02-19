@@ -1,10 +1,13 @@
-import { FocusReveal, FocusRevealProps } from '@gfazioli/mantine-focus-reveal';
+import {
+  OnboardingTour,
+  type OnboardingTourFocusRevealProps,
+} from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Group, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
 import { Testimonials } from './Testimonials';
 
-function Wrapper(props: Partial<FocusRevealProps>) {
+function Wrapper(props: Partial<OnboardingTourFocusRevealProps>) {
   const [focused, { close, open }] = useDisclosure(false);
 
   return (
@@ -20,16 +23,16 @@ function Wrapper(props: Partial<FocusRevealProps>) {
 
       <Group justify="center">
         <Testimonials testimonial={0} />
-        <FocusReveal focused={focused} {...props} onBlur={close}>
+        <OnboardingTour.FocusReveal focused={focused} {...props} onBlur={close}>
           <Testimonials testimonial={1} />
-        </FocusReveal>
+        </OnboardingTour.FocusReveal>
       </Group>
     </Stack>
   );
 }
 
 const code = `
-import { FocusReveal, FocusRevealProps } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour, type OnboardingTourFocusRevealProps} from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Group, Stack, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -49,23 +52,22 @@ function Demo() {
 
       <Group justify="center">
         <Testimonials testimonial={0} />
-        <FocusReveal focused={focused} {...props} onBlur={close}>
+        <OnboardingTour.FocusReveal focused={focused} {{props}} onBlur={close}>
           <Testimonials testimonial={1} />
-        </FocusReveal>
+        </OnboardingTour.FocusReveal>
       </Group>
     </Stack>
   );
 }
 `;
 
-export const configurator: MantineDemo = {
+export const focusRevealConfigurator: MantineDemo = {
   type: 'configurator',
   component: Wrapper,
   code: [
     {
       fileName: 'Demo.tsx',
-      code: code,
-
+      code,
       language: 'tsx',
     },
   ],

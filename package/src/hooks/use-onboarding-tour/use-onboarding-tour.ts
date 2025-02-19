@@ -1,70 +1,55 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-export type OnboardingTour = {
-  /** Unique id of the tour */
+export type OnboardingTourStep = {
+  /** Unique id of the tour. Will be use for the data-onboarding-tour-id attribute */
   id: string;
 
+  /** Header of the tour. You can also pass a React component here */
+  header?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
+
   /** Title of the tour. You can also pass a React component here */
-  title?: string | React.ReactNode;
+  title?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
 
-  /** Description of the tour. You can also pass a React component here */
-  description?: string | React.ReactNode;
+  /** Custom Content of the tour. You can also pass a React component here */
+  content?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
 
-  /** Content of the tour. You can also pass a React component here */
-  content?: React.ReactNode;
+  /** Footer of the tour. You can also pass a React component here */
+  footer?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
+
+  /** Anything else */
+  [key: string]: any;
 };
 
 /** Options for useOnboardingTour() hook */
 export type OnboardingTourOptions = {
-  /** Automatically start the tour */
-  autoStart?: boolean;
-
   /** Loop the tour */
   loop?: boolean;
 
-  /** Show the previous button */
-  withPrevButton?: boolean;
-
-  /** Show the next button */
-  withNextButton?: boolean;
-
-  /** Show the close button */
-  withCloseButton?: boolean;
-
-  /** Show the progress bar */
-  withProgress?: boolean;
-
-  /** Show the counter */
-  withCounter?: boolean;
-
   /** Triggered when the tour starts   */
-  onTourStart?: () => void;
+  onOnboardingTourStart?: () => void;
 
   /** Triggered when the tour ends */
-  onTourEnd?: () => void;
-
-  /** Triggered when the tour is closed */
-  onTourClose?: () => void;
+  onOnboardingTourEnd?: () => void;
 
   /** Triggered when the tour changes */
-  onTourChange?: (tour: OnboardingTour) => void;
+  onOnboardingTourChange?: (tourStep: OnboardingTourStep) => void;
 };
 
-export type UseOnboardingTourReturn = Readonly<{
-  /** List of tours */
-  tour: OnboardingTour[];
+export type OnboardingTourController = Readonly<{
+  /** List of tour steps */
+  tour: OnboardingTourStep[];
 
-  /** Current tour */
-  currentTour: OnboardingTour | undefined;
+  /** Current step */
+  currentStep: OnboardingTourStep | undefined;
 
-  /** Current index of the tour. Zero-based index */
-  currentIndex: number | undefined;
+  /** Current step index of the tour. Zero-based index */
+  currentStepIndex: number | undefined;
 
   /** ID of the selected tour */
-  selectedTourId: string | undefined;
+  selectedStepId: string | undefined;
 
   /** Set the current index */
-  setCurrentIndex: (index: number) => void;
+  setCurrentStepIndex: (index: number) => void;
 
   /** Start the tour */
   startTour: () => void;
@@ -73,10 +58,10 @@ export type UseOnboardingTourReturn = Readonly<{
   endTour: () => void;
 
   /** Go to the next tour */
-  nextTour: () => void;
+  nextStep: () => void;
 
   /** Go to the previous tour */
-  prevTour: () => void;
+  prevStep: () => void;
 
   /** Options of the tour */
   options: OnboardingTourOptions;
@@ -90,87 +75,67 @@ export type UseOnboardingTourReturn = Readonly<{
  * @param options The options of the tour
  * @returns
  */
-export function useOnboardingTour(tour: OnboardingTour[], options?: OnboardingTourOptions) {
+export function useOnboardingTour(tour: OnboardingTourStep[], options?: OnboardingTourOptions) {
   const defaultOptions = {
-    autoStart: false,
     loop: false,
-    withPrevButton: true,
-    withNextButton: true,
-    withCloseButton: true,
-    withProgress: true,
-    withCounter: true,
   };
 
   const mergedOptions = { ...defaultOptions, ...options };
 
-  const [currentIndex, setCurrentIndex] = useState<number>();
+  const [currentStepIndex, setCurrentStepIndex] = useState<number>();
 
-  const {
-    autoStart,
-    loop,
-    withPrevButton,
-    withNextButton,
-    withCloseButton,
-    withProgress,
-    withCounter,
-    onTourStart,
-    onTourEnd,
-    onTourClose,
-    onTourChange,
-  } = mergedOptions || {};
+  const { loop, onOnboardingTourStart, onOnboardingTourEnd, onOnboardingTourChange } =
+    mergedOptions || {};
 
-  useEffect(() => {
-    if (currentIndex === undefined && autoStart) {
-      startTour();
-    }
-  }, []);
-
+  /** Start the tour */
   const startTour = () => {
-    setCurrentIndex(0);
-    onTourStart && onTourStart();
+    setCurrentStepIndex(0);
+    onOnboardingTourStart?.();
+    onOnboardingTourChange?.(tour[0]);
   };
 
-  const nextTour = () => {
-    if (currentIndex < tour.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-      onTourChange && onTourChange(tour[currentIndex + 1]);
+  /** Go to the next tour */
+  const nextStep = () => {
+    if (currentStepIndex < tour.length - 1) {
+      setCurrentStepIndex((currentStep) => currentStep + 1);
+      onOnboardingTourChange?.(tour[currentStepIndex + 1]);
     } else if (loop) {
-      setCurrentIndex(0);
-      onTourEnd && onTourEnd();
+      setCurrentStepIndex(0);
     } else {
-      setCurrentIndex(undefined);
-      onTourEnd && onTourEnd();
+      setCurrentStepIndex(undefined);
+      onOnboardingTourEnd?.();
     }
   };
 
-  const prevTour = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-      onTourChange && onTourChange(tour[currentIndex - 1]);
+  /** Go to the previous tour */
+  const prevStep = () => {
+    if (currentStepIndex > 0) {
+      setCurrentStepIndex((currentStep) => currentStep - 1);
+      onOnboardingTourChange?.(tour[currentStepIndex - 1]);
     } else if (loop) {
-      setCurrentIndex(tour.length - 1);
-      onTourEnd && onTourEnd();
+      setCurrentStepIndex(tour.length - 1);
     } else {
-      setCurrentIndex(undefined);
-      onTourEnd && onTourEnd();
+      setCurrentStepIndex(undefined);
+      onOnboardingTourEnd?.();
     }
   };
 
+  /** End the tour */
   const endTour = () => {
-    setCurrentIndex(undefined);
-    onTourEnd && onTourEnd();
+    setCurrentStepIndex(undefined);
+    onOnboardingTourEnd?.();
   };
 
   return {
     tour,
-    currentTour: tour[currentIndex],
-    currentIndex,
-    selectedTourId: tour[currentIndex]?.id,
-    setCurrentIndex,
+    currentStep: tour[currentStepIndex],
+    currentStepIndex,
+    selectedStepId: tour[currentStepIndex]?.id,
+    setCurrentStepIndex,
     startTour,
     endTour,
-    nextTour,
-    prevTour,
+    nextStep,
+    prevStep,
     options: mergedOptions,
   } as const;
 }

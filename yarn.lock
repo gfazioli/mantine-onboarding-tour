@@ -1445,9 +1445,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@gfazioli/mantine-focus-reveal@workspace:*, @gfazioli/mantine-focus-reveal@workspace:package":
+"@gfazioli/mantine-onboarding-tour@workspace:*, @gfazioli/mantine-onboarding-tour@workspace:package":
   version: 0.0.0-use.local
-  resolution: "@gfazioli/mantine-focus-reveal@workspace:package"
+  resolution: "@gfazioli/mantine-onboarding-tour@workspace:package"
   peerDependencies:
     "@mantine/core": ">=7.0.0"
     "@mantine/hooks": ">=7.0.0"
@@ -6999,7 +6999,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "extension-template-docs@workspace:docs"
   dependencies:
-    "@gfazioli/mantine-focus-reveal": "workspace:*"
+    "@gfazioli/mantine-onboarding-tour": "workspace:*"
     "@mantine/core": "npm:7.17.0"
     "@mantine/dates": "npm:^7.17.0"
     "@mantine/hooks": "npm:7.17.0"

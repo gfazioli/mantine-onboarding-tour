@@ -1,8 +1,8 @@
-# Mantine FocusReveal Component
+# Mantine OnboardingTour Component
 
 <div align="center">
 
-  ![image](https://github.com/gfazioli/mantine-focus-reveal/assets/432181/d9d37b48-ab49-44c7-9315-4ad9a48e70f8)
+  https://github.com/user-attachments/assets/93d39052-90be-45d7-a470-67f8727bc096
 
 </div>
 
@@ -10,10 +10,10 @@
 
 <div align="center">
   
-  [![NPM version](https://img.shields.io/npm/v/%40gfazioli%2Fmantine-focus-reveal?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-focus-reveal)
-  [![NPM Downloads](https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-focus-reveal?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-focus-reveal)
-  [![NPM Downloads](https://img.shields.io/npm/dy/%40gfazioli%2Fmantine-focus-reveal?style=for-the-badge&label=%20&color=f90)](https://www.npmjs.com/package/@gfazioli/mantine-focus-reveal)
-  ![NPM License](https://img.shields.io/npm/l/%40gfazioli%2Fmantine-focus-reveal?style=for-the-badge)
+  [![NPM version](https://img.shields.io/npm/v/%40gfazioli%2Fmantine-onboarding-tour?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-onboarding-tour)
+  [![NPM Downloads](https://img.shields.io/npm/dm/%40gfazioli%2Fmantine-onboarding-tour?style=for-the-badge)](https://www.npmjs.com/package/@gfazioli/mantine-onboarding-tour)
+  [![NPM Downloads](https://img.shields.io/npm/dy/%40gfazioli%2Fmantine-onboarding-tour?style=for-the-badge&label=%20&color=f90)](https://www.npmjs.com/package/@gfazioli/mantine-onboarding-tour)
+  ![NPM License](https://img.shields.io/npm/l/%40gfazioli%2Fmantine-onboarding-tour?style=for-the-badge)
 
 </div>
 
@@ -21,48 +21,70 @@
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 
-It allows you to create a focus-reveal effect with overlays, popovers, and onboarding tours, enhancing element visibility and interactivity.
+[![Mantine UI Library](https://img.shields.io/badge/-MANTINE_UI_LIBRARY-blue?style=for-the-badge&labelColor=white&logo=mantine
+)](https://mantine.dev/)
 
-You can find more components on the [Mantine Extensions Hub](https://mantine-extensions.vercel.app/) library.
+
+It allows you to create a onboarding-tour effect with overlays, popovers, and onboarding tours, enhancing element visibility and interactivity.
+
+
+[![Demo](https://img.shields.io/badge/-Demo_%26_Documentation-blue?style=for-the-badge&labelColor=white&logo=typescript
+)](https://gfazioli.github.io/mantine-onboarding-tour/)
+[![Demo](https://img.shields.io/badge/-Full_Screen_Demo-blue?style=for-the-badge&labelColor=white
+)](https://gfazioli.github.io/mantine-onboarding-tour/demo)
+[![Demo](https://img.shields.io/badge/-Mantine_Extensions_Hub-blue?style=for-the-badge&labelColor=blue
+)](https://gfazioli.github.io/mantine-onboarding-tour/)
+
+
+👉 You can find more components on the [Mantine Extensions Hub](https://mantine-extensions.vercel.app/) library.
 
 ## Installation
 
 ```sh
-npm install @gfazioli/mantine-focus-reveal
+npm install @gfazioli/mantine-onboarding-tour
 ```
+
 or 
 
 ```sh
-yarn add @gfazioli/mantine-focus-reveal
+yarn add @gfazioli/mantine-onboarding-tour
 ```
 
 After installation import package styles at the root of your application:
 
 ```tsx
-import '@gfazioli/mantine-focus-reveal/styles.css';
+import '@gfazioli/mantine-onboarding-tour/styles.css';
 ```
 
 ## Usage
 
 ```tsx
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour, type OnboardingTourStep } from '@gfazioli/mantine-onboarding-tour';
 
 function Demo() {
-  function BoxComponent({ children, ...props }: { children: ReactNode; [key: string]: any }) {
-    return (
-      <Box {...props} p="md" w="200px" c="white" style={{ borderRadius: '8px' }}>
-        {children}
-      </Box>
-    );
-  }
+
+  const onboardingSteps: OnboardingTourStep[] = [
+    {
+      id: 'welcome',
+      title: 'Welcome to the Onboarding Tour Component',
+      content:
+        'This is a demo of the Onboarding Tour component, which allows to create onboarding experiences for your users.',
+    },
+    {
+      id: 'my-button',
+      title: 'Features',
+      content: 'You can select any component by using the `data-onboarding-tour-id` attribute',
+    },
+
+  ];
 
   return (
-    <FocusReveal {...props} w={560} h={300}>
-      <BoxComponent bg="red">Hello World #1</BoxComponent>
-      <BoxComponent bg="cyan">Hope you like it #2</BoxComponent>
-      <BoxComponent bg="blue">Have a nice day #3</BoxComponent>
-      <BoxComponent bg="lime">Goodbye #4</BoxComponent>
-    </FocusReveal>
+    <OnboardingTour tour={onboardingSteps} started={started}>
+      <Title data-onboarding-tour-id="welcome" order={4}>
+        A simple example of the Onboarding Tour component
+      </Title>
+      <Button data-onboarding-tour-id="my-button">See all testimonials</Button>
+    </OnboardingTour>
   );
 }
 ```

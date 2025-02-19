@@ -1,21 +1,28 @@
-export { focusRevealModes, getAllFocusRevealModes } from './focus-reveal-modes';
-export { FocusReveal } from './FocusReveal';
-export { useFocusRevealGroupContext } from './FocusRevealGroup.context';
-export { FocusRevealOnboardingTourProvider } from './FocusRevealOnboardingTourProvider/FocusRevealOnboardingTourProvider';
+export { OnboardingTour } from './OnboardingTour';
 
 export { useOnboardingTour } from './hooks/use-onboarding-tour/use-onboarding-tour';
-export { useScrollIntoView } from './hooks/use-scroll-into-view/use-scroll-into-view';
+
+export {
+  focusRevealModes,
+  getAllOnboardingTourFocusRevealModes,
+} from './OnboardingTourFocusReveal/focus-reveal-modes';
 
 export type {
-  FocusRevealBaseProps,
-  FocusRevealCssVariables,
-  FocusRevealFactory,
-  FocusRevealProps,
-  FocusRevealStylesNames,
-} from './FocusReveal';
+  OnboardingTourBaseProps,
+  OnboardingTourFactory,
+  OnboardingTourProps,
+} from './OnboardingTour';
 
-export type { FocusRevealFocusedMode } from './focus-reveal-modes';
-export type { FocusRevealGroupProps } from './FocusRevealGroup/FocusRevealGroup';
-export type { FocusRevealPopoverContentProps } from './FocusRevealPopoverContent/FocusRevealPopoverContent';
+export type {
+  OnboardingTourFocusRevealFactory,
+  OnboardingTourFocusRevealProps,
+} from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
-export type { OnboardingTour } from './hooks/use-onboarding-tour/use-onboarding-tour';
+export type { OnboardingTourFocusRevealFocusedMode } from './OnboardingTourFocusReveal/focus-reveal-modes';
+
+export type { OnboardingTourTargetProps } from './OnboardingTourTarget/OnboardingTourTarget';
+
+export type {
+  OnboardingTourController,
+  OnboardingTourStep,
+} from './hooks/use-onboarding-tour/use-onboarding-tour';

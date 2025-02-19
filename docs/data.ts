@@ -25,12 +25,12 @@ export interface PackageData {
 }
 
 export const PACKAGE_DATA: PackageData = {
-  packageName: '@gfazioli/mantine-focus-reveal',
+  packageName: '@gfazioli/mantine-onboarding-tour',
   packageDescription:
-    'A Mantine component enables you to create a focus-reveal effect using overlays, popovers, and onboarding tours, which enhances element visibility and interactivity.',
-  mdxFileUrl: 'https://github.com/gfazioli/mantine-focus-reveal/blob/master/docs/pages/index.mdx',
-  repositoryUrl: 'https://github.com/gfazioli/mantine-focus-reveal',
-  licenseUrl: 'https://github.com/gfazioli/mantine-focus-reveal/blob/master/LICENSE',
+    'A Mantine component enables you to create a onboarding-tour effect using overlays, popovers, and onboarding tours, which enhances element visibility and interactivity.',
+  mdxFileUrl: 'https://github.com/gfazioli/mantine-onboarding-tour/blob/master/docs/docs.mdx',
+  repositoryUrl: 'https://github.com/gfazioli/mantine-onboarding-tour',
+  licenseUrl: 'https://github.com/gfazioli/mantine-onboarding-tour/blob/master/LICENSE',
   author: {
     name: 'Giovambattista Fazioli',
     githubUsername: 'gfazioli',

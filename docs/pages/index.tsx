@@ -12,9 +12,14 @@ export default function HomePage() {
       <PageHeader data={PACKAGE_DATA} />
       <DocsTabs
         docgen={docgen}
-        componentsProps={['FocusReveal', 'FocusRevealGroup', 'FocusRevealPopoverContent']}
-        componentPrefix="FocusReveal"
-        componentsStyles={['FocusReveal']}
+        componentsProps={[
+          'OnboardingTour',
+          'OnboardingTourTarget',
+          'OnboardingTourFocusReveal',
+          'OnboardingTourFocusRevealGroup',
+        ]}
+        componentPrefix="OnboardingTour"
+        componentsStyles={['OnboardingTour', 'OnboardingTourFocusReveal']}
         stylesApiData={STYLES_API_DATA}
       >
         <Docs />

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Group, Stack, Text, Title } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
@@ -10,8 +10,17 @@ function Wrapper() {
   const MAX_TESTIMONIALS = 3;
 
   useHotkeys([
-    ['ArrowRight', () => setFocusIndex(focusIndex + 1 < MAX_TESTIMONIALS ? focusIndex + 1 : 0)],
-    ['ArrowLeft', () => setFocusIndex(focusIndex - 1 >= 0 ? focusIndex - 1 : MAX_TESTIMONIALS - 1)],
+    [
+      'ArrowRight',
+      () =>
+        focusIndex >= 0 && setFocusIndex(focusIndex + 1 < MAX_TESTIMONIALS ? focusIndex + 1 : 0),
+    ],
+    [
+      'ArrowLeft',
+      () =>
+        focusIndex >= 0 &&
+        setFocusIndex(focusIndex - 1 >= 0 ? focusIndex - 1 : MAX_TESTIMONIALS - 1),
+    ],
   ]);
 
   return (
@@ -22,9 +31,9 @@ function Wrapper() {
 
       <Group justify="center">
         {testimonials.map(
-          (testimonial, index) =>
+          (_, index) =>
             index < MAX_TESTIMONIALS && (
-              <FocusReveal
+              <OnboardingTour.FocusReveal
                 key={`focus-reveal-${index}`}
                 focused={focusIndex === index}
                 transitionProps={{ duration: 0, exitDuration: 0 }}
@@ -42,7 +51,7 @@ function Wrapper() {
                     </Button>
                   </Group>
                 </Testimonials>
-              </FocusReveal>
+              </OnboardingTour.FocusReveal>
             )
         )}
       </Group>
@@ -51,10 +60,10 @@ function Wrapper() {
 }
 
 const code = `
-import { FocusReveal } from "@gfazioli/mantine-focus-reveal";
-import { Button, Group, Stack, Text, Title } from "@mantine/core";
-import { useHotkeys } from "@mantine/hooks";
-import { useState } from "react";
+import { useState } from 'react';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
+import { Button, Group, Stack, Text, Title } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
 
 function Demo() {
   const [focusIndex, setFocusIndex] = useState(-1);
@@ -62,32 +71,29 @@ function Demo() {
 
   useHotkeys([
     [
-      "ArrowRight",
+      'ArrowRight',
       () =>
-        setFocusIndex(focusIndex + 1 < MAX_TESTIMONIALS ? focusIndex + 1 : 0),
+        focusIndex >= 0 && setFocusIndex(focusIndex + 1 < MAX_TESTIMONIALS ? focusIndex + 1 : 0),
     ],
     [
-      "ArrowLeft",
+      'ArrowLeft',
       () =>
-        setFocusIndex(
-          focusIndex - 1 >= 0 ? focusIndex - 1 : MAX_TESTIMONIALS - 1,
-        ),
+        focusIndex >= 0 &&
+        setFocusIndex(focusIndex - 1 >= 0 ? focusIndex - 1 : MAX_TESTIMONIALS - 1),
     ],
   ]);
 
   return (
     <Stack justify="center" align="center">
       <Title order={1}>Cycle Example</Title>
-      <Text fs="italic">
-        Use the arrow keys to cycle through the testimonials
-      </Text>
+      <Text fs="italic">Use the arrow keys to cycle through the testimonials</Text>
       <Button onClick={() => setFocusIndex(0)}>Start</Button>
 
       <Group justify="center">
         {testimonials.map(
-          (testimonial, index) =>
+          (_, index) =>
             index < MAX_TESTIMONIALS && (
-              <FocusReveal
+              <OnboardingTour.FocusReveal
                 key={\`focus-reveal-\${index}\`}
                 focused={focusIndex === index}
                 transitionProps={{ duration: 0, exitDuration: 0 }}
@@ -99,18 +105,14 @@ function Demo() {
                     <Button
                       size="xs"
                       variant="gradient"
-                      onClick={() =>
-                        setFocusIndex(
-                          index + 1 < MAX_TESTIMONIALS ? index + 1 : 0,
-                        )
-                      }
+                      onClick={() => setFocusIndex(index + 1 < MAX_TESTIMONIALS ? index + 1 : 0)}
                     >
                       Next
                     </Button>
                   </Group>
                 </Testimonials>
-              </FocusReveal>
-            ),
+              </OnboardingTour.FocusReveal>
+            )
         )}
       </Group>
     </Stack>
@@ -118,7 +120,7 @@ function Demo() {
 }
 `;
 
-export const cycle: MantineDemo = {
+export const focusRevealCycle: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,

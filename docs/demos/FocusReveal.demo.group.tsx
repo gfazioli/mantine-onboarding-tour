@@ -1,4 +1,4 @@
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Center, Code, Divider, Stack, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 import { Testimonials } from './Testimonials';
@@ -27,39 +27,39 @@ function Wrapper() {
         />
       </Stack>
 
-      <FocusReveal.Group focusedMode="scale">
+      <OnboardingTour.FocusReveal.Group focusedMode="scale">
         <Stack>
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={0} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={200} />
 
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={1} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={200} />
 
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={2} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={200} />
         </Stack>
-      </FocusReveal.Group>
+      </OnboardingTour.FocusReveal.Group>
     </>
   );
 }
 
 const code = `
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Center, Code, Divider, Stack, Text, Title } from '@mantine/core';
 
 function Demo() {
@@ -75,8 +75,7 @@ function Demo() {
           </Text>
         </Center>
 
-        <Divider
-          mb={600}
+        <Divider mb={600}
           label={
             <>
               <Text fz={48}>👇</Text>
@@ -86,39 +85,39 @@ function Demo() {
         />
       </Stack>
 
-      <FocusReveal.Group focusedMode="scale">
+      <OnboardingTour.FocusReveal.Group focusedMode="scale">
         <Stack>
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={0} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={200} />
 
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={1} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={200} />
 
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={2} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={200} />
         </Stack>
-      </FocusReveal.Group>
+      </OnboardingTour.FocusReveal.Group>
     </>
   );
 }
 `;
 
-export const group: MantineDemo = {
+export const focusRevealGroup: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,

@@ -1,25 +1,297 @@
+import { IconExternalLink } from '@tabler/icons-react';
+import { Button, rem } from '@mantine/core';
 import { InstallScript } from './components/InstallScript/InstallScript';
 import * as demos from './demos';
 
 ## Installation
 
-<InstallScript packages="@gfazioli/mantine-focus-reveal" />
+<InstallScript packages="@gfazioli/mantine-onboarding-tour" />
 
 After installation import package styles at the root of your application:
 
 ```tsx
-import '@gfazioli/mantine-focus-reveal/styles.css';
+import '@gfazioli/mantine-onboarding-tour/styles.css';
 ```
 
-You can import styles within a layer `@layer mantine-focus-reveal` by importing `@gfazioli/mantine-focus-reveal/styles.layer.css` file.
+You can import styles within a layer `@layer mantine-onboarding-tour` by importing `@gfazioli/mantine-onboarding-tour/styles.layer.css` file.
 
 ```tsx
-import '@gfazioli/mantine-focus-reveal/styles.layer.css';
+import '@gfazioli/mantine-onboarding-tour/styles.layer.css';
 ```
+
+## Example
+
+Here is a full page example of an Onboarding Tour.
+
+<Button
+  component="a"
+  href="/demo"
+  target="_blank"
+  rightSection={
+    <IconExternalLink
+      style={{ width: rem(18), height: rem(18) }}
+      stroke={1.5}
+    />
+  }
+  fullWidth
+  justify="space-between"
+  h={50}
+  px={20}
+  radius="md"
+>
+  Open Onboarding Tour example page
+</Button>
 
 ## Usage
 
-The `FocusReveal` component allows highlighting and making any component on your page more visible. The highlighting process can be controlled by three main properties:
+The `OnboardingTour` component allows to create onboarding experiences for your users.
+
+<Demo data={demos.configurator} />
+
+## OnboardingTourStep
+
+The `OnboardingTourStep` interface defines the structure of each step in the tour.
+
+```tsx
+export type OnboardingTourStep = {
+  /** Unique id of the tour. Will be use for the data-onboarding-tour-id attribute */
+  id: string;
+
+  /** Header of the tour. You can also pass a React component here */
+  header?:
+    | React.ReactNode
+    | ((tourController: OnboardingTourController) => React.ReactNode);
+
+  /** Title of the tour. You can also pass a React component here */
+  title?:
+    | React.ReactNode
+    | ((tourController: OnboardingTourController) => React.ReactNode);
+
+  /** Custom Content of the tour. You can also pass a React component here */
+  content?:
+    | React.ReactNode
+    | ((tourController: OnboardingTourController) => React.ReactNode);
+
+  /** Footer of the tour. You can also pass a React component here */
+  footer?:
+    | React.ReactNode
+    | ((tourController: OnboardingTourController) => React.ReactNode);
+
+  /** Anything else */
+  [key: string]: any;
+};
+```
+
+Both `header`, `title`, `content`, and `footer` can be a string, a React component, or a function that receives `tourController` and returns a React component.
+
+## OnboardingTourController
+
+The `OnboardingTourController` interface provides the current state of the tour. It also provides a series of actions to interact with the tour, such as the action to go to the next step `nextStep()` or to end the tour `endTour()`.
+
+```tsx
+export type OnboardingTourController = Readonly<{
+  /** List of tour steps */
+  tour: OnboardingTourStep[];
+
+  /** Current step */
+  currentStep: OnboardingTourStep | undefined;
+
+  /** Current step index of the tour. Zero-based index */
+  currentStepIndex: number | undefined;
+
+  /** ID of the selected tour */
+  selectedStepId: string | undefined;
+
+  /** Set the current index */
+  setCurrentStepIndex: (index: number) => void;
+
+  /** Start the tour */
+  startTour: () => void;
+
+  /** End the tour */
+  endTour: () => void;
+
+  /** Go to the next tour */
+  nextStep: () => void;
+
+  /** Go to the previous tour */
+  prevStep: () => void;
+
+  /** Options of the tour */
+  options: OnboardingTourOptions;
+}>;
+```
+
+## Define the onboarding tour
+
+You can define your onboarding tour by using the `OnboardingTourStep` array.
+
+```tsx
+const onboardingSteps: OnboardingTourStep[] = [
+  {
+    id: 'welcome',
+    // Simple string
+    title: 'Welcome to the Onboarding Tour Component',
+    // Component
+    content: <Text size="lg">Hello world!</Text>,
+  },
+  {
+    id: 'subtitle',
+    title: 'Another title',
+    content: (tourController: OnboardingTourController) => (
+      <Text size="lg">
+        Hello world! {tourController.currentStep.id}
+      </Text>
+    ),
+  },
+];
+```
+
+<Demo data={demos.onboardingTourStep} />
+
+You may also handle the `header`, `title`, `content`, and `footer` by using the `OnBoardingTour` component props. In this case the `OnboardingTourStep` will be ignored.
+
+<Demo data={demos.onboardingProps} />
+
+Anyway, the `OnboardingTourStep` are always available in the `OnboardingTourController` and you can use them to display any variant. Fo example,
+
+<Demo data={demos.wrapTitle} />
+
+## Custom entry
+
+You may use any custom entry in the `OnboardingTourStep` list to customize the tour. For example, here we're going to display some extra information in the footer, by using a custom property `price`:
+
+```tsx
+...
+    {
+      id: 'step-2',
+      title: 'Step-2',
+      description: 'Description of the Step 2',
+      price: 12,
+    },
+...
+```
+
+Then we can use the `footer` prop to display the `price`:
+
+```tsx
+<OnboardingTour
+    ...
+    footer={(onboardingTour: OnboardingTourController) => {
+        if (onboardingTour.currentStep?.price) {
+          return onboardingTour.currentStep?.price;
+        }
+        return null;
+    }} />
+```
+
+<Demo data={demos.customEntry} />
+
+### Custom Popover Content
+
+You may use the controller to override the default behavior of the tour or to add custom logic to the tour. For example, you could replace the default Popover content with a custom one:
+
+<Demo data={demos.customPopoverContent} />
+
+## Custom Stepper
+
+The `stepper` prop allows you to customize the stepper of the tour. For example, you could use it to display a progress bar or a custom list of steps. Currently, the `OnboardingTour` component use the [Mantine Stepper](https://mantine.dev/core/stepper/) component. You can use the `stepperProps` and `stepperStepProps` props to customize the stepper. Of course, you can build your own using the `stepper` prop.
+
+<Demo data={demos.customStepper} />
+
+## OnboardingTour.Target
+
+You have to use the `OnboardingTour.Target` when your tour component are not visible as children of the `OnboardingTour` component.
+For example, here is an example of a tour component that is not a child of the `OnboardingTour` component.
+
+```tsx
+function AnotherComponent() {
+  return (
+    <Group>
+       {/* ❌ This won't work */}
+      <Button data-onboarding-tour-id="my-button">Click me</Button>
+      <Button>Cancel</Button>
+    </Group>
+  );
+}
+
+...
+function Demo() {
+
+   const onboardingSteps: OnboardingTourStep[] = [
+    {
+      id: 'welcome',
+      title: 'Welcome to the Onboarding Tour Component',
+      content:
+        'This is a demo of the Onboarding Tour component, which allows to create onboarding experiences for your users.',
+    },
+    {
+      id: 'my-button',
+      title: 'The New Action Button',
+      content: 'This is the content for my button',
+    },
+  ];
+
+  return (
+    <OnboardingTour tour={onboardingSteps} started={true}>
+      <div>
+        <Title data-onboarding-tour-id="welcome">Welcome to the Onboarding Tour Component</Title>
+        <AnotherComponent />
+      </div>
+    </OnboardingTour>
+  )
+}
+```
+
+The above example won't work because we can't get the `data-onboarding-tour-id` attribute of the `AnotherComponent` component.
+In this case you have to use the `OnboardingTour.Target` component to make it work. In short, instead of using the `data-onboarding-tour-id` attribute of the component, you have to wrap your component with `OnboardingTour.Target`.
+
+```tsx
+function AnotherComponent() {
+  return (
+    <Group>
+      {/* ✅ This will work */}
+      <OnboardingTour.Target id="my-button">
+        <Button>Click me</Button>
+      </OnboardingTour.Target>
+      <Button>Cancel</Button>
+    </Group>
+  );
+}
+
+...
+function Demo() {
+
+   const onboardingSteps: OnboardingTourStep[] = [
+    {
+      id: 'welcome',
+      title: 'Welcome to the Onboarding Tour Component',
+      content:
+        'This is a demo of the Onboarding Tour component, which allows to create onboarding experiences for your users.',
+    },
+    {
+      id: 'my-button',
+      title: 'The New Action Button',
+      content: 'This is the content for my button',
+    },
+  ];
+
+  return (
+    <OnboardingTour tour={onboardingSteps} started={true}>
+      <div>
+        <Title data-onboarding-tour-id="welcome">Welcome to the Onboarding Tour Component</Title>
+        <AnotherComponent />
+      </div>
+    </OnboardingTour>
+  )
+}
+```
+
+<Demo data={demos.target} />
+
+## OnboardingTour.FocusReveal
+
+The `OnboardingTour.FocusReveal` component allows highlighting and making any component on your page more visible. The highlighting process can be controlled by three main properties:
 
 - `withOverlay`: displays a dark overlay across the entire page except for the highlighted component
 - `withReveal`: scrolls the page to make the component to be highlighted visible
@@ -29,23 +301,23 @@ Naturally, we have the `focused` prop that controls when the component should be
 
 > **Note**: In all examples, we use the `onBlur` event to remove focus from the component for demonstration purposes. In a real-world scenario, you might also use the `focused` prop to control the focus state.
 
-<Demo data={demos.configurator} />
+<Demo data={demos.focusRevealConfigurator} />
 
 ## Uncontrolled Mode
 
-The `FocusReveal` component can also be used in an uncontrolled mode. In this mode, the component will automatically highlight the children.
+The `OnboardingTour.FocusReveal` component can also be used in an uncontrolled mode. In this mode, the component will automatically highlight the children.
 
-<Demo data={demos.uncontrolled} />
+<Demo data={demos.focusRevealUncontrolled} />
 
-## Group
+## OnboardingTour.FocusReveal.Group
 
-If you want to highlight multiple components, you can use the `FocusReveal.Group` component. This component allows you to highlight multiple components at the same time.
-This also allows for controlling multiple `FocusReveal` components simultaneously, setting some common properties for all the components.
+If you want to highlight multiple components, you can use the `OnboardingTour.FocusReveal.Group` component. This component allows you to highlight multiple components at the same time.
+This also allows for controlling multiple `OnboardingTour.FocusReveal` components simultaneously, setting some common properties for all the components.
 
 ```tsx
-export interface FocusRevealGroupProps {
+export interface OnboardingTourFocusRevealGroupProps {
   /** FocusReveal mode/effects when focused */
-  focusedMode?: FocusRevealFocusedMode;
+  focusedMode?: OnboardingTourFocusRevealFocusedMode;
 
   /** Indicator if element should be revealed. Default `false` */
   withReveal?: boolean;
@@ -64,13 +336,13 @@ export interface FocusRevealGroupProps {
 }
 ```
 
-> **Note**: The `FocusReveal.Group` component does not have the `focused` prop. Instead, use the `focused` prop in the `FocusReveal` component. In addition, the `withReveal` prop is set to `false` by default. The `defaultFocused` prop is set to `true` by default.
+> **Note**: The `OnboardingTour.FocusReveal.Group` component does not have the `focused` prop. Instead, use the `focused` prop in the `OnboardingTour.FocusReveal` component. In addition, the `withReveal` prop is set to `false` by default. The `defaultFocused` prop is set to `true` by default.
 
-<Demo data={demos.group} />
+<Demo data={demos.focusRevealGroup} />
 
-Below another example of using the `FocusReveal.Group` component.
+Below another example of using the `OnboardingTour.FocusReveal.Group` component.
 
-<Demo data={demos.groupProps} />
+<Demo data={demos.focusRevealGroupProps} />
 
 ## withReveal
 
@@ -103,7 +375,7 @@ interface ScrollIntoViewParams {
 }
 ```
 
-<Demo data={demos.reveal} />
+<Demo data={demos.focusRevealReveal} />
 
 > **Note**: The `onScrollFinish` callback is not available in the `revealsProps` prop. Instead, use the `onRevealFinish` prop.
 
@@ -142,7 +414,7 @@ interface OverlayProps {
 }
 ```
 
-<Demo data={demos.overlay} />
+<Demo data={demos.focusRevealOverlay} />
 
 ## scrollableRef
 
@@ -150,35 +422,36 @@ The `scrollableRef` prop allows you to specify a custom scrollable element. This
 
 ### With simple Paper container
 
-<Demo data={demos.paper} />
+<Demo data={demos.focusRevealPaper} />
 
 Below, by using the `ScrollArea` component, we can create a scrollable container.
 
 ### ScrollArea
 
-<Demo data={demos.scrollContainer} />
+<Demo data={demos.focusRevealScrollContainer} />
 
 ## Custom Focus Mode
 
-The `FocusReveal` component allows you to create a custom focus mode. This is useful when you want to create a custom focus effect.
+The `OnboardingTour.FocusReveal` component allows you to create a custom focus mode. This is useful when you want to create a custom focus effect.
 
-<Demo data={demos.focusMode} />
+<Demo data={demos.focusRevealFocusMode} />
 
 ## With Popover
 
-In addition to focus and reveal, you can add a `Popover` display when the element gains focus by using the `popoverContent` prop. 
+In addition to focus and reveal, you can add a `Popover` display when the element gains focus by using the `popoverContent` prop.
 
-<Demo data={demos.popover} />
+<Demo data={demos.focusRevealPopover} />
 
 You can use the `popoverProps` prop (are the same as the Mantine `Popover` component. You can find the documentation [here](https://mantine.dev/core/popover/?t=props)) to manipulate the Mantine `Popover` component.
 
-<Demo data={demos.popoverProps} />
+<Demo data={demos.focusRevealPopoverProps} />
 
+## Example: Cycle
 
+Here are some examples of how to use the `OnboardingTour.FocusReveal` component in different scenarios.
 
+<Demo data={demos.focusRevealCycle} />
 
-## Use cases
+## Example: Multiple Focus components
 
-### Cycle
-
-<Demo data={demos.cycle} />
+<Demo data={demos.focusRevealCycleDescription} />

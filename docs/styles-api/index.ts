@@ -1,5 +1,7 @@
-import { FocusRevealStylesApi } from './FocusReveal.styles-api';
+import { OnboardingTourStylesApi } from './OnboardingTour.styles-api';
+import { OnboardingTourFocusRevealStylesApi } from './OnboardingTourFocusReveal.styles-api';
 
 export const STYLES_API_DATA = {
-  FocusReveal: FocusRevealStylesApi,
+  OnboardingTour: OnboardingTourStylesApi,
+  OnboardingTourFocusReveal: OnboardingTourFocusRevealStylesApi,
 };

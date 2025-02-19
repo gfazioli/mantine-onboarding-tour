@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
@@ -18,13 +18,13 @@ function Wrapper() {
       <Divider my={400} label="Divider" />
 
       <Center>
-        <FocusReveal
+        <OnboardingTour.FocusReveal
           scrollableRef={scrollRef as React.RefObject<HTMLDivElement>}
           focused={focused}
           onBlur={close}
         >
           <Testimonials testimonial={0} />
-        </FocusReveal>
+        </OnboardingTour.FocusReveal>
       </Center>
     </ScrollArea>
   );
@@ -32,7 +32,7 @@ function Wrapper() {
 
 const code = `
 import { useRef } from 'react';
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, ScrollArea } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -49,20 +49,20 @@ function Demo() {
       <Divider my={400} label="Divider" />
 
       <Center>
-        <FocusReveal
+        <OnboardingTour.FocusReveal
           scrollableRef={scrollRef as React.RefObject<HTMLDivElement>}
           focused={focused}
           onBlur={close}
         >
           <Testimonials testimonial={0} />
-        </FocusReveal>
+        </OnboardingTour.FocusReveal>
       </Center>
     </ScrollArea>
   );
 }
 `;
 
-export const scrollContainer: MantineDemo = {
+export const focusRevealScrollContainer: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,

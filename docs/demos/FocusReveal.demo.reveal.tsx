@@ -1,4 +1,4 @@
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Group, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
@@ -18,7 +18,7 @@ function Wrapper() {
       <Divider my={200} />
 
       <Group justify="center">
-        <FocusReveal
+        <OnboardingTour.FocusReveal
           focused={focused}
           onBlur={close}
           revealProps={{
@@ -26,7 +26,7 @@ function Wrapper() {
           }}
         >
           <Testimonials testimonial={1} />
-        </FocusReveal>
+        </OnboardingTour.FocusReveal>
       </Group>
 
       <Divider my={200} />
@@ -35,7 +35,7 @@ function Wrapper() {
 }
 
 const code = `
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Group, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -53,7 +53,7 @@ function Demo() {
       <Divider my={200} />
 
       <Group justify="center">
-        <FocusReveal
+        <OnboardingTour.FocusReveal
           focused={focused}
           onBlur={close}
           revealProps={{
@@ -61,7 +61,7 @@ function Demo() {
           }}
         >
           <Testimonials testimonial={1} />
-        </FocusReveal>
+        </OnboardingTour.FocusReveal>
       </Group>
 
       <Divider my={200} />
@@ -70,7 +70,7 @@ function Demo() {
 }
 `;
 
-export const reveal: MantineDemo = {
+export const focusRevealReveal: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,

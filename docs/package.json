@@ -9,7 +9,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@gfazioli/mantine-focus-reveal": "workspace:*",
+    "@gfazioli/mantine-onboarding-tour": "workspace:*",
     "@mantine/core": "7.17.0",
     "@mantine/dates": "^7.17.0",
     "@mantine/hooks": "7.17.0",

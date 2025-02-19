@@ -1,6 +1,0 @@
-.custom {
-  &[data-focus-reveal-focused='true'] {
-    border: 4px solid red;
-    transform: rotateZ(2deg);
-  }
-}

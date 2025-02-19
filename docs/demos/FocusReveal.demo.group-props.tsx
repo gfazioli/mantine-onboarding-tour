@@ -1,15 +1,17 @@
 import { useState } from 'react';
 import {
-  FocusReveal,
-  FocusRevealFocusedMode,
   focusRevealModes,
-} from '@gfazioli/mantine-focus-reveal';
+  OnboardingTour,
+  OnboardingTourFocusRevealFocusedMode,
+} from '@gfazioli/mantine-onboarding-tour';
 import { Center, Code, Divider, Group, Select, Stack, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
 import { Testimonials } from './Testimonials';
 
 function Wrapper() {
-  const [focusedMode, setFocusedMode] = useState<FocusRevealFocusedMode | string | null>('scale');
+  const [focusedMode, setFocusedMode] = useState<
+    OnboardingTourFocusRevealFocusedMode | string | null
+  >('scale');
 
   return (
     <>
@@ -43,41 +45,43 @@ function Wrapper() {
         />
       </Stack>
 
-      <FocusReveal.Group focusedMode={focusedMode as FocusRevealFocusedMode}>
+      <OnboardingTour.FocusReveal.Group
+        focusedMode={focusedMode as OnboardingTourFocusRevealFocusedMode}
+      >
         <Stack>
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={0} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={100} />
 
           <Center>
-            <FocusReveal defaultFocused={false}>
+            <OnboardingTour.FocusReveal defaultFocused={false}>
               <Testimonials testimonial={1} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={100} />
 
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={2} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={100} />
         </Stack>
-      </FocusReveal.Group>
+      </OnboardingTour.FocusReveal.Group>
     </>
   );
 }
 
 const code = `
 import { useState } from 'react';
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
-import { FocusRevealFocusedMode } from '@gfazioli/mantine-focus-reveal/dist/types/FocusReveal';
+import { FocusRevealFocusedMode, focusRevealModes } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Center, Code, Divider, Group, Select, Stack, Text, Title } from '@mantine/core';
 
 function Demo() {
@@ -128,39 +132,39 @@ function Demo() {
         />
       </Stack>
 
-      <FocusReveal.Group focusedMode={focusedMode as FocusRevealFocusedMode}>
+      <OnboardingTour.FocusReveal.Group focusedMode={focusedMode as FocusRevealFocusedMode}>
         <Stack>
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={0} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={100} />
 
           <Center>
-            <FocusReveal defaultFocused={false}>
+            <OnboardingTour.FocusReveal defaultFocused={false}>
               <Testimonials testimonial={1} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={100} />
 
           <Center>
-            <FocusReveal>
+            <OnboardingTour.FocusReveal>
               <Testimonials testimonial={2} />
-            </FocusReveal>
+            </OnboardingTour.FocusReveal>
           </Center>
 
           <Divider my={100} />
         </Stack>
-      </FocusReveal.Group>
+      </OnboardingTour.FocusReveal.Group>
     </>
   );
 }  
 `;
 
-export const groupProps: MantineDemo = {
+export const focusRevealGroupProps: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code,

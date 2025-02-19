@@ -1,4 +1,4 @@
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Group, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
@@ -19,19 +19,19 @@ function Wrapper() {
       <Divider my={100} label="Divider" />
 
       <Group justify="center">
-        <FocusReveal focused={focused} onBlur={close} className={classes.custom}>
+        <OnboardingTour.FocusReveal focused={focused} onBlur={close} className={classes.custom}>
           <Testimonials testimonial={1} />
-        </FocusReveal>
+        </OnboardingTour.FocusReveal>
       </Group>
     </Stack>
   );
 }
 
 const code = `
-import { FocusReveal } from '@gfazioli/mantine-focus-reveal';
+import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Group, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { MantineDemo } from '@mantinex/demo';
+import classes from './CustomMode.module.css';
 
 function Demo() {
   const [focused, { close, open }] = useDisclosure(false);
@@ -47,9 +47,9 @@ function Demo() {
       <Divider my={100} label="Divider" />
 
       <Group justify="center">
-        <FocusReveal focused={focused} onBlur={close} className={classes.custom}>
+        <OnboardingTour.FocusReveal focused={focused} onBlur={close} className={classes.custom}>
           <Testimonials testimonial={1} />
-        </FocusReveal>
+        </OnboardingTour.FocusReveal>
       </Group>
     </Stack>
   );
@@ -58,14 +58,14 @@ function Demo() {
 
 const customClasses = `
 .custom {
-  &[data-focus-reveal-focused="true"] {
+  &[data-onboarding-tour-focus-reveal-focused='true'] {
     border: 4px solid red;
     transform: rotateZ(2deg);
   }
 }
 `;
 
-export const focusMode: MantineDemo = {
+export const focusRevealFocusMode: MantineDemo = {
   type: 'code',
   component: Wrapper,
   code: [
