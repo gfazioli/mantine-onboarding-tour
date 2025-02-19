@@ -1,0 +1,184 @@
+import { InstallScript } from './components/InstallScript/InstallScript';
+import * as demos from './demos';
+
+## Installation
+
+<InstallScript packages="@gfazioli/mantine-focus-reveal" />
+
+After installation import package styles at the root of your application:
+
+```tsx
+import '@gfazioli/mantine-focus-reveal/styles.css';
+```
+
+You can import styles within a layer `@layer mantine-focus-reveal` by importing `@gfazioli/mantine-focus-reveal/styles.layer.css` file.
+
+```tsx
+import '@gfazioli/mantine-focus-reveal/styles.layer.css';
+```
+
+## Usage
+
+The `FocusReveal` component allows highlighting and making any component on your page more visible. The highlighting process can be controlled by three main properties:
+
+- `withOverlay`: displays a dark overlay across the entire page except for the highlighted component
+- `withReveal`: scrolls the page to make the component to be highlighted visible
+- `focusEffect`: applies a series of predefined effects when the component is highlighted
+
+Naturally, we have the `focused` prop that controls when the component should be highlighted.
+
+> **Note**: In all examples, we use the `onBlur` event to remove focus from the component for demonstration purposes. In a real-world scenario, you might also use the `focused` prop to control the focus state.
+
+<Demo data={demos.configurator} />
+
+## Uncontrolled Mode
+
+The `FocusReveal` component can also be used in an uncontrolled mode. In this mode, the component will automatically highlight the children.
+
+<Demo data={demos.uncontrolled} />
+
+## Group
+
+If you want to highlight multiple components, you can use the `FocusReveal.Group` component. This component allows you to highlight multiple components at the same time.
+This also allows for controlling multiple `FocusReveal` components simultaneously, setting some common properties for all the components.
+
+```tsx
+export interface FocusRevealGroupProps {
+  /** FocusReveal mode/effects when focused */
+  focusedMode?: FocusRevealFocusedMode;
+
+  /** Indicator if element should be revealed. Default `false` */
+  withReveal?: boolean;
+
+  /** Will render overlay if set to `true` */
+  withOverlay?: boolean;
+
+  /** Props passed down to `Overlay` component */
+  overlayProps?: OverlayProps & ElementProps<'div'>;
+
+  /** Props passed down to the `Transition` component that used to animate the Overlay, use to configure duration and animation type, `{ duration: 150, transition: 'fade' }` by default */
+  transitionProps?: TransitionOverride;
+
+  /** Content */
+  children?: React.ReactNode;
+}
+```
+
+> **Note**: The `FocusReveal.Group` component does not have the `focused` prop. Instead, use the `focused` prop in the `FocusReveal` component. In addition, the `withReveal` prop is set to `false` by default. The `defaultFocused` prop is set to `true` by default.
+
+<Demo data={demos.group} />
+
+Below another example of using the `FocusReveal.Group` component.
+
+<Demo data={demos.groupProps} />
+
+## withReveal
+
+The `withReveal` props scrolls the page to make the component to be highlighted visible. This is useful when the component is not visible on the screen. Internally, the component uses the `scrollIntoView` method to make the component visible, from the Mantine `useScrollIntoView()` hook.
+
+Of course, you can customize the scroll behavior by using the `revealProps` prop. This prop accepts the same properties as the `useScrollIntoView()` method.
+
+```tsx
+interface ScrollIntoViewParams {
+  /** callback fired after scroll */
+  // onScrollFinish?: () => void; // See below
+
+  /** duration of scroll in milliseconds */
+  duration?: number;
+
+  /** axis of scroll */
+  axis?: 'x' | 'y';
+
+  /** custom mathematical easing function */
+  easing?: (t: number) => number;
+
+  /** additional distance between nearest edge and element */
+  offset?: number;
+
+  /** indicator if animation may be interrupted by user scrolling */
+  cancelable?: boolean;
+
+  /** prevents content jumping in scrolling lists with multiple targets */
+  isList?: boolean;
+}
+```
+
+<Demo data={demos.reveal} />
+
+> **Note**: The `onScrollFinish` callback is not available in the `revealsProps` prop. Instead, use the `onRevealFinish` prop.
+
+## withOverlay
+
+The `withOverlay` prop displays a dark overlay across the entire page except for the highlighted component. This is useful when you want to focus the user's attention on a specific component. The overlay is customizable by using the `overlayProps` prop.
+
+```tsx
+interface OverlayProps {
+  /** Controls overlay background-color opacity 0–1, disregarded when gradient prop is set, 0.6 by default */
+  backgroundOpacity?: number;
+
+  /** Overlay background blur, 0 by default */
+  blur?: string | number;
+
+  /** Determines whether content inside overlay should be vertically and horizontally centered, false by default */
+  center?: boolean;
+
+  /** Content inside overlay */
+  children?: React.ReactNode;
+
+  /** Overlay background-color, #000 by default */
+  color?: BackgroundColor;
+
+  /** Determines whether overlay should have fixed position instead of absolute, false by default */
+  fixed?: boolean;
+
+  /** Changes overlay to gradient. If set, color prop is ignored */
+  gradient?: string;
+
+  /** Key of theme.radius or any valid CSS value to set border-radius, 0 by default */
+  radius?: MantineRadius | number;
+
+  /** Overlay z-index, 200 by default */
+  zIndex?: string | number;
+}
+```
+
+<Demo data={demos.overlay} />
+
+## scrollableRef
+
+The `scrollableRef` prop allows you to specify a custom scrollable element. This is useful when the component to be highlighted is inside a scrollable container. The `scrollableRef` prop accepts a `React.RefObject<HTMLElement>`.
+
+### With simple Paper container
+
+<Demo data={demos.paper} />
+
+Below, by using the `ScrollArea` component, we can create a scrollable container.
+
+### ScrollArea
+
+<Demo data={demos.scrollContainer} />
+
+## Custom Focus Mode
+
+The `FocusReveal` component allows you to create a custom focus mode. This is useful when you want to create a custom focus effect.
+
+<Demo data={demos.focusMode} />
+
+## With Popover
+
+In addition to focus and reveal, you can add a `Popover` display when the element gains focus by using the `popoverContent` prop. 
+
+<Demo data={demos.popover} />
+
+You can use the `popoverProps` prop (are the same as the Mantine `Popover` component. You can find the documentation [here](https://mantine.dev/core/popover/?t=props)) to manipulate the Mantine `Popover` component.
+
+<Demo data={demos.popoverProps} />
+
+
+
+
+## Use cases
+
+### Cycle
+
+<Demo data={demos.cycle} />

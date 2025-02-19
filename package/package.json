@@ -1,0 +1,45 @@
+{
+  "name": "@gfazioli/mantine-focus-reveal",
+  "version": "0.1.0",
+  "description": "A Mantine component enables you to create a focus-reveal effect using overlays, popovers, and onboarding tours, which enhances element visibility and interactivity.",
+  "homepage": "https://gfazioli.github.io/mantine-focus-reveal/",
+  "packageManager": "yarn@4.0.1",
+  "license": "MIT",
+  "author": "Giovambattista Fazioli <giovambattista.fazioli@gmail.com>",
+  "keywords": [
+    "mantine",
+    "extension",
+    "react-component",
+    "react",
+    "typescript",
+    "focus-reveal",
+    "onboarding",
+    "tour"
+  ],
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.mjs",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/types/index.d.mts",
+        "default": "./dist/esm/index.mjs"
+      },
+      "require": {
+        "types": "./dist/types/index.d.ts",
+        "default": "./dist/cjs/index.cjs"
+      }
+    },
+    "./styles.css": "./dist/styles.css",
+    "./styles.layer.css": "./dist/styles.layer.css"
+  },
+  "repository": "https://github.com/gfazioli/mantine-focus-reveal.git",
+  "peerDependencies": {
+    "@mantine/core": ">=7.0.0",
+    "@mantine/hooks": ">=7.0.0",
+    "@tabler/icons-react": "^3.30.0",
+    "react": "^18.x || ^19.x",
+    "react-dom": "^18.x || ^19.x"
+  },
+  "bugs": "https://github.com/gfazioli/mantine-focus-reveal/issues"
+}

@@ -1,0 +1,32 @@
+.root {
+  padding-top: 60px;
+  padding-bottom: 40px;
+  background-color: var(--mantine-color-body);
+}
+
+.title {
+  color: var(--mantine-color-bright);
+  font-size: 32px;
+  letter-spacing: -0.5px;
+  font-weight: 500;
+
+  @mixin smaller-than $mantine-breakpoint-sm {
+    font-size: 24px;
+  }
+}
+
+.description {
+  margin-top: var(--mantine-spacing-md);
+  max-width: 600px;
+  font-size: var(--mantine-font-size-lg);
+  color: var(--mantine-color-dimmed);
+
+  @mixin smaller-than $mantine-breakpoint-sm {
+    margin-top: var(--mantine-spacing-xs);
+    font-size: var(--mantine-font-size-sm);
+  }
+}
+
+.links {
+  margin-top: var(--mantine-spacing-lg);
+}

@@ -1,0 +1,96 @@
+.tabsWrapper {
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  padding-bottom: var(--mantine-spacing-md);
+}
+
+.tab {
+  font-size: var(--mantine-font-size-md);
+  font-weight: 500;
+  height: 42px;
+  padding-inline-start: var(--mantine-spacing-sm);
+  padding-inline-end: var(--mantine-spacing-lg);
+  border: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+  color: var(--mantine-color-bright);
+  background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-6));
+
+  @mixin hover {
+    background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-5));
+  }
+
+  @mixin smaller-than $mantine-breakpoint-md {
+    font-size: var(--mantine-font-size-sm);
+    padding-left: var(--mantine-spacing-md);
+    padding-right: var(--mantine-spacing-md);
+  }
+
+  &[data-active] {
+    border-color: transparent;
+    color: light-dark(var(--mantine-color-white), var(--mantine-color-black));
+    background-color: light-dark(var(--mantine-color-gray-9), var(--mantine-color-gray-1));
+
+    .tabIcon {
+      color: inherit;
+    }
+  }
+}
+
+.tabInner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: var(--mantine-spacing-xs);
+}
+
+.tabIcon {
+  color: light-dark(var(--mantine-color-gray-6), var(--mantine-color-dark-1));
+
+  @mixin smaller-than $mantine-breakpoint-md {
+    display: none;
+  }
+}
+
+.main {
+  position: relative;
+  width: 100%;
+}
+
+.tableOfContents {
+  flex: 0 0 280px;
+  padding-top: 45px;
+  position: sticky;
+  z-index: 1;
+  top: calc(var(--app-shell-header-height) - 30px);
+  left: 0;
+
+  @mixin smaller-than $mantine-breakpoint-md {
+    display: none;
+  }
+}
+
+.tabContent {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  &[data-main] {
+    flex-direction: row;
+    align-items: flex-start;
+    max-width: calc(100% - 280px);
+
+    @mixin smaller-than $mantine-breakpoint-md {
+      max-width: 100%;
+    }
+  }
+
+  &[data-secondary] {
+    padding-top: 45px;
+  }
+}
+
+.contentWrapper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 100%;
+}
