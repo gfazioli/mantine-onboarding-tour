@@ -35,23 +35,22 @@ export default {
   title: 'OnboardingTourProvider',
   args: {
     loop: false,
-    withCloseButton: true,
     withPrevButton: true,
     withNextButton: true,
     withStepper: true,
     nextStepNavigation: 'Next',
     prevStepNavigation: 'Prev',
-    finishStepNavigation: 'Finish',
+    skipNavigation: 'Finish',
   },
   argTypes: {
     loop: { control: 'boolean' },
     withPrevButton: { control: 'boolean' },
     withNextButton: { control: 'boolean' },
-    withCloseButton: { control: 'boolean' },
+
     withStepper: { control: 'boolean' },
     nextStepNavigation: { control: 'text' },
     prevStepNavigation: { control: 'text' },
-    finishStepNavigation: { control: 'text' },
+    skipNavigation: { control: 'text' },
   },
 };
 
@@ -63,7 +62,7 @@ const onboardingSteps: OnboardingTourStep[] = [
   },
   {
     id: 'login',
-    title: <h2>Focus</h2>,
+    title: 'Focus',
     content: 'Focus Reveal component allows to highlight important parts of the page',
   },
   {
