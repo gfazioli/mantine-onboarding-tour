@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Anchor,
   Box,
@@ -316,26 +316,38 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
         </Group>
       ));
 
-    return (
-      <Box ref={ref} {...getStyles('popoverContent')} {...others}>
-        <Stack>
-          {headerComponent}
-          {titleComponent}
-          {contentComponent}
-          <Group justify="space-between">
-            {skipNavigationComponent}
+    return useMemo(
+      () => (
+        <Box ref={ref} {...getStyles('popoverContent')} {...others}>
+          <Stack>
+            {headerComponent}
+            {titleComponent}
+            {contentComponent}
             <Group justify="space-between">
-              {prevNavigationComponent}
-              {nextNavigationComponent}
-              {endNavigationComponent}
+              {skipNavigationComponent}
+              <Group justify="space-between">
+                {prevNavigationComponent}
+                {nextNavigationComponent}
+                {endNavigationComponent}
+              </Group>
             </Group>
-          </Group>
 
-          {stepperComponent}
+            {stepperComponent}
 
-          {footerComponent}
-        </Stack>
-      </Box>
+            {footerComponent}
+          </Stack>
+        </Box>
+      ),
+      [
+        withSkipButton,
+        withPrevButton,
+        withNextButton,
+        withStepper,
+        nextStepNavigation,
+        prevStepNavigation,
+        endStepNavigation,
+        skipNavigation,
+      ]
     );
   }
 );

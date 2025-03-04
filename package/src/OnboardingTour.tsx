@@ -151,6 +151,7 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
           return (
             <OnboardingTourFocusReveal
               {...focusRevealProps}
+              key={`onboarding-tour-${tourId}`}
               popoverContent={
                 <OnboardingTour.PopoverContent
                   classNames={resolvedClassNames}
@@ -159,6 +160,7 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
                   tourController={onboardingTour}
                   onOnboardingTourClose={onOnboardingTourClose}
                   {...(others as unknown as OnboardingTourPopoverContentBaseProps)}
+                  key={`onboarding-tour-content-${tourId}`}
                 />
               }
               focused={tourId === selectedTourId}
