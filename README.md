@@ -28,6 +28,8 @@ This component is created on top of the [Mantine](https://mantine.dev/) library.
 It allows you to create a onboarding-tour effect with overlays, popovers, and onboarding tours, enhancing element visibility and interactivity.
 
 
+[![Mantine Extensions](https://img.shields.io/badge/-Watch_the_Video-blue?style=for-the-badge&labelColor=black&logo=youtube
+)](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4)
 [![Demo](https://img.shields.io/badge/-Demo_%26_Documentation-blue?style=for-the-badge&labelColor=white&logo=typescript
 )](https://gfazioli.github.io/mantine-onboarding-tour/)
 [![Demo](https://img.shields.io/badge/-Full_Screen_Demo-blue?style=for-the-badge&labelColor=white
