@@ -1,6 +1,6 @@
 {
   "name": "@gfazioli/mantine-onboarding-tour",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A Mantine component enables you to create a onboarding-tour effect using overlays, popovers, and onboarding tours, which enhances element visibility and interactivity.",
   "homepage": "https://gfazioli.github.io/mantine-onboarding-tour/",
   "packageManager": "yarn@4.0.1",
