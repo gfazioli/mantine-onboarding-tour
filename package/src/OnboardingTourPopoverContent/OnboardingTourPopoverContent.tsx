@@ -13,13 +13,12 @@ import {
   StepperStepProps,
   StylesApiProps,
   Text,
-  useMantineTheme,
   useProps,
   useStyles,
 } from '@mantine/core';
-import type { OnboardingTourController } from '../hooks/use-onboarding-tour/use-onboarding-tour';
 import {
   OnboardingTourStep,
+  type OnboardingTourController,
   type OnboardingTourOptions,
 } from '../hooks/use-onboarding-tour/use-onboarding-tour';
 import classes from './OnboardingTourPopoverContent.module.css';
@@ -139,7 +138,6 @@ export type OnboardingCurrentTour = OnboardingTourStep & {
 export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContentFactory>(
   (_props, ref) => {
     const props = useProps('OnboardingTourPopoverContent', defaultProps, _props);
-    const theme = useMantineTheme();
 
     const {
       tourController,
@@ -190,11 +188,8 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
 
     const {
       tour,
-      options,
       currentStep,
       currentStepIndex,
-      selectedStepId,
-      startTour,
       setCurrentStepIndex: setCurrentStep,
       endTour,
       nextStep: nextTour,
@@ -310,7 +305,7 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
             size="xs"
           >
             {tour.map((step) => (
-              <Stepper.Step {...stepperStepProps} key={step.id} value={step.id}></Stepper.Step>
+              <Stepper.Step {...stepperStepProps} key={step.id} value={step.id} />
             ))}
           </Stepper>
         </Group>

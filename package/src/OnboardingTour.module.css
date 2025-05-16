@@ -1,8 +1,5 @@
 .popoverContent {
   --onboarding-tour-popover-content-stepper-icon-size: 16px;
-}
-
-.popoverContent {
   position: relative;
 }
 

@@ -1,6 +1,7 @@
+import React from 'react';
 import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from '@mantine/core';
 
-export function LoginForm() {
+export const LoginForm: React.FC = () => {
   return (
     <Paper withBorder shadow="md" p={30} radius="md">
       <TextInput label="Email" placeholder="you@mantine.dev" required />
@@ -16,4 +17,4 @@ export function LoginForm() {
       </Button>
     </Paper>
   );
-}
+};

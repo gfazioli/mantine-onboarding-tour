@@ -176,7 +176,7 @@ export const customStepper: MantineDemo = {
   code: [
     {
       fileName: 'Demo.tsx',
-      code: code,
+      code,
       language: 'tsx',
     },
   ],

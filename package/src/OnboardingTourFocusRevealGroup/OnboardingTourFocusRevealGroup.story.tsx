@@ -1,11 +1,7 @@
 import React from 'react';
 import { Center, Stack, Title } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { Testimonials } from '../../../docs/demos/Testimonials';
-import {
-  OnboardingTourFocusReveal,
-  OnboardingTourFocusRevealProps,
-} from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
+import { OnboardingTourFocusReveal } from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
 export default {
   title: 'OnboardingTourFocusReveal.Group',
@@ -13,9 +9,7 @@ export default {
   argTypes: {},
 };
 
-export function DefaultFocused(props: OnboardingTourFocusRevealProps) {
-  const [focused, { toggle }] = useDisclosure(false);
-
+export function DefaultFocused() {
   return (
     <OnboardingTourFocusReveal.Group focusedMode="scale">
       <Stack>
@@ -55,9 +49,7 @@ export function DefaultFocused(props: OnboardingTourFocusRevealProps) {
   );
 }
 
-export function GroupedFocused(props: OnboardingTourFocusRevealProps) {
-  const [focused, { toggle }] = useDisclosure(false);
-
+export function GroupedFocused() {
   return (
     <OnboardingTourFocusReveal.Group focusedMode="scale">
       <Stack>

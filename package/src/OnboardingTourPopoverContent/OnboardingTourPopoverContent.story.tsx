@@ -322,6 +322,7 @@ export function CustomStepper() {
   useEffect(onboardingTour.startTour, []);
 
   const customStepper = (tourController: OnboardingTourController) => {
+    // eslint-disable-next-line no-console
     console.log(tourController);
     return (
       <Center>

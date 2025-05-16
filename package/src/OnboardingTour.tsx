@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import {
   BoxProps,
   Factory,
-  factory,
   StylesApiProps,
   useProps,
   useResolvedStylesApi,
@@ -73,7 +72,7 @@ export const defaultProps: Partial<OnboardingTourProps> = {};
 //   },
 // }));
 
-export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
+export function OnboardingTour(_props: OnboardingTourProps) {
   const props = useProps('OnboardingTour', defaultProps, _props);
 
   const {
@@ -183,7 +182,7 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
   };
 
   return <_OnboardingTourProvider value={value}>{wrapChildren(children)}</_OnboardingTourProvider>;
-});
+}
 
 OnboardingTour.displayName = 'OnboardingTour';
 OnboardingTour.classes = classes;

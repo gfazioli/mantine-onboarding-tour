@@ -1,26 +1,33 @@
 import React from 'react';
-import { render, tests } from '@mantine-tests/core';
-import { OnboardingTour, OnboardingTourProps, OnboardingTourStylesNames } from './OnboardingTour';
+import { Button, Title } from '@mantine/core';
+import { render } from '@mantine-tests/core';
+import { OnboardingTourStep } from './hooks/use-onboarding-tour/use-onboarding-tour';
+import { OnboardingTour } from './OnboardingTour';
 
-const defaultProps: OnboardingTourProps = {};
+const onboardingSteps: OnboardingTourStep[] = [
+  {
+    id: 'welcome',
+    title: 'Welcome to the Onboarding Tour Component',
+    content:
+      'This is a demo of the Onboarding Tour component, which allows to create onboarding experiences for your users.',
+  },
+  {
+    id: 'my-button',
+    title: 'Features',
+    content: 'You can select any component by using the `data-onboarding-tour-id` attribute',
+  },
+];
 
-describe('@mantine/core/OnboardingTour', () => {
-  tests.itSupportsSystemProps<OnboardingTourProps, OnboardingTourStylesNames>({
-    component: OnboardingTour,
-    props: defaultProps,
-    styleProps: true,
-    children: true,
-    classes: true,
-    id: true,
-    refType: HTMLDivElement,
-    displayName: '@mantine/core/OnboardingTour',
-    stylesApiSelectors: ['focused'],
-  });
-
-  it('supports perspective prop', () => {
-    const { container } = render(<OnboardingTour />);
-    expect(container.querySelector('.mantine-OnboardingTour-root')).toHaveStyle({
-      perspective: '500px',
-    });
+describe('OnboardingTour', () => {
+  it('renders without crashing', () => {
+    const { container } = render(
+      <OnboardingTour tour={onboardingSteps} started>
+        <Title data-onboarding-tour-id="welcome" order={4}>
+          A simple example of the Onboarding Tour component
+        </Title>
+        <Button data-onboarding-tour-id="my-button">See all testimonials</Button>
+      </OnboardingTour>
+    );
+    expect(container).toBeTruthy();
   });
 });

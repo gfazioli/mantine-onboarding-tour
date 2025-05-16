@@ -58,12 +58,16 @@ export function PopoverContent(props: OnboardingTourFocusRevealProps) {
           popoverContent={<PopoverContent />}
           focused={focused}
           {...props}
+          // eslint-disable-next-line no-console
           onChange={(focused) => console.log('onChange ', focused)}
           onBlur={() => {
             close();
+            // eslint-disable-next-line no-console
             console.log('blurred');
           }}
+          // eslint-disable-next-line no-console
           onFocus={() => console.log('focused')}
+          // eslint-disable-next-line no-console
           onRevealFinish={() => console.log('scroll finished')}
         >
           <Testimonials testimonial={0}>
@@ -107,12 +111,16 @@ export function PopoverProps(props: OnboardingTourFocusRevealProps) {
           popoverContent={<PopoverContent />}
           popoverProps={{ position: 'right' }}
           focused={focused}
+          // eslint-disable-next-line no-console
           onChange={(focused) => console.log('onChange ', focused)}
           onBlur={() => {
             close();
+            // eslint-disable-next-line no-console
             console.log('blurred');
           }}
+          // eslint-disable-next-line no-console
           onFocus={() => console.log('focused')}
+          // eslint-disable-next-line no-console
           onRevealFinish={() => console.log('scroll finished')}
         >
           <Testimonials testimonial={0}>

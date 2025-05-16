@@ -97,7 +97,7 @@ function Wrapper() {
           </Anchor>
         </Group>
         <Stack mx={16}>
-          <Group justify="right"></Group>
+          <Group justify="right" />
           <Text>{content as string}</Text>
           <Button size="xs" onClick={nextStep}>
             Next
@@ -299,7 +299,7 @@ export const customPopoverContent: MantineDemo = {
   code: [
     {
       fileName: 'Demo.tsx',
-      code: code,
+      code,
       language: 'tsx',
     },
     {
