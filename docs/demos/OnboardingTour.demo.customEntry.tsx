@@ -160,7 +160,7 @@ export const customEntry: MantineDemo = {
   code: [
     {
       fileName: 'Demo.tsx',
-      code: code,
+      code,
       language: 'tsx',
     },
   ],

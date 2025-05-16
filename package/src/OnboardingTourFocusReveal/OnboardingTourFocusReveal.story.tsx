@@ -74,12 +74,16 @@ export function FocusWithReveal(props: OnboardingTourFocusRevealProps) {
         <OnboardingTourFocusReveal
           focused={focused}
           {...props}
+          // eslint-disable-next-line no-console
           onChange={(focused) => console.log('onChange ', focused)}
           onBlur={() => {
             close();
+            // eslint-disable-next-line no-console
             console.log('blurred');
           }}
+          // eslint-disable-next-line no-console
           onFocus={() => console.log('focused')}
+          // eslint-disable-next-line no-console
           onRevealFinish={() => console.log('scroll finished')}
         >
           <Testimonials testimonial={0}>
@@ -198,7 +202,7 @@ export function RevealWithFocus(props: OnboardingTourFocusRevealProps) {
 }
 
 export function CustomMode(props: OnboardingTourFocusRevealProps) {
-  const [focused, { toggle }] = useDisclosure(false);
+  const [_] = useDisclosure(false);
 
   return (
     <Stack>
@@ -209,7 +213,7 @@ export function CustomMode(props: OnboardingTourFocusRevealProps) {
       </Center>
 
       <Center>
-        <OnboardingTourFocusReveal defaultFocused={true} {...props} className={classes.custom}>
+        <OnboardingTourFocusReveal defaultFocused {...props} className={classes.custom}>
           <Testimonials testimonial={0} />
         </OnboardingTourFocusReveal>
       </Center>
@@ -218,7 +222,7 @@ export function CustomMode(props: OnboardingTourFocusRevealProps) {
 }
 
 export function CustomCenterMode(props: OnboardingTourFocusRevealProps) {
-  const [focused, { toggle }] = useDisclosure(false);
+  const [_] = useDisclosure(false);
 
   return (
     <Stack>
@@ -229,7 +233,7 @@ export function CustomCenterMode(props: OnboardingTourFocusRevealProps) {
       </Center>
 
       <Center>
-        <OnboardingTourFocusReveal defaultFocused={true} {...props} className={classes.center}>
+        <OnboardingTourFocusReveal defaultFocused {...props} className={classes.center}>
           <Testimonials testimonial={0} />
         </OnboardingTourFocusReveal>
       </Center>
@@ -238,7 +242,7 @@ export function CustomCenterMode(props: OnboardingTourFocusRevealProps) {
 }
 
 export function ScrollingDefaultFocused(props: OnboardingTourFocusRevealProps) {
-  const [focused, { toggle }] = useDisclosure(false);
+  const [_] = useDisclosure(false);
 
   return (
     <Stack>
@@ -251,7 +255,7 @@ export function ScrollingDefaultFocused(props: OnboardingTourFocusRevealProps) {
       <div style={{ height: '1800px' }} />
 
       <Center>
-        <OnboardingTourFocusReveal defaultFocused={true} {...props}>
+        <OnboardingTourFocusReveal defaultFocused {...props}>
           <Testimonials testimonial={0} />
         </OnboardingTourFocusReveal>
       </Center>
@@ -265,7 +269,7 @@ export function ScrollingDefaultFocused(props: OnboardingTourFocusRevealProps) {
       <div style={{ height: '100px' }} />
       <Center>
         <Testimonials testimonial={3} />
-        <OnboardingTourFocusReveal defaultFocused={true} {...props} withReveal={false}>
+        <OnboardingTourFocusReveal defaultFocused {...props} withReveal={false}>
           <Testimonials testimonial={0} />
         </OnboardingTourFocusReveal>
       </Center>
@@ -343,7 +347,7 @@ export function RevealThenFocus(props: OnboardingTourFocusRevealProps) {
 }
 
 export function TransitionProps(props: OnboardingTourFocusRevealProps) {
-  const [focused, { open, toggle }] = useDisclosure(false);
+  const [focused, { open }] = useDisclosure(false);
 
   return (
     <Stack>

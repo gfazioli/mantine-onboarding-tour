@@ -47,7 +47,7 @@ export function Cycle(props: OnboardingTourFocusRevealProps) {
 
       <Group justify="center">
         {testimonials.map(
-          (testimonial, index) =>
+          (_, index) =>
             index < 4 && (
               <OnboardingTourFocusReveal
                 key={`focus-reveal-${index}`}
@@ -93,7 +93,7 @@ export function CycleDescription(props: OnboardingTourFocusRevealProps) {
 
       <Group justify="center">
         {testimonials.map(
-          (testimonial, index) =>
+          (_, index) =>
             index < 4 && (
               <OnboardingTourFocusReveal
                 key={`focus-reveal-${index}`}
@@ -108,7 +108,7 @@ export function CycleDescription(props: OnboardingTourFocusRevealProps) {
             )
         )}
       </Group>
-      <OnboardingTourFocusReveal defaultFocused={true} withReveal={false}>
+      <OnboardingTourFocusReveal defaultFocused withReveal={false}>
         <Paper mt={32} withBorder shadow="md" p={30} radius="md">
           {descriptions[focusIndex]}
         </Paper>

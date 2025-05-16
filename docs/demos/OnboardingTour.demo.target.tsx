@@ -136,7 +136,7 @@ export const target: MantineDemo = {
   code: [
     {
       fileName: 'Demo.tsx',
-      code: code,
+      code,
       language: 'tsx',
     },
   ],

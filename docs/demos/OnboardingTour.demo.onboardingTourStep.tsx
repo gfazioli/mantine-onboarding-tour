@@ -148,7 +148,7 @@ export const onboardingTourStep: MantineDemo = {
   code: [
     {
       fileName: 'Demo.tsx',
-      code: code,
+      code,
       language: 'tsx',
     },
   ],

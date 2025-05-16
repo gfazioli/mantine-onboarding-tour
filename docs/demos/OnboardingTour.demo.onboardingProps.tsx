@@ -124,7 +124,7 @@ export const onboardingProps: MantineDemo = {
   code: [
     {
       fileName: 'Demo.tsx',
-      code: code,
+      code,
       language: 'tsx',
     },
   ],

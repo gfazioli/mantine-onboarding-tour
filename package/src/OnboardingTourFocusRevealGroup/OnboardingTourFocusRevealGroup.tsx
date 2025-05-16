@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import {
   ElementProps,
-  factory,
   Factory,
   Overlay,
   OverlayProps,
@@ -44,104 +43,101 @@ export type OnboardingTourFocusRevealGroupFactory = Factory<{
   stylesNames: OnboardingTourFocusRevealGroupStylesNames;
 }>;
 
-export const OnboardingTourFocusRevealGroup = factory<OnboardingTourFocusRevealGroupFactory>(
-  (_props, ref) => {
-    const groupDefaultProps: Partial<OnboardingTourFocusRevealGroupProps> = {
-      focusedMode: 'none',
-      withReveal: false,
-      withOverlay: true,
-      overlayProps: {
-        blur: 2,
-        backgroundOpacity: 0.5,
-        color: 'black',
-      },
-      transitionProps: { transition: 'fade', duration: 150 },
-      popoverProps: {
-        position: 'left',
-        withArrow: true,
-        arrowSize: 16,
-        arrowRadius: 4,
-        offset: -4,
-        radius: 'md',
-        shadow: 'xl',
-      },
-    };
+export function OnboardingTourFocusRevealGroup(_props: OnboardingTourFocusRevealGroupProps) {
+  const groupDefaultProps: Partial<OnboardingTourFocusRevealGroupProps> = {
+    focusedMode: 'none',
+    withReveal: false,
+    withOverlay: true,
+    overlayProps: {
+      blur: 2,
+      backgroundOpacity: 0.5,
+      color: 'black',
+    },
+    transitionProps: { transition: 'fade', duration: 150 },
+    popoverProps: {
+      position: 'left',
+      withArrow: true,
+      arrowSize: 16,
+      arrowRadius: 4,
+      offset: -4,
+      radius: 'md',
+      shadow: 'xl',
+    },
+  };
 
-    const props = useProps('OnboardingTourFocusRevealGroup', groupDefaultProps, _props);
+  const props = useProps('OnboardingTourFocusRevealGroup', groupDefaultProps, _props);
 
-    // exception
-    props.overlayProps = { ...groupDefaultProps.overlayProps, ..._props.overlayProps };
-    props.transitionProps = { ...groupDefaultProps.transitionProps, ..._props.transitionProps };
-    props.popoverProps = { ...groupDefaultProps.popoverProps, ..._props.popoverProps };
+  // exception
+  props.overlayProps = { ...groupDefaultProps.overlayProps, ..._props.overlayProps };
+  props.transitionProps = { ...groupDefaultProps.transitionProps, ..._props.transitionProps };
+  props.popoverProps = { ...groupDefaultProps.popoverProps, ..._props.popoverProps };
 
-    const {
-      withReveal,
-      withOverlay,
-      focusedMode,
-      overlayProps,
-      transitionProps,
-      popoverProps,
-      children,
-    } = props;
+  const {
+    withReveal,
+    withOverlay,
+    focusedMode,
+    overlayProps,
+    transitionProps,
+    popoverProps,
+    children,
+  } = props;
 
-    const [overlay, setOverlay] = useState(false);
+  const [overlay, setOverlay] = useState(false);
 
-    const listInViewport = useRef({});
+  const listInViewport = useRef({});
 
-    // Check if all children are not in viewport
-    const areAllNotVisible = () =>
-      Object.values(listInViewport.current).every((visible) => !visible);
+  // Check if all children are not in viewport
+  const areAllNotVisible = () => Object.values(listInViewport.current).every((visible) => !visible);
 
-    const setMeInViewport = (uuid: string, visible: boolean) => {
-      listInViewport.current[uuid] = visible;
-    };
+  const setMeInViewport = (uuid: string, visible: boolean) => {
+    listInViewport.current[uuid] = visible;
+  };
 
-    const setRequestOverlay = (value: boolean) => {
-      if (value) {
-        setOverlay(true);
-      } else if (areAllNotVisible()) {
-        setOverlay(false);
-      }
-    };
+  const setRequestOverlay = (value: boolean) => {
+    if (value) {
+      setOverlay(true);
+    } else if (areAllNotVisible()) {
+      setOverlay(false);
+    }
+  };
 
-    return (
-      <OnboardingTourFocusRevealGroupProvider
-        value={{
-          setRequestOverlay,
-          setMeInViewport,
-          focusedMode,
-          withReveal,
-          withOverlay,
-          overlayProps,
-          transitionProps,
-          popoverProps,
-        }}
-      >
-        {withOverlay && (
-          <Transition
-            transition={transitionProps?.transition}
-            mounted={overlay}
-            duration={transitionProps?.duration}
-            exitDuration={transitionProps?.exitDuration}
-          >
-            {(transitionStyles) => (
-              <Overlay
-                data-focus-reveal-overlay
-                {...overlayProps}
-                style={{
-                  position: 'fixed',
-                  inset: 0,
-                  ...transitionStyles,
-                }}
-              />
-            )}
-          </Transition>
-        )}
+  return (
+    <OnboardingTourFocusRevealGroupProvider
+      value={{
+        setRequestOverlay,
+        setMeInViewport,
+        focusedMode,
+        withReveal,
+        withOverlay,
+        overlayProps,
+        transitionProps,
+        popoverProps,
+      }}
+    >
+      {withOverlay && (
+        <Transition
+          transition={transitionProps?.transition}
+          mounted={overlay}
+          duration={transitionProps?.duration}
+          exitDuration={transitionProps?.exitDuration}
+        >
+          {(transitionStyles) => (
+            <Overlay
+              data-focus-reveal-overlay
+              {...overlayProps}
+              style={{
+                position: 'fixed',
+                inset: 0,
+                ...transitionStyles,
+              }}
+            />
+          )}
+        </Transition>
+      )}
 
-        {children}
-      </OnboardingTourFocusRevealGroupProvider>
-    );
-  }
-);
+      {children}
+    </OnboardingTourFocusRevealGroupProvider>
+  );
+}
 
 OnboardingTourFocusRevealGroup.displayName = 'OnboardingTourFocusRevealGroup';

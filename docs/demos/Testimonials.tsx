@@ -1,4 +1,4 @@
-import { forwardRef, ReactNode } from 'react';
+import React, { forwardRef } from 'react';
 import { Avatar, Card, Group, Rating, Stack, Text, Title } from '@mantine/core';
 
 const text =
@@ -77,10 +77,10 @@ export const testimonials = [
   },
 ];
 
-export const Testimonial = forwardRef<
+export const Testimonial = React.forwardRef<
   HTMLDivElement,
   {
-    children: ReactNode;
+    children?: React.ReactNode;
     avatar: string;
     name: string;
     rating: number;
@@ -90,7 +90,7 @@ export const Testimonial = forwardRef<
 >(({ children, avatar, name, text, rating, ...props }, ref) => {
   return (
     <Card w={200} shadow="sm" padding="lg" radius="md" withBorder ref={ref} {...props}>
-      <Card.Section p={'md'}>
+      <Card.Section p="md">
         <Group>
           <Avatar size="md" radius="xl" src={avatar} />
           <Title order={4}>{name}</Title>

@@ -184,9 +184,11 @@ export function FocusRevealProps(props: OnboardingTourProps) {
   const [started, { open, close }] = useDisclosure(false);
 
   const customPopoverContent = (controller: OnboardingTourController) => {
-    if (!controller.currentStep) return null;
+    if (!controller.currentStep) {
+      return null;
+    }
 
-    const { title, description, image } = controller.currentStep as OnboardingTourStep;
+    const { title, description } = controller.currentStep as OnboardingTourStep;
 
     return (
       <>

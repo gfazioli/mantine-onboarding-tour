@@ -3,7 +3,6 @@ import {
   BoxProps,
   ElementProps,
   Factory,
-  factory,
   Overlay,
   OverlayProps,
   Popover,
@@ -147,7 +146,7 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
 //   return {};
 // });
 
-export const OnboardingTourFocusReveal = factory<OnboardingTourFocusRevealFactory>((_props) => {
+export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps) {
   const ctx = useOnboardingTourFocusRevealGroupContext();
 
   const props = useProps(
@@ -330,7 +329,7 @@ export const OnboardingTourFocusReveal = factory<OnboardingTourFocusRevealFactor
       {clonedChildren}
     </>
   );
-});
+}
 
 OnboardingTourFocusReveal.classes = classes;
 OnboardingTourFocusReveal.displayName = 'OnboardingTourFocusReveal';
