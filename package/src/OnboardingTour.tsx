@@ -116,6 +116,7 @@ export function OnboardingTour(_props: OnboardingTourProps) {
 
   const value = {
     ...onboardingTour,
+    ...others,
     focusRevealProps,
     onOnboardingTourClose,
     getStyles,

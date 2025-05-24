@@ -77,6 +77,35 @@ const onboardingSteps: OnboardingTourStep[] = [
   },
 ];
 
+function SubComponent() {
+  return (
+    <Stack w={300}>
+      <h2>Sub Component</h2>
+      <OnboardingTour.Target id="welcome">
+        <Button>Next</Button>
+      </OnboardingTour.Target>
+    </Stack>
+  );
+}
+
+export function SimpleUsage() {
+  return (
+    <OnboardingTour
+      started
+      tour={onboardingSteps}
+      withSkipButton={false}
+      nextStepNavigation="Prossimo"
+    >
+      <SubComponent />
+      <Button data-onboarding-tour-id="login">Login</Button>
+      <Button data-onboarding-tour-id="ask-help">Ask Help</Button>
+      <Button data-onboarding-tour-id="disabled" disabled>
+        Disabled
+      </Button>
+    </OnboardingTour>
+  );
+}
+
 export function OnboardingTourProvider(props: OnboardingTourProps) {
   const [started, { open, close }] = useDisclosure(false);
 
