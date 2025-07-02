@@ -91,5 +91,9 @@ function Demo() {
 }
 ```
 
+<div align="center">
+  
+[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-onboarding-tour&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-onboarding-tour&Timeline)
 
+</div>
 
