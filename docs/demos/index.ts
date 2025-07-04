@@ -18,5 +18,7 @@ export { customPopoverContent } from './OnboardingTour.demo.customPopoverContent
 export { customStepper } from './OnboardingTour.demo.customStepper';
 export { onboardingProps } from './OnboardingTour.demo.onboardingProps';
 export { onboardingTourStep } from './OnboardingTour.demo.onboardingTourStep';
+export { onboardingTourStepFocusReveal } from './OnboardingTour.demo.onboardingTourStepFocusReveal';
 export { target } from './OnboardingTour.demo.target';
+export { targetFocusReveal } from './OnboardingTour.demo.targetFocusReveal';
 export { wrapTitle } from './OnboardingTour.demo.wrapTitle';

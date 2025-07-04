@@ -78,12 +78,23 @@ export type OnboardingTourStep = {
     | React.ReactNode
     | ((tourController: OnboardingTourController) => React.ReactNode);
 
+  /** Props passed to FocusReveal */
+  focusRevealProps?:
+    | OnboardingTourFocusRevealProps
+    | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);    
+
   /** Anything else */
   [key: string]: any;
 };
 ```
 
 Both `header`, `title`, `content`, and `footer` can be a string, a React component, or a function that receives `tourController` and returns a React component.
+You can use the `OnboardingTourController` to access the current step and its properties, such as `currentStep.id`, `currentStep.title`, and so on.
+
+You may also set up the `focusRevealProps` to customize the `OnboardingTour.FocusReveal` component for each step. This allows you to control the focus and reveal behavior of the tour step.
+In this case, `focusRevealProps` can be either an object of type `OnboardingTourFocusRevealProps` or a function that receives `tourController` and returns an object of type `OnboardingTourFocusRevealProps`.
+
+<Demo data={demos.onboardingTourStepFocusReveal} />
 
 ## OnboardingTourController
 
@@ -289,6 +300,12 @@ function Demo() {
 ```
 
 <Demo data={demos.target} />
+
+You may also set up the `focusRevealProps` to customize the `OnboardingTour.FocusReveal` component for each target. This allows you to control the focus and reveal behavior of the tour step.
+In this case, `focusRevealProps` can be either an object of type `OnboardingTourFocusRevealProps` or a function that receives `tourController` and returns an object of type `OnboardingTourFocusRevealProps`.
+
+<Demo data={demos.targetFocusReveal} />
+
 
 ## OnboardingTour.FocusReveal
 
