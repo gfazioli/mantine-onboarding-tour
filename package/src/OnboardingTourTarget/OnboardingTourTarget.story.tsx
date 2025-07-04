@@ -23,25 +23,21 @@ export default {
   title: 'OnboardingTour Target',
   args: {
     loop: false,
-    withCloseButton: true,
     withPrevButton: true,
     withNextButton: true,
     withStepper: true,
     withSkipButton: true,
     nextStepNavigation: 'Next',
     prevStepNavigation: 'Prev',
-    finishStepNavigation: 'Finish',
   },
   argTypes: {
     loop: { control: 'boolean' },
     withPrevButton: { control: 'boolean' },
     withNextButton: { control: 'boolean' },
-    withCloseButton: { control: 'boolean' },
     withStepper: { control: 'boolean' },
     withSkipButton: { control: 'boolean' },
     nextStepNavigation: { control: 'text' },
     prevStepNavigation: { control: 'text' },
-    finishStepNavigation: { control: 'text' },
   },
 };
 
@@ -50,6 +46,20 @@ function SubComponent() {
     <Stack>
       <h2>Sub Component</h2>
       <OnboardingTour.Target id="sub-component">
+        <Button>Next</Button>
+      </OnboardingTour.Target>
+    </Stack>
+  );
+}
+
+function SubComponentPopoverPosition() {
+  return (
+    <Stack>
+      <h2>Sub Component</h2>
+      <OnboardingTour.Target
+        id="sub-component"
+        focusRevealProps={{ popoverProps: { position: 'bottom' } }}
+      >
         <Button>Next</Button>
       </OnboardingTour.Target>
     </Stack>
@@ -112,6 +122,62 @@ export function OnboardingTourProviderTarget(props: OnboardingTourProps) {
   );
 }
 
+export function OnboardingTourProviderTargetPopoverPosition(props: OnboardingTourProps) {
+  const [started, { open, close }] = useDisclosure(false);
+
+  const onboardingSteps: OnboardingTourStep[] = [
+    {
+      id: 'welcome',
+      title: 'Welcome to Mantine',
+      content: 'Mantine is a react components library with focus on usability and accessibility',
+    },
+    {
+      id: 'login',
+      title: 'Focus Reveal',
+      content: 'Focus Reveal component allows to highlight important parts of the page',
+    },
+    {
+      id: 'sub-component',
+      title: 'Onboarding',
+      content: 'Use Focus Reveal to create onboarding experience for your users',
+    },
+  ];
+
+  return (
+    <OnboardingTour
+      tour={onboardingSteps}
+      started={started}
+      onOnboardingTourEnd={close}
+      maw={400}
+      {...props}
+    >
+      <Container>
+        <Group align="center" justify="space-between">
+          <IconBrandMantine size={48} color="violet" />
+          <Group>
+            <Button variant="light" onClick={open}>
+              Start Tour
+            </Button>
+            <Button data-onboarding-tour-id="login">Login</Button>
+            <Button data-onboarding-tour-id="ask-help">Ask Help</Button>
+          </Group>
+        </Group>
+
+        <Divider my={16} />
+
+        <Flex gap={32}>
+          <SubComponentPopoverPosition />
+          <Divider my={16} orientation="vertical" />
+
+          <Center w="100%">
+            <Testimonials data-onboarding-tour-id="welcome" testimonial={0} />
+          </Center>
+        </Flex>
+      </Container>
+    </OnboardingTour>
+  );
+}
+
 export function CustomShell(props: OnboardingTourProps) {
   const [started, { open, close }] = useDisclosure(false);
   const [opened, { toggle }] = useDisclosure();
@@ -126,6 +192,12 @@ export function CustomShell(props: OnboardingTourProps) {
     {
       id: 'item-3',
       title: 'Subtitle',
+      focusRevealProps: {
+        popoverProps: {
+          position: 'bottom',
+          shadow: '0 0 10px red',
+        },
+      },
     },
     {
       id: 'item-10',

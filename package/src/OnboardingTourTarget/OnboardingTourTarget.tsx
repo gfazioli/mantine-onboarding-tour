@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { isElement, useProps } from '@mantine/core';
+import { OnboardingTourController } from '../hooks/use-onboarding-tour/use-onboarding-tour';
 import { useOnboardingTourContext } from '../OnboardingTour.context';
-import { OnboardingTourFocusReveal } from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
+import {
+  OnboardingTourFocusReveal,
+  OnboardingTourFocusRevealProps,
+} from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 import { OnboardingTourPopoverContentBaseProps } from '../OnboardingTourPopoverContent';
 import { OnboardingTourPopoverContent } from '../OnboardingTourPopoverContent/OnboardingTourPopoverContent';
 
@@ -14,6 +18,11 @@ export interface OnboardingTourTargetProps {
 
   /** Key of the prop that should be used to get element ref */
   refProp?: string;
+
+  /** Props passed to FocusReveal */
+  focusRevealProps?:
+    | OnboardingTourFocusRevealProps
+    | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);
 }
 
 const defaultProps: Partial<OnboardingTourTargetProps> = {
@@ -21,7 +30,7 @@ const defaultProps: Partial<OnboardingTourTargetProps> = {
 };
 
 export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
-  const { children, id, refProp, ...others } = useProps(
+  const { children, id, refProp, focusRevealProps, ...others } = useProps(
     'OnboardingTourTarget',
     defaultProps,
     props
@@ -48,9 +57,14 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
     return children;
   }
 
+  const mergedFocusRevealProps = {
+    ...ctx.focusRevealProps,
+    ...(typeof focusRevealProps === 'function' ? focusRevealProps(ctx) : focusRevealProps),
+  };
+
   return (
     <OnboardingTourFocusReveal
-      {...ctx.focusRevealProps}
+      {...mergedFocusRevealProps}
       popoverContent={
         <OnboardingTourPopoverContent
           tourController={ctx}
