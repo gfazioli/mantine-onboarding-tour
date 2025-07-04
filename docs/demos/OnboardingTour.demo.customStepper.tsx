@@ -44,7 +44,7 @@ function Wrapper() {
     <Center>
       <Rating
         count={tourController.tour.length}
-        value={tourController.currentStepIndex || 0}
+        value={(tourController.currentStepIndex ?? 0) + 1}
         onChange={(value) => tourController.setCurrentStepIndex(value - 1)}
       />
     </Center>
@@ -129,7 +129,7 @@ function Demo() {
     <Center>
       <Rating
         count={tourController.tour.length}
-        value={tourController.currentStepIndex || 0}
+        value={(tourController.currentStepIndex ?? 0) + 1}
         onChange={(value) => tourController.setCurrentStepIndex(value - 1)}
       />
     </Center>

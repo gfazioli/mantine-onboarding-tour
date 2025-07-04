@@ -56,7 +56,6 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
           tourController={ctx}
           onOnboardingTourClose={ctx.onOnboardingTourClose}
           {...(others as unknown as OnboardingTourPopoverContentBaseProps)}
-          {...ctx}
         />
       }
       focused
