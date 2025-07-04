@@ -106,6 +106,57 @@ export function SimpleUsage() {
   );
 }
 
+export function TourWithPositioning() {
+  const steps: OnboardingTourStep[] = [
+    {
+      id: 'welcome',
+      title: 'Welcome to Mantine',
+      content: 'Mantine is a react components',
+      focusRevealProps: {
+        popoverProps: {
+          position: 'top',
+        },
+      },
+    },
+    {
+      id: 'login',
+      title: 'Focus',
+      content: 'Focus Reveal component',
+    },
+    {
+      id: 'disabled',
+      title: 'Onboarding',
+      content: 'Use Focus Reveal',
+      focusRevealProps: {
+        overlayProps: {
+          color: 'rgba(255, 0, 0, 0.5)',
+        },
+        popoverProps: {
+          position: 'bottom',
+        },
+      },
+    },
+    {
+      id: 'ask-help',
+      title: 'Finish',
+      content: 'You are ready to use Mantine',
+    },
+  ];
+
+  return (
+    <Center p={256} h="100vh">
+      <OnboardingTour started tour={steps} withSkipButton={false} nextStepNavigation="Prossimo">
+        <SubComponent />
+        <Button data-onboarding-tour-id="login">Login</Button>
+        <Button data-onboarding-tour-id="ask-help">Ask Help</Button>
+        <Button data-onboarding-tour-id="disabled" disabled>
+          Disabled
+        </Button>
+      </OnboardingTour>
+    </Center>
+  );
+}
+
 export function OnboardingTourProvider(props: OnboardingTourProps) {
   const [started, { open, close }] = useDisclosure(false);
 
