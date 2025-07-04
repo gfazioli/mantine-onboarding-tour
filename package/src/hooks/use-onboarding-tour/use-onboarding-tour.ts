@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { OnboardingTourFocusRevealProps } from '../../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
 export type OnboardingTourStep = {
   /** Unique id of the tour. Will be use for the data-onboarding-tour-id attribute */
@@ -15,6 +16,11 @@ export type OnboardingTourStep = {
 
   /** Footer of the tour. You can also pass a React component here */
   footer?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
+
+  /** Props passed to FocusReveal */
+  focusRevealProps?:
+    | OnboardingTourFocusRevealProps
+    | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);
 
   /** Anything else */
   [key: string]: any;

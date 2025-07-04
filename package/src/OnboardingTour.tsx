@@ -148,9 +148,17 @@ export function OnboardingTour(_props: OnboardingTourProps) {
         // If the element has the data-onboarding-tour attribute set to true
         const tourId = child.props['data-onboarding-tour-id'];
         if (tourId) {
+          const mergedFocusRevealProps = {
+            ...focusRevealProps,
+            ...(typeof onboardingTour.currentStep?.focusRevealProps === 'function'
+              ? onboardingTour.currentStep.focusRevealProps(onboardingTour)
+              : onboardingTour.currentStep?.focusRevealProps),
+          };
+
           return (
             <OnboardingTourFocusReveal
-              {...focusRevealProps}
+              {...mergedFocusRevealProps}
+              classNames={resolvedClassNames}
               key={`onboarding-tour-${tourId}`}
               popoverContent={
                 <OnboardingTour.PopoverContent
