@@ -25,6 +25,7 @@ function Demo() {
       id: 'step-2',
       title: 'Step 2 Title',
       content: 'Content for step 2',
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       focusRevealProps: (tourController: OnboardingTourController) => {
         return {
           overlayProps: {

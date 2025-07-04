@@ -14,6 +14,7 @@ function AnotherComponent({ open }: { open: () => void }) {
       </OnboardingTour.Target>
       <OnboardingTour.Target
         id="step-3"
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         focusRevealProps={(tourController) => ({
           popoverProps: { position: 'right-end' },
           overlayProps: { blur: 16 },

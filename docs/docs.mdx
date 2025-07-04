@@ -81,7 +81,9 @@ export type OnboardingTourStep = {
   /** Props passed to FocusReveal */
   focusRevealProps?:
     | OnboardingTourFocusRevealProps
-    | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);    
+    | ((
+        tourController: OnboardingTourController
+      ) => OnboardingTourFocusRevealProps);
 
   /** Anything else */
   [key: string]: any;
@@ -305,7 +307,6 @@ You may also set up the `focusRevealProps` to customize the `OnboardingTour.Focu
 In this case, `focusRevealProps` can be either an object of type `OnboardingTourFocusRevealProps` or a function that receives `tourController` and returns an object of type `OnboardingTourFocusRevealProps`.
 
 <Demo data={demos.targetFocusReveal} />
-
 
 ## OnboardingTour.FocusReveal
 
