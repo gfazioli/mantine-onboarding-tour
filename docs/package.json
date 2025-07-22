@@ -1,23 +1,15 @@
 {
-  "name": "extension-template-docs",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --port 9281",
-    "start": "next start",
-    "typecheck": "tsc --noEmit"
-  },
   "dependencies": {
     "@gfazioli/mantine-onboarding-tour": "workspace:*",
+    "@mantine/code-highlight": "8.2.1",
     "@mantine/core": "8.2.1",
     "@mantine/dates": "^8.2.1",
     "@mantine/hooks": "8.2.1",
-    "@mantinex/demo": "^1.2.0",
-    "@mantinex/dev-icons": "^1.1.0",
-    "@mantinex/mantine-header": "^1.1.0",
-    "@mantinex/mantine-logo": "^1.1.0",
-    "@mantinex/mantine-meta": "^1.0.2",
+    "@mantinex/demo": "^2.0.0",
+    "@mantinex/dev-icons": "^2.0.0",
+    "@mantinex/mantine-header": "^2.0.0",
+    "@mantinex/mantine-logo": "^2.0.0",
+    "@mantinex/mantine-meta": "^2.0.0",
     "@mantinex/shiki": "^1.1.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
@@ -28,7 +20,7 @@
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "remark-slug": "^7.0.1",
-    "shikiji": "^0.10.2",
+    "shiki": "^3.8.1",
     "type-fest": "^4.41.0"
   },
   "devDependencies": {
@@ -36,5 +28,14 @@
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "typescript": "5.8.3"
-  }
+  },
+  "name": "extension-template-docs",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 9281",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "version": "0.1.0"
 }
