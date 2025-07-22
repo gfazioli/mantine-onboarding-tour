@@ -176,27 +176,27 @@ Anyway, the `OnboardingTourStep` are always available in the `OnboardingTourCont
 You may use any custom entry in the `OnboardingTourStep` list to customize the tour. For example, here we're going to display some extra information in the footer, by using a custom property `price`:
 
 ```tsx
-...
-    {
-      id: 'step-2',
-      title: 'Step-2',
-      description: 'Description of the Step 2',
-      price: 12,
-    },
-...
+const onboardingSteps: OnboardingTourStep[] = [
+  {
+    id: 'step-2',
+    title: 'Step-2',
+    description: 'Description of the Step 2',
+    price: 12,
+  },
+];
 ```
 
 Then we can use the `footer` prop to display the `price`:
 
 ```tsx
 <OnboardingTour
-    ...
-    footer={(onboardingTour: OnboardingTourController) => {
-        if (onboardingTour.currentStep?.price) {
-          return onboardingTour.currentStep?.price;
-        }
-        return null;
-    }} />
+  footer={(onboardingTour: OnboardingTourController) => {
+    if (onboardingTour.currentStep?.price) {
+      return onboardingTour.currentStep?.price;
+    }
+    return null;
+  }}
+/>
 ```
 
 <Demo data={demos.customEntry} />
@@ -222,17 +222,15 @@ For example, here is an example of a tour component that is not a child of the `
 function AnotherComponent() {
   return (
     <Group>
-       {/* ❌ This won't work */}
+      {/* ❌ This won't work */}
       <Button data-onboarding-tour-id="my-button">Click me</Button>
       <Button>Cancel</Button>
     </Group>
   );
 }
 
-...
 function Demo() {
-
-   const onboardingSteps: OnboardingTourStep[] = [
+  const onboardingSteps: OnboardingTourStep[] = [
     {
       id: 'welcome',
       title: 'Welcome to the Onboarding Tour Component',
@@ -249,11 +247,13 @@ function Demo() {
   return (
     <OnboardingTour tour={onboardingSteps} started={true}>
       <div>
-        <Title data-onboarding-tour-id="welcome">Welcome to the Onboarding Tour Component</Title>
+        <Title data-onboarding-tour-id="welcome">
+          Welcome to the Onboarding Tour Component
+        </Title>
         <AnotherComponent />
       </div>
     </OnboardingTour>
-  )
+  );
 }
 ```
 
@@ -273,10 +273,8 @@ function AnotherComponent() {
   );
 }
 
-...
 function Demo() {
-
-   const onboardingSteps: OnboardingTourStep[] = [
+  const onboardingSteps: OnboardingTourStep[] = [
     {
       id: 'welcome',
       title: 'Welcome to the Onboarding Tour Component',
@@ -293,11 +291,13 @@ function Demo() {
   return (
     <OnboardingTour tour={onboardingSteps} started={true}>
       <div>
-        <Title data-onboarding-tour-id="welcome">Welcome to the Onboarding Tour Component</Title>
+        <Title data-onboarding-tour-id="welcome">
+          Welcome to the Onboarding Tour Component
+        </Title>
         <AnotherComponent />
       </div>
     </OnboardingTour>
-  )
+  );
 }
 ```
 
