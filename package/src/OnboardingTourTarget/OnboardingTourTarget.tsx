@@ -62,11 +62,38 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
     ...(typeof focusRevealProps === 'function' ? focusRevealProps(ctx) : focusRevealProps),
   };
 
+  const {
+    header,
+    title,
+    content,
+    footer,
+    withPrevButton,
+    withNextButton,
+    withSkipButton,
+    withStepper,
+    nextStepNavigation,
+    endStepNavigation,
+    prevStepNavigation,
+    skipNavigation,
+  } = ctx;
+
   return (
     <OnboardingTourFocusReveal
       {...mergedFocusRevealProps}
       popoverContent={
         <OnboardingTourPopoverContent
+          header={header}
+          title={title}
+          content={content}
+          footer={footer}
+          nextStepNavigation={nextStepNavigation}
+          endStepNavigation={endStepNavigation}
+          prevStepNavigation={prevStepNavigation}
+          skipNavigation={skipNavigation}
+          withNextButton={withNextButton}
+          withPrevButton={withPrevButton}
+          withSkipButton={withSkipButton}
+          withStepper={withStepper}
           tourController={ctx}
           onOnboardingTourClose={ctx.onOnboardingTourClose}
           {...(others as unknown as OnboardingTourPopoverContentBaseProps)}

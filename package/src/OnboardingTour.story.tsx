@@ -59,6 +59,11 @@ const onboardingSteps: OnboardingTourStep[] = [
     id: 'welcome',
     title: 'Welcome to Mantine',
     content: 'Mantine is a react components library with focus on usability and accessibility',
+    focusRevealProps: {
+      popoverProps: {
+        position: 'bottom',
+      },
+    },
   },
   {
     id: 'login',
@@ -94,7 +99,7 @@ export function SimpleUsage() {
       started
       tour={onboardingSteps}
       withSkipButton={false}
-      nextStepNavigation="Prossimo"
+      nextStepNavigation="Next Step"
     >
       <SubComponent />
       <Button data-onboarding-tour-id="login">Login</Button>
