@@ -1,10 +1,19 @@
 {
+  "name": "extension-template-docs",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "next build",
+    "dev": "next dev --port 9281",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
   "dependencies": {
     "@gfazioli/mantine-onboarding-tour": "workspace:*",
-    "@mantine/code-highlight": "8.2.2",
-    "@mantine/core": "8.2.2",
-    "@mantine/dates": "^8.2.2",
-    "@mantine/hooks": "8.2.2",
+    "@mantine/code-highlight": "8.2.4",
+    "@mantine/core": "8.2.4",
+    "@mantine/dates": "^8.2.4",
+    "@mantine/hooks": "8.2.4",
     "@mantinex/demo": "^2.0.0",
     "@mantinex/dev-icons": "^2.0.0",
     "@mantinex/mantine-header": "^2.0.0",
@@ -13,14 +22,14 @@
     "@mantinex/shiki": "^1.1.0",
     "@mdx-js/loader": "^3.1.0",
     "@mdx-js/react": "^3.1.0",
-    "@next/mdx": "^15.4.5",
+    "@next/mdx": "^15.4.6",
     "@tabler/icons-react": "^3.34.1",
     "@types/mdx": "^2.0.13",
-    "next": "15.4.5",
+    "next": "15.4.6",
     "react": "19.1.1",
     "react-dom": "19.1.1",
     "remark-slug": "^7.0.1",
-    "shiki": "^3.9.1",
+    "shiki": "^3.9.2",
     "type-fest": "^4.41.0"
   },
   "devDependencies": {
@@ -28,14 +37,5 @@
     "@types/react": "^19.1.9",
     "@types/react-dom": "^19.1.7",
     "typescript": "5.9.2"
-  },
-  "name": "extension-template-docs",
-  "private": true,
-  "scripts": {
-    "build": "next build",
-    "dev": "next dev --port 9281",
-    "start": "next start",
-    "typecheck": "tsc --noEmit"
-  },
-  "version": "0.1.0"
+  }
 }
