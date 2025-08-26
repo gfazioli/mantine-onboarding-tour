@@ -49,11 +49,12 @@ function Wrapper() {
 
 const code = `
 import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
-import { Button, Center, Divider, Group, Stack, Text, Title } from '@mantine/core';
+import { Button, Center, Divider, Group, Stack, Switch, Text, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 
 function Demo() {
   const [focused, { open, close }] = useDisclosure(false);
+  const [disableTargetInteraction, setDisableTargetInteraction] = useDisclosure(false);
 
   return (
     <Stack justify="center" align="center">
@@ -62,7 +63,11 @@ function Demo() {
       <Center>
         <Group>
           <Button onClick={open}>Focus the component</Button>
-          <Button variant="light" onClick={close}>Blur</Button>
+          <Switch
+            label="Disable target interactions"
+            checked={disableTargetInteraction}
+            onChange={() => setDisableTargetInteraction.toggle()}
+          />
         </Group>
       </Center>
 
@@ -72,12 +77,12 @@ function Demo() {
         <OnboardingTour.FocusReveal
           focused={focused}
           onBlur={close}
-          disableTargetInteraction
+          disableTargetInteraction={disableTargetInteraction}
           withOverlay
         >
           <Stack align="center">
-            <Testimonials testimonial={1} />
-            <Button onClick={() => alert('You clicked me!')}>Click inside</Button>
+            <Testimonials testimonial={1} withButton />
+            <Button>Click inside (will not fire when focused)</Button>
             <Text size="sm" c="dimmed">
               Interaction disabled while focused: pointer events are blocked.
             </Text>
