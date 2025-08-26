@@ -292,7 +292,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         position: 'relative',
         ...child.props.style,
         zIndex: realFocused ? 201 : 0,
-        pointerEvents: disableTargetInteraction ? 'none' : undefined,
+        pointerEvents: realFocused && disableTargetInteraction ? 'none' : undefined,
       },
     };
 

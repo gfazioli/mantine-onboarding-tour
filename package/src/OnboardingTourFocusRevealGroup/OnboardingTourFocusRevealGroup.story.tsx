@@ -5,11 +5,15 @@ import { OnboardingTourFocusReveal } from '../OnboardingTourFocusReveal/Onboardi
 
 export default {
   title: 'OnboardingTourFocusReveal.Group',
-  args: {},
-  argTypes: {},
+  args: {
+    disableTargetInteraction: false,
+  },
+  argTypes: {
+    disableTargetInteraction: { control: { type: 'boolean' } },
+  },
 };
 
-export function DefaultFocused() {
+export function DefaultFocused(props: React.ComponentProps<typeof OnboardingTourFocusReveal>) {
   return (
     <OnboardingTourFocusReveal.Group focusedMode="scale">
       <Stack>
@@ -22,7 +26,7 @@ export function DefaultFocused() {
         <div style={{ height: '1800px' }} />
 
         <Center>
-          <OnboardingTourFocusReveal>
+          <OnboardingTourFocusReveal {...props}>
             <Testimonials testimonial={0} />
           </OnboardingTourFocusReveal>
         </Center>
@@ -30,7 +34,7 @@ export function DefaultFocused() {
         <div style={{ height: '300px' }} />
 
         <Center>
-          <OnboardingTourFocusReveal>
+          <OnboardingTourFocusReveal {...props}>
             <Testimonials testimonial={1} />
           </OnboardingTourFocusReveal>
         </Center>
@@ -38,7 +42,7 @@ export function DefaultFocused() {
         <div style={{ height: '300px' }} />
 
         <Center>
-          <OnboardingTourFocusReveal>
+          <OnboardingTourFocusReveal {...props}>
             <Testimonials testimonial={2} />
           </OnboardingTourFocusReveal>
         </Center>
@@ -49,7 +53,7 @@ export function DefaultFocused() {
   );
 }
 
-export function GroupedFocused() {
+export function GroupedFocused(props: React.ComponentProps<typeof OnboardingTourFocusReveal>) {
   return (
     <OnboardingTourFocusReveal.Group focusedMode="scale">
       <Stack>
@@ -62,7 +66,7 @@ export function GroupedFocused() {
         <div style={{ height: '1800px' }} />
 
         <Center>
-          <OnboardingTourFocusReveal>
+          <OnboardingTourFocusReveal {...props}>
             <Testimonials testimonial={0} />
           </OnboardingTourFocusReveal>
         </Center>
@@ -70,7 +74,7 @@ export function GroupedFocused() {
         <div style={{ height: '300px' }} />
 
         <Center>
-          <OnboardingTourFocusReveal defaultFocused={false}>
+          <OnboardingTourFocusReveal defaultFocused={false} {...props}>
             <Testimonials testimonial={1} />
           </OnboardingTourFocusReveal>
         </Center>
@@ -78,7 +82,7 @@ export function GroupedFocused() {
         <div style={{ height: '300px' }} />
 
         <Center>
-          <OnboardingTourFocusReveal>
+          <OnboardingTourFocusReveal {...props}>
             <Testimonials testimonial={2} />
           </OnboardingTourFocusReveal>
         </Center>

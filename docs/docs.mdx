@@ -328,6 +328,12 @@ The `OnboardingTour.FocusReveal` component can also be used in an uncontrolled m
 
 <Demo data={demos.focusRevealUncontrolled} />
 
+## Disable target interaction
+
+When the target is focused, you can prevent mouse/keyboard interaction with the highlighted element by setting `disableTargetInteraction`. This is useful when you want users to read the popover content and navigate the tour without interacting with the underlying component.
+
+<Demo data={demos.focusRevealDisableInteraction} />
+
 ## OnboardingTour.FocusReveal.Group
 
 If you want to highlight multiple components, you can use the `OnboardingTour.FocusReveal.Group` component. This component allows you to highlight multiple components at the same time.

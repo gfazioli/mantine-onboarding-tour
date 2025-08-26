@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { Avatar, Card, Group, Rating, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Button, Card, Group, Rating, Stack, Text, Title } from '@mantine/core';
 
 const text =
   'Scroll the page 👆up or 👇down to remove the focus from the card. In practice, make this component invisible so that the onBlur event will be triggered.';
@@ -85,9 +85,10 @@ export const Testimonial = React.forwardRef<
     name: string;
     rating: number;
     text: string;
+    withButton?: boolean;
     [key: string]: any;
   }
->(({ children, avatar, name, text, rating, ...props }, ref) => {
+>(({ children, avatar, name, text, rating, withButton, ...props }, ref) => {
   return (
     <Card w={200} shadow="sm" padding="lg" radius="md" withBorder ref={ref} {...props}>
       <Card.Section p="md">
@@ -100,6 +101,11 @@ export const Testimonial = React.forwardRef<
         <Text size="sm" c="dimmed">
           {text}
         </Text>
+        {withButton && (
+          <Button variant="outline" mt="md">
+            Action
+          </Button>
+        )}
         {children}
         <Group justify="end">
           <Rating value={rating} />

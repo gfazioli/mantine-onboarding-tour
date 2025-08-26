@@ -1,6 +1,7 @@
 export { focusRevealConfigurator } from './FocusReveal.demo.configurator';
 export { focusRevealCycle } from './FocusReveal.demo.cycle';
 export { focusRevealCycleDescription } from './FocusReveal.demo.cycleDescription';
+export { focusRevealDisableInteraction } from './FocusReveal.demo.disableTargetInteraction';
 export { focusRevealFocusMode } from './FocusReveal.demo.focusMode';
 export { focusRevealGroup } from './FocusReveal.demo.group';
 export { focusRevealGroupProps } from './FocusReveal.demo.group-props';

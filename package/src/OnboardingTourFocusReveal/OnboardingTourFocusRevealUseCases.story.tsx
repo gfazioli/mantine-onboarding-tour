@@ -13,11 +13,13 @@ export default {
   args: {
     withReveal: true,
     withOverlay: true,
+    disableTargetInteraction: false,
     focusedMode: 'none',
   },
   argTypes: {
     withReveal: { control: { type: 'boolean' } },
     withOverlay: { control: { type: 'boolean' } },
+    disableTargetInteraction: { control: { type: 'boolean' } },
     focusedMode: {
       control: {
         type: 'select',
