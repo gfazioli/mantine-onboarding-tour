@@ -91,7 +91,7 @@ export interface OnboardingTourFocusRevealBaseProps {
   popoverProps?: Omit<PopoverProps, 'withinPortal'>;
 
   /** Disable interactions on the target component */
-  disableInteraction?: boolean;
+  disableTargetInteraction?: boolean;
 
   /** Called when OnboardingTourFocusReveal focused state changes */
   onChange?: (focused: boolean) => void;
@@ -171,7 +171,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
   const {
     focused,
     defaultFocused,
-    disableInteraction,
+    disableTargetInteraction,
     withOverlay,
     overlayProps,
     withReveal,
@@ -292,7 +292,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         position: 'relative',
         ...child.props.style,
         zIndex: realFocused ? 201 : 0,
-        pointerEvents: disableInteraction ? 'none' : undefined
+        pointerEvents: disableTargetInteraction ? 'none' : undefined,
       },
     };
 
