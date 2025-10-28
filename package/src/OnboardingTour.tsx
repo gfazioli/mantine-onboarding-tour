@@ -43,6 +43,15 @@ export interface OnboardingTourBaseProps
     | OnboardingTourFocusRevealProps
     | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);
 
+  /** Enable responsive behavior for mobile devices */
+  responsive?: boolean;
+
+  /** Mobile breakpoint query - defaults to '(max-width: 768px)' */
+  mobileBreakpoint?: string;
+
+  /** Mobile popover position - 'top' or 'bottom' */
+  mobilePosition?: 'top' | 'bottom';
+
   /** Child elements */
   children: React.ReactNode;
 }
@@ -64,7 +73,11 @@ export type OnboardingTourFactory = Factory<{
   };
 }>;
 
-export const defaultProps: Partial<OnboardingTourProps> = {};
+export const defaultProps: Partial<OnboardingTourProps> = {
+  responsive: true,
+  mobileBreakpoint: '(max-width: 768px)',
+  mobilePosition: 'bottom',
+};
 
 // const varsResolver = createVarsResolver<OnboardingTourFactory>((_, {}) => ({
 //   popoverContent: {
@@ -80,6 +93,9 @@ export function OnboardingTour(_props: OnboardingTourProps) {
     started,
     loop,
     focusRevealProps: _focusRevealProps,
+    responsive,
+    mobileBreakpoint,
+    mobilePosition,
     onOnboardingTourStart,
     onOnboardingTourEnd,
     onOnboardingTourClose,
@@ -108,11 +124,16 @@ export function OnboardingTour(_props: OnboardingTourProps) {
     onOnboardingTourChange,
   });
 
-  const focusRevealProps = _focusRevealProps
-    ? typeof _focusRevealProps === 'function'
-      ? _focusRevealProps(onboardingTour)
-      : _focusRevealProps
-    : {};
+  const focusRevealProps = {
+    ...(_focusRevealProps
+      ? typeof _focusRevealProps === 'function'
+        ? _focusRevealProps(onboardingTour)
+        : _focusRevealProps
+      : {}),
+    responsive,
+    mobileBreakpoint,
+    mobilePosition,
+  };
 
   const value = {
     ...onboardingTour,
