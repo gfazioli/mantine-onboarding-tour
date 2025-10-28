@@ -13,7 +13,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import { useDidUpdate, useInViewport, useMergedRef, useUncontrolled } from '@mantine/hooks';
+import { useDidUpdate, useInViewport, useMergedRef, useUncontrolled, useMediaQuery } from '@mantine/hooks';
 import { useScrollIntoView } from '../hooks/use-scroll-into-view/use-scroll-into-view';
 import { OnboardingTourFocusRevealGroup } from '../OnboardingTourFocusRevealGroup/OnboardingTourFocusRevealGroup';
 import { useOnboardingTourFocusRevealGroupContext } from '../OnboardingTourFocusRevealGroup/OnboardingTourFocusRevealGroup.context';
@@ -96,6 +96,15 @@ export interface OnboardingTourFocusRevealBaseProps {
   /** Called when OnboardingTourFocusReveal focused state changes */
   onChange?: (focused: boolean) => void;
 
+  /** Enable responsive behavior for mobile devices */
+  responsive?: boolean;
+
+  /** Mobile breakpoint query - defaults to '(max-width: 768px)' */
+  mobileBreakpoint?: string;
+
+  /** Mobile popover position - 'top' or 'bottom' */
+  mobilePosition?: 'top' | 'bottom';
+
   /** Called when OnboardingTourFocusReveal is focused */
   onFocus?: () => void;
 
@@ -128,6 +137,9 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
   focusedMode: 'none',
   withReveal: true,
   withOverlay: true,
+  responsive: true,
+  mobileBreakpoint: '(max-width: 768px)',
+  mobilePosition: 'bottom',
   overlayProps: {
     blur: 2,
     backgroundOpacity: 0.5,
@@ -180,6 +192,9 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     focusedMode,
     popoverContent,
     popoverProps,
+    responsive,
+    mobileBreakpoint,
+    mobilePosition,
 
     scrollableRef,
     onChange,
@@ -244,13 +259,26 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
 
   const mergedRef = useMergedRef(inViewportRef, targetRef);
 
+  // Mobile detection and responsive behavior
+  const isMobile = useMediaQuery(mobileBreakpoint);
+  const shouldUseResponsive = responsive && isMobile;
+
   useEffect(() => {
     ctx?.setMeInViewport(uuid, inViewport);
 
     if (targetRef.current) {
       if (_focused || defaultFocused) {
         if (withReveal) {
-          scrollIntoView({ alignment: 'center' });
+          // Responsive scroll behavior
+          if (shouldUseResponsive) {
+            if (mobilePosition === 'top') {
+              scrollIntoView({ alignment: 'start' });
+            } else {
+              scrollIntoView({ alignment: 'end' });
+            }
+          } else {
+            scrollIntoView({ alignment: 'center' });
+          }
         }
       }
 
@@ -298,13 +326,37 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
 
     newProps['data-popover-dropdown'] = !!popoverContent;
 
+    // Create popover props with responsive behavior
+    const finalPopoverProps = {
+      ...popoverProps,
+      position: shouldUseResponsive ? mobilePosition : popoverProps.position,
+      withinPortal: shouldUseResponsive,
+      styles: shouldUseResponsive ? {
+        ...popoverProps.styles,
+        dropdown: {
+          ...(typeof popoverProps.styles === 'object' && popoverProps.styles?.dropdown),
+          // For mobile, use full width but keep standard positioning
+          left: '20px',
+          right: '20px',
+          width: 'auto',
+          maxWidth: 'none',
+          transform: 'none',
+        }
+      } : popoverProps.styles
+    };
+
     return (
-      <Popover opened={realFocused && !!popoverContent} withinPortal={false} {...popoverProps}>
+      <Popover opened={realFocused && !!popoverContent} {...finalPopoverProps}>
         <Popover.Target>{cloneElement(child, newProps)}</Popover.Target>
-        <Popover.Dropdown>{popoverContent}</Popover.Dropdown>
+        <Popover.Dropdown 
+          className={shouldUseResponsive ? classes.mobilePopover : undefined}
+          data-position={shouldUseResponsive ? mobilePosition : undefined}
+        >
+          {popoverContent}
+        </Popover.Dropdown>
       </Popover>
     );
-  }, [children, realFocused, _focused, inViewport, defaultFocused]);
+  }, [children, realFocused, _focused, inViewport, defaultFocused, shouldUseResponsive, mobilePosition, popoverProps, classes.mobilePopover]);
 
   if (ctx) {
     return clonedChildren;
