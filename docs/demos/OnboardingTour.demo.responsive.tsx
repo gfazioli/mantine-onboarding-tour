@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Stack, Title, Container, Group, Box, Text, Switch } from '@mantine/core';
+import { Button, Stack, Title, Container, Group, Box, Text, Switch, SegmentedControl } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
+import type { MantineDemo } from '@mantinex/demo';
 
 const onboardingSteps = [
   {
@@ -31,7 +32,7 @@ const onboardingSteps = [
   },
 ];
 
-export function ResponsiveDemo() {
+function Wrapper() {
   const [started, { open, close }] = useDisclosure(false);
   const [responsive, setResponsive] = useState(true);
   const [mobilePosition, setMobilePosition] = useState<'top' | 'bottom'>('bottom');
@@ -79,46 +80,30 @@ export function ResponsiveDemo() {
 
           <Group gap="sm">
             <Text size="sm" fw={500}>Mobile Position:</Text>
-            <Button.Group>
-              <Button
-                variant={mobilePosition === 'top' ? 'filled' : 'outline'}
-                size="sm"
-                onClick={() => setMobilePosition('top')}
-                disabled={!responsive}
-              >
-                Top
-              </Button>
-              <Button
-                variant={mobilePosition === 'bottom' ? 'filled' : 'outline'}
-                size="sm"
-                onClick={() => setMobilePosition('bottom')}
-                disabled={!responsive}
-              >
-                Bottom
-              </Button>
-            </Button.Group>
+            <SegmentedControl
+              value={mobilePosition}
+              onChange={(value) => setMobilePosition(value as 'top' | 'bottom')}
+              data={[
+                { label: 'Top', value: 'top' },
+                { label: 'Bottom', value: 'bottom' },
+              ]}
+              disabled={!responsive}
+              size="sm"
+            />
           </Group>
 
           <Group gap="sm">
             <Text size="sm" fw={500}>Breakpoint:</Text>
-            <Button.Group>
-              <Button
-                variant={mobileBreakpoint === '(max-width: 768px)' ? 'filled' : 'outline'}
-                size="sm"
-                onClick={() => setMobileBreakpoint('(max-width: 768px)')}
-                disabled={!responsive}
-              >
-                768px
-              </Button>
-              <Button
-                variant={mobileBreakpoint === '(max-width: 1024px)' ? 'filled' : 'outline'}
-                size="sm"
-                onClick={() => setMobileBreakpoint('(max-width: 1024px)')}
-                disabled={!responsive}
-              >
-                1024px
-              </Button>
-            </Button.Group>
+            <SegmentedControl
+              value={mobileBreakpoint}
+              onChange={(value) => setMobileBreakpoint(value)}
+              data={[
+                { label: '768px', value: '(max-width: 768px)' },
+                { label: '1024px', value: '(max-width: 1024px)' },
+              ]}
+              disabled={!responsive}
+              size="sm"
+            />
           </Group>
         </Group>
 
@@ -267,43 +252,40 @@ export function ResponsiveDemo() {
   );
 }
 
-export const responsive = {
-  type: 'demo',
-  component: ResponsiveDemo,
-  code: `import React, { useState } from 'react';
-import { Button, Stack, Title, Group, Box, Text, Switch, Paper } from '@mantine/core';
+const code = `
+import { OnboardingTour, type OnboardingTourStep } from '@gfazioli/mantine-onboarding-tour';
+import { Button, Stack, Title, Group, Box, Text, Switch, Paper, SegmentedControl } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
-import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 
-const onboardingSteps = [
-  {
-    id: 'welcome',
-    title: '🎉 Welcome to Responsive Demo',
-    content: 'This demo showcases the responsive onboarding tour! Toggle the responsive mode to see different behaviors on mobile devices.',
-  },
-  {
-    id: 'features',
-    title: '✨ Key Features',
-    content: 'Experience smart positioning, optimized scrolling, and mobile-first design that adapts to your screen size.',
-  },
-  {
-    id: 'mobile',
-    title: '📱 Mobile Experience',
-    content: 'On mobile devices, the guide automatically positions itself at the top or bottom with full-width layout.',
-  },
-  {
-    id: 'desktop',
-    title: '🖥️ Desktop Experience',
-    content: 'On desktop, the guide uses standard positioning with smart placement around the target element.',
-  },
-];
-
-function ResponsiveDemo() {
+function Demo() {
   const [started, { open, close }] = useDisclosure(false);
   const [responsive, setResponsive] = useState(true);
   const [mobilePosition, setMobilePosition] = useState<'top' | 'bottom'>('bottom');
   const [mobileBreakpoint, setMobileBreakpoint] = useState('(max-width: 768px)');
+
+  const onboardingSteps: OnboardingTourStep[] = [
+    {
+      id: 'welcome',
+      title: '🎉 Welcome to Responsive Demo',
+      content: 'This demo showcases the responsive onboarding tour! Toggle the responsive mode to see different behaviors on mobile devices.',
+    },
+    {
+      id: 'features',
+      title: '✨ Key Features',
+      content: 'Experience smart positioning, optimized scrolling, and mobile-first design that adapts to your screen size.',
+    },
+    {
+      id: 'mobile',
+      title: '📱 Mobile Experience',
+      content: 'On mobile devices, the guide automatically positions itself at the top or bottom with full-width layout.',
+    },
+    {
+      id: 'desktop',
+      title: '🖥️ Desktop Experience',
+      content: 'On desktop, the guide uses standard positioning with smart placement around the target element.',
+    },
+  ];
 
   return (
     <Stack gap="md">
@@ -326,46 +308,30 @@ function ResponsiveDemo() {
 
         <Group gap="sm">
           <Text size="sm" fw={500}>Position:</Text>
-          <Button.Group>
-            <Button
-              variant={mobilePosition === 'top' ? 'filled' : 'outline'}
-              size="xs"
-              onClick={() => setMobilePosition('top')}
-              disabled={!responsive}
-            >
-              Top
-            </Button>
-            <Button
-              variant={mobilePosition === 'bottom' ? 'filled' : 'outline'}
-              size="xs"
-              onClick={() => setMobilePosition('bottom')}
-              disabled={!responsive}
-            >
-              Bottom
-            </Button>
-          </Button.Group>
+          <SegmentedControl
+            value={mobilePosition}
+            onChange={(value) => setMobilePosition(value as 'top' | 'bottom')}
+            data={[
+              { label: 'Top', value: 'top' },
+              { label: 'Bottom', value: 'bottom' },
+            ]}
+            disabled={!responsive}
+            size="xs"
+          />
         </Group>
 
         <Group gap="sm">
           <Text size="sm" fw={500}>Breakpoint:</Text>
-          <Button.Group>
-            <Button
-              variant={mobileBreakpoint === '(max-width: 768px)' ? 'filled' : 'outline'}
-              size="xs"
-              onClick={() => setMobileBreakpoint('(max-width: 768px)')}
-              disabled={!responsive}
-            >
-              768px
-            </Button>
-            <Button
-              variant={mobileBreakpoint === '(max-width: 1024px)' ? 'filled' : 'outline'}
-              size="xs"
-              onClick={() => setMobileBreakpoint('(max-width: 1024px)')}
-              disabled={!responsive}
-            >
-              1024px
-            </Button>
-          </Button.Group>
+          <SegmentedControl
+            value={mobileBreakpoint}
+            onChange={(value) => setMobileBreakpoint(value)}
+            data={[
+              { label: '768px', value: '(max-width: 768px)' },
+              { label: '1024px', value: '(max-width: 1024px)' },
+            ]}
+            disabled={!responsive}
+            size="xs"
+          />
         </Group>
       </Group>
 
@@ -417,5 +383,17 @@ function ResponsiveDemo() {
       </OnboardingTour>
     </Stack>
   );
-}`,
+}`;
+
+export const responsive: MantineDemo = {
+  type: 'code',
+  component: Wrapper,
+  defaultExpanded: false,
+  code: [
+    {
+      fileName: 'Demo.tsx',
+      code,
+      language: 'tsx',
+    },
+  ],
 };

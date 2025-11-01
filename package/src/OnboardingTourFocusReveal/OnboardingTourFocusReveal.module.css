@@ -186,6 +186,8 @@
 }
 
 /* Mobile Popover Styles */
+/* Note: Using !important is necessary here to override Mantine's Popover default styles
+   and ensure consistent mobile positioning across all configurations */
 .mobilePopover {
   /* Keep standard positioning but make it full width on mobile */
   left: 20px !important;
