@@ -23,3 +23,4 @@ export { onboardingTourStepFocusReveal } from './OnboardingTour.demo.onboardingT
 export { target } from './OnboardingTour.demo.target';
 export { targetFocusReveal } from './OnboardingTour.demo.targetFocusReveal';
 export { wrapTitle } from './OnboardingTour.demo.wrapTitle';
+export { responsive } from './OnboardingTour.demo.responsive';

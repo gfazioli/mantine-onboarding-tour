@@ -480,3 +480,84 @@ Here are some examples of how to use the `OnboardingTour.FocusReveal` component 
 ## Example: Multiple Focus components
 
 <Demo data={demos.focusRevealCycleDescription} />
+
+## Responsive Behavior
+
+The `OnboardingTour` component supports responsive behavior for mobile devices. You can control the mobile experience using the following props:
+
+- `responsive`: Enable/disable responsive behavior (default: `true`)
+- `mobileBreakpoint`: Media query for mobile detection (default: `'(max-width: 768px)'`)
+- `mobilePosition`: Position of the guide on mobile - `'top'` or `'bottom'` (default: `'bottom'`)
+
+### Basic Responsive Usage
+
+```tsx
+<OnboardingTour
+  tour={onboardingSteps}
+  started={started}
+  responsive={true}
+  mobileBreakpoint="(max-width: 768px)"
+  mobilePosition="bottom"
+>
+  {/* Your content */}
+</OnboardingTour>
+```
+
+### Responsive Demo
+
+<Demo data={demos.responsive} />
+
+### Responsive Features
+
+When responsive mode is enabled on mobile devices:
+
+- **Smart Positioning**: The guide automatically positions itself at the top or bottom of the screen
+- **Optimized Scrolling**: Elements are scrolled into view with appropriate alignment
+- **Mobile-First Design**: The guide uses full-width layout with proper spacing
+- **Configurable Breakpoints**: You can customize when responsive behavior kicks in
+
+### Mobile Position Options
+
+- **`bottom`** (default): Guide appears at the bottom of the screen
+- **`top`**: Guide appears at the top of the screen
+
+### Custom Breakpoints
+
+You can use any valid CSS media query for mobile detection:
+
+```tsx
+// Tablet and below
+mobileBreakpoint="(max-width: 1024px)"
+
+// Small mobile only
+mobileBreakpoint="(max-width: 480px)"
+
+// Custom breakpoint
+mobileBreakpoint="(max-width: 900px) and (orientation: portrait)"
+```
+
+### Per-Step Responsive Configuration
+
+You can also configure responsive behavior per step using `focusRevealProps`:
+
+```tsx
+const steps = [
+  {
+    id: 'step1',
+    title: 'Desktop Step',
+    content: 'This step uses standard positioning',
+    focusRevealProps: {
+      responsive: false, // Disable responsive for this step
+    }
+  },
+  {
+    id: 'step2', 
+    title: 'Mobile Step',
+    content: 'This step uses mobile positioning',
+    focusRevealProps: {
+      responsive: true,
+      mobilePosition: 'top', // Override global setting
+    }
+  }
+];
+```
