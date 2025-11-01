@@ -289,7 +289,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         setRealFocused(false);
       }
     }
-  }, [_focused, withReveal, inViewport]);
+  }, [_focused, withReveal, inViewport, shouldUseResponsive, mobilePosition]);
 
   useDidUpdate(() => {
     ctx?.setMeInViewport(uuid, inViewport);
