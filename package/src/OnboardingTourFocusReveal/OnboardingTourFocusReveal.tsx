@@ -13,7 +13,13 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import { useDidUpdate, useInViewport, useMergedRef, useUncontrolled, useMediaQuery } from '@mantine/hooks';
+import {
+  useDidUpdate,
+  useInViewport,
+  useMediaQuery,
+  useMergedRef,
+  useUncontrolled,
+} from '@mantine/hooks';
 import { useScrollIntoView } from '../hooks/use-scroll-into-view/use-scroll-into-view';
 import { OnboardingTourFocusRevealGroup } from '../OnboardingTourFocusRevealGroup/OnboardingTourFocusRevealGroup';
 import { useOnboardingTourFocusRevealGroupContext } from '../OnboardingTourFocusRevealGroup/OnboardingTourFocusRevealGroup.context';
@@ -331,24 +337,26 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
       ...popoverProps,
       position: shouldUseResponsive ? mobilePosition : popoverProps.position,
       withinPortal: shouldUseResponsive,
-      styles: shouldUseResponsive ? {
-        ...popoverProps.styles,
-        dropdown: {
-          ...(typeof popoverProps.styles === 'object' && popoverProps.styles?.dropdown),
-          // For mobile, use full width but keep standard positioning
-          left: '20px',
-          right: '20px',
-          width: 'auto',
-          maxWidth: 'none',
-          transform: 'none',
-        }
-      } : popoverProps.styles
+      styles: shouldUseResponsive
+        ? {
+            ...popoverProps.styles,
+            dropdown: {
+              ...(typeof popoverProps.styles === 'object' && popoverProps.styles?.dropdown),
+              // For mobile, use full width but keep standard positioning
+              left: '20px',
+              right: '20px',
+              width: 'auto',
+              maxWidth: 'none',
+              transform: 'none',
+            },
+          }
+        : popoverProps.styles,
     };
 
     return (
       <Popover opened={realFocused && !!popoverContent} {...finalPopoverProps}>
         <Popover.Target>{cloneElement(child, newProps)}</Popover.Target>
-        <Popover.Dropdown 
+        <Popover.Dropdown
           className={shouldUseResponsive ? classes.mobilePopover : undefined}
           data-position={shouldUseResponsive ? mobilePosition : undefined}
         >
@@ -356,7 +364,17 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         </Popover.Dropdown>
       </Popover>
     );
-  }, [children, realFocused, _focused, inViewport, defaultFocused, shouldUseResponsive, mobilePosition, popoverProps, classes.mobilePopover]);
+  }, [
+    children,
+    realFocused,
+    _focused,
+    inViewport,
+    defaultFocused,
+    shouldUseResponsive,
+    mobilePosition,
+    popoverProps,
+    classes.mobilePopover,
+  ]);
 
   if (ctx) {
     return clonedChildren;

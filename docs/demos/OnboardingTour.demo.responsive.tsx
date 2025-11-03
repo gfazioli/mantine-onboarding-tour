@@ -1,34 +1,49 @@
 import React, { useState } from 'react';
-import { Button, Stack, Title, Container, Group, Box, Text, Switch, SegmentedControl } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
 import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
+import {
+  Box,
+  Button,
+  Container,
+  Group,
+  SegmentedControl,
+  Stack,
+  Switch,
+  Text,
+  Title,
+} from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import type { MantineDemo } from '@mantinex/demo';
 
 const onboardingSteps = [
   {
     id: 'welcome',
     title: '🎉 Welcome to Responsive Demo',
-    content: 'This demo showcases the responsive onboarding tour! Toggle the responsive mode to see different behaviors on mobile devices.',
+    content:
+      'This demo showcases the responsive onboarding tour! Toggle the responsive mode to see different behaviors on mobile devices.',
   },
   {
     id: 'top-button',
     title: '📱 Responsive Behavior',
-    content: 'When responsive is enabled, the guide adapts to mobile screens with optimized positioning and scrolling.',
+    content:
+      'When responsive is enabled, the guide adapts to mobile screens with optimized positioning and scrolling.',
   },
   {
     id: 'left-button',
     title: '🎨 Mobile-First Design',
-    content: 'Notice how the guide appears at the bottom on mobile when responsive is enabled, and uses standard positioning when disabled.',
+    content:
+      'Notice how the guide appears at the bottom on mobile when responsive is enabled, and uses standard positioning when disabled.',
   },
   {
     id: 'right-button',
     title: '⚡ Smart Scrolling',
-    content: 'The system automatically scrolls elements into view with the appropriate alignment based on the guide position.',
+    content:
+      'The system automatically scrolls elements into view with the appropriate alignment based on the guide position.',
   },
   {
     id: 'bottom-button',
     title: '🚀 Ready to Use',
-    content: 'The responsive system provides the best user experience across all devices with intelligent positioning!',
+    content:
+      'The responsive system provides the best user experience across all devices with intelligent positioning!',
   },
 ];
 
@@ -46,14 +61,15 @@ function Wrapper() {
             📱 Responsive Onboarding Tour Demo
           </Title>
           <Text c="dimmed" ta="center" size="lg" mb="xl">
-            Experience the responsive onboarding tour! Toggle responsive mode and mobile position to see different behaviors.
+            Experience the responsive onboarding tour! Toggle responsive mode and mobile position to
+            see different behaviors.
           </Text>
         </div>
-        
+
         <Group justify="center" mb="xl" gap="md">
-          <Button 
-            onClick={open} 
-            size="xl" 
+          <Button
+            onClick={open}
+            size="xl"
             variant="gradient"
             gradient={{ from: 'blue', to: 'purple', deg: 45 }}
             radius="xl"
@@ -66,7 +82,9 @@ function Wrapper() {
 
         <Group justify="center" mb="xl" gap="lg">
           <Group gap="sm">
-            <Text size="sm" fw={500}>Responsive Mode:</Text>
+            <Text size="sm" fw={500}>
+              Responsive Mode:
+            </Text>
             <Switch
               checked={responsive}
               onChange={(event) => setResponsive(event.currentTarget.checked)}
@@ -79,7 +97,9 @@ function Wrapper() {
           </Group>
 
           <Group gap="sm">
-            <Text size="sm" fw={500}>Mobile Position:</Text>
+            <Text size="sm" fw={500}>
+              Mobile Position:
+            </Text>
             <SegmentedControl
               value={mobilePosition}
               onChange={(value) => setMobilePosition(value as 'top' | 'bottom')}
@@ -93,7 +113,9 @@ function Wrapper() {
           </Group>
 
           <Group gap="sm">
-            <Text size="sm" fw={500}>Breakpoint:</Text>
+            <Text size="sm" fw={500}>
+              Breakpoint:
+            </Text>
             <SegmentedControl
               value={mobileBreakpoint}
               onChange={(value) => setMobileBreakpoint(value)}
@@ -117,48 +139,47 @@ function Wrapper() {
           mobilePosition={mobilePosition}
         >
           {/* Top section */}
-          <Box 
-            h={200} 
-            p="xl" 
-            style={{ 
+          <Box
+            h={200}
+            p="xl"
+            style={{
               borderRadius: 16,
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               color: 'white',
-              boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)'
+              boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
             }}
           >
-            <Title order={4} c="white" mb="sm">📱 Top Section</Title>
+            <Title order={4} c="white" mb="sm">
+              📱 Top Section
+            </Title>
             <Text size="sm" c="rgba(255,255,255,0.8)" mb="md">
               This section demonstrates responsive behavior
             </Text>
-            <Button 
-              data-onboarding-tour-id="top-button"
-              variant="white"
-              color="dark"
-              radius="xl"
-            >
+            <Button data-onboarding-tour-id="top-button" variant="white" color="dark" radius="xl">
               Responsive Behavior
             </Button>
           </Box>
 
           {/* Middle section with left and right buttons */}
           <Group justify="space-between" mt="xl" gap="xl">
-            <Box 
-              w={280} 
-              h={200} 
-              p="xl" 
-              style={{ 
+            <Box
+              w={280}
+              h={200}
+              p="xl"
+              style={{
                 borderRadius: 16,
                 background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
                 color: 'white',
-                boxShadow: '0 10px 30px rgba(240, 147, 251, 0.3)'
+                boxShadow: '0 10px 30px rgba(240, 147, 251, 0.3)',
               }}
             >
-              <Title order={4} c="white" mb="sm">🎨 Left Section</Title>
+              <Title order={4} c="white" mb="sm">
+                🎨 Left Section
+              </Title>
               <Text size="sm" c="rgba(255,255,255,0.8)" mb="md">
                 Mobile-first design with responsive positioning
               </Text>
-              <Button 
+              <Button
                 data-onboarding-tour-id="left-button"
                 variant="white"
                 color="dark"
@@ -168,22 +189,24 @@ function Wrapper() {
               </Button>
             </Box>
 
-            <Box 
-              w={280} 
-              h={200} 
-              p="xl" 
-              style={{ 
+            <Box
+              w={280}
+              h={200}
+              p="xl"
+              style={{
                 borderRadius: 16,
                 background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
                 color: 'white',
-                boxShadow: '0 10px 30px rgba(79, 172, 254, 0.3)'
+                boxShadow: '0 10px 30px rgba(79, 172, 254, 0.3)',
               }}
             >
-              <Title order={4} c="white" mb="sm">⚡ Right Section</Title>
+              <Title order={4} c="white" mb="sm">
+                ⚡ Right Section
+              </Title>
               <Text size="sm" c="rgba(255,255,255,0.8)" mb="md">
                 Smart scrolling with intelligent alignment
               </Text>
-              <Button 
+              <Button
                 data-onboarding-tour-id="right-button"
                 variant="white"
                 color="dark"
@@ -195,22 +218,24 @@ function Wrapper() {
           </Group>
 
           {/* Bottom section */}
-          <Box 
-            h={200} 
-            p="xl" 
+          <Box
+            h={200}
+            p="xl"
             mt="xl"
-            style={{ 
+            style={{
               borderRadius: 16,
               background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
               color: 'white',
-              boxShadow: '0 10px 30px rgba(250, 112, 154, 0.3)'
+              boxShadow: '0 10px 30px rgba(250, 112, 154, 0.3)',
             }}
           >
-            <Title order={4} c="white" mb="sm">🚀 Bottom Section</Title>
+            <Title order={4} c="white" mb="sm">
+              🚀 Bottom Section
+            </Title>
             <Text size="sm" c="rgba(255,255,255,0.8)" mb="md">
               Ready to use responsive system with intelligent positioning
             </Text>
-            <Button 
+            <Button
               data-onboarding-tour-id="bottom-button"
               variant="white"
               color="dark"
@@ -221,22 +246,24 @@ function Wrapper() {
           </Box>
 
           {/* Welcome section */}
-          <Box 
-            h={120} 
-            p="lg" 
+          <Box
+            h={120}
+            p="lg"
             mt="xl"
-            style={{ 
+            style={{
               borderRadius: 16,
               background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
               color: '#333',
-              boxShadow: '0 10px 30px rgba(168, 237, 234, 0.3)'
+              boxShadow: '0 10px 30px rgba(168, 237, 234, 0.3)',
             }}
           >
-            <Title order={4} c="dark" mb="sm">🎯 Welcome</Title>
+            <Title order={4} c="dark" mb="sm">
+              🎯 Welcome
+            </Title>
             <Text size="sm" c="dark.6" mb="md">
               Toggle responsive mode to see different behaviors
             </Text>
-            <Button 
+            <Button
               data-onboarding-tour-id="welcome"
               variant="filled"
               color="dark"
