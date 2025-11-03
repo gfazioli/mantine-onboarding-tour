@@ -527,13 +527,13 @@ You can use any valid CSS media query for mobile detection:
 
 ```tsx
 // Tablet and below
-mobileBreakpoint="(max-width: 1024px)"
+mobileBreakpoint = '(max-width: 1024px)';
 
 // Small mobile only
-mobileBreakpoint="(max-width: 480px)"
+mobileBreakpoint = '(max-width: 480px)';
 
 // Custom breakpoint
-mobileBreakpoint="(max-width: 900px) and (orientation: portrait)"
+mobileBreakpoint = '(max-width: 900px) and (orientation: portrait)';
 ```
 
 ### Per-Step Responsive Configuration
@@ -548,16 +548,16 @@ const steps = [
     content: 'This step uses standard positioning',
     focusRevealProps: {
       responsive: false, // Disable responsive for this step
-    }
+    },
   },
   {
-    id: 'step2', 
+    id: 'step2',
     title: 'Mobile Step',
     content: 'This step uses mobile positioning',
     focusRevealProps: {
       responsive: true,
       mobilePosition: 'top', // Override global setting
-    }
-  }
+    },
+  },
 ];
 ```
