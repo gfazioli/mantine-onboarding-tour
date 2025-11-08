@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import {
   BoxProps,
   Factory,
+  MantineBreakpoint,
   StylesApiProps,
   useProps,
   useResolvedStylesApi,
@@ -46,8 +47,8 @@ export interface OnboardingTourBaseProps
   /** Enable responsive behavior for mobile devices */
   responsive?: boolean;
 
-  /** Mobile breakpoint query - defaults to '(max-width: 768px)' */
-  mobileBreakpoint?: string;
+  /** Mobile breakpoint name (e.g., 'sm', 'md') - defaults to 'sm' */
+  mobileBreakpoint?: MantineBreakpoint;
 
   /** Mobile popover position - 'top' or 'bottom' */
   mobilePosition?: 'top' | 'bottom';
@@ -75,7 +76,7 @@ export type OnboardingTourFactory = Factory<{
 
 export const defaultProps: Partial<OnboardingTourProps> = {
   responsive: true,
-  mobileBreakpoint: '(max-width: 768px)',
+  mobileBreakpoint: 'sm', // Default to 'sm' breakpoint
   mobilePosition: 'bottom',
 };
 

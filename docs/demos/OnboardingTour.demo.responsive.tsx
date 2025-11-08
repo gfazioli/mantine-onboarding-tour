@@ -51,7 +51,7 @@ function Wrapper() {
   const [started, { open, close }] = useDisclosure(false);
   const [responsive, setResponsive] = useState(true);
   const [mobilePosition, setMobilePosition] = useState<'top' | 'bottom'>('bottom');
-  const [mobileBreakpoint, setMobileBreakpoint] = useState('(max-width: 768px)');
+  const [mobileBreakpoint, setMobileBreakpoint] = useState<'xs' | 'sm' | 'md' | 'lg' | 'xl'>('sm');
 
   return (
     <Container size="lg" py="xl">
@@ -118,10 +118,12 @@ function Wrapper() {
             </Text>
             <SegmentedControl
               value={mobileBreakpoint}
-              onChange={(value) => setMobileBreakpoint(value)}
+              onChange={(value) => setMobileBreakpoint(value as 'xs' | 'sm' | 'md' | 'lg' | 'xl')}
               data={[
-                { label: '768px', value: '(max-width: 768px)' },
-                { label: '1024px', value: '(max-width: 1024px)' },
+                { label: 'xs', value: 'xs' },
+                { label: 'sm', value: 'sm' },
+                { label: 'md', value: 'md' },
+                { label: 'lg', value: 'lg' },
               ]}
               disabled={!responsive}
               size="sm"
@@ -284,7 +286,7 @@ function Demo() {
   const [started, { open, close }] = useDisclosure(false);
   const [responsive, setResponsive] = useState(true);
   const [mobilePosition, setMobilePosition] = useState<'top' | 'bottom'>('bottom');
-  const [mobileBreakpoint, setMobileBreakpoint] = useState('(max-width: 768px)');
+  const [mobileBreakpoint, setMobileBreakpoint] = useState<'xs' | 'sm' | 'md' | 'lg' | 'xl'>('sm');
 
   const onboardingSteps: OnboardingTourStep[] = [
     {
@@ -346,10 +348,12 @@ function Demo() {
           <Text size="sm" fw={500}>Breakpoint:</Text>
           <SegmentedControl
             value={mobileBreakpoint}
-            onChange={(value) => setMobileBreakpoint(value)}
+            onChange={(value) => setMobileBreakpoint(value as 'xs' | 'sm' | 'md' | 'lg' | 'xl')}
             data={[
-              { label: '768px', value: '(max-width: 768px)' },
-              { label: '1024px', value: '(max-width: 1024px)' },
+              { label: 'xs', value: 'xs' },
+              { label: 'sm', value: 'sm' },
+              { label: 'md', value: 'md' },
+              { label: 'lg', value: 'lg' },
             ]}
             disabled={!responsive}
             size="xs"

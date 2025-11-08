@@ -3,6 +3,7 @@ import {
   BoxProps,
   ElementProps,
   Factory,
+  MantineBreakpoint,
   Overlay,
   OverlayProps,
   Popover,
@@ -10,6 +11,7 @@ import {
   StylesApiProps,
   Transition,
   TransitionOverride,
+  useMatches,
   useProps,
   useStyles,
 } from '@mantine/core';
@@ -105,8 +107,8 @@ export interface OnboardingTourFocusRevealBaseProps {
   /** Enable responsive behavior for mobile devices */
   responsive?: boolean;
 
-  /** Mobile breakpoint query - defaults to '(max-width: 768px)' */
-  mobileBreakpoint?: string;
+  /** Mobile breakpoint name (e.g., 'sm', 'md') - defaults to 'sm' */
+  mobileBreakpoint?: MantineBreakpoint;
 
   /** Mobile popover position - 'top' or 'bottom' */
   mobilePosition?: 'top' | 'bottom';
@@ -144,7 +146,7 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
   withReveal: true,
   withOverlay: true,
   responsive: true,
-  mobileBreakpoint: '(max-width: 768px)',
+  mobileBreakpoint: 'sm', // Default to 'sm' breakpoint
   mobilePosition: 'bottom',
   overlayProps: {
     blur: 2,
@@ -266,8 +268,20 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
   const mergedRef = useMergedRef(inViewportRef, targetRef);
 
   // Mobile detection and responsive behavior
-  const isMobile = useMediaQuery(mobileBreakpoint);
-  const shouldUseResponsive = responsive && isMobile;
+  // Convert breakpoint name to media query for useMediaQuery
+  // Default to 'sm' breakpoint (typically max-width: 768px) if not specified
+  const breakpoint = mobileBreakpoint || 'sm';
+  // Mantine breakpoints: xs: 36em, sm: 48em, md: 62em, lg: 75em, xl: 88em
+  const breakpointMap: Record<string, string> = {
+    xs: '(max-width: 36em)',
+    sm: '(max-width: 48em)',
+    md: '(max-width: 62em)',
+    lg: '(max-width: 75em)',
+    xl: '(max-width: 88em)',
+  };
+  const mediaQuery = breakpointMap[breakpoint] || breakpointMap.sm;
+  const isMobile = useMediaQuery(mediaQuery);
+  const shouldUseResponsive = responsive !== false && isMobile;
 
   useEffect(() => {
     ctx?.setMeInViewport(uuid, inViewport);
@@ -333,9 +347,10 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     newProps['data-popover-dropdown'] = !!popoverContent;
 
     // Create popover props with responsive behavior
+    // On mobile: use mobilePosition (top/bottom), on desktop: use popoverProps.position (usually left/right)
     const finalPopoverProps = {
       ...popoverProps,
-      position: shouldUseResponsive ? mobilePosition : popoverProps.position,
+      position: shouldUseResponsive ? mobilePosition : (popoverProps.position || 'left'),
       withinPortal: shouldUseResponsive,
       styles: shouldUseResponsive
         ? {

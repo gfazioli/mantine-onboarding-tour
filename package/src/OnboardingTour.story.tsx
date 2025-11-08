@@ -441,3 +441,69 @@ export function OnboardingTourProviderClasses(props: OnboardingTourProps) {
     </OnboardingTour>
   );
 }
+
+export function ResponsiveOnboardingTour(props: OnboardingTourProps) {
+  const [started, { open, close }] = useDisclosure(false);
+
+  const responsiveSteps: OnboardingTourStep[] = [
+    {
+      id: 'welcome',
+      title: 'Responsive Onboarding Tour',
+      content:
+        'This tour adapts to mobile devices! Resize your browser window to see the responsive behavior in action.',
+    },
+    {
+      id: 'top-button',
+      title: 'Mobile Positioning',
+      content:
+        'On mobile devices, the guide automatically positions itself at the top or bottom of the screen.',
+    },
+    {
+      id: 'left-button',
+      title: 'Smart Scrolling',
+      content:
+        'Elements are automatically scrolled into view with appropriate alignment based on the guide position.',
+    },
+    {
+      id: 'right-button',
+      title: 'Full-Width Layout',
+      content: 'On mobile, the guide uses a full-width layout with proper spacing for better UX.',
+    },
+  ];
+
+  return (
+    <OnboardingTour
+      tour={responsiveSteps}
+      started={started}
+      onOnboardingTourEnd={close}
+      onOnboardingTourClose={close}
+      responsive={true}
+      mobileBreakpoint="(max-width: 768px)"
+      mobilePosition="bottom"
+      maw={400}
+      {...props}
+    >
+      <Container>
+        <Group align="center" justify="space-between">
+          <IconBrandMantine size={48} color="violet" />
+          <Group>
+            <Button variant="light" onClick={open}>
+              Start Tour
+            </Button>
+            <Button data-onboarding-tour-id="top-button">Top Button</Button>
+            <Button data-onboarding-tour-id="left-button">Left Button</Button>
+            <Button data-onboarding-tour-id="right-button">Right Button</Button>
+          </Group>
+        </Group>
+
+        <Divider my={16} />
+
+        <Flex gap={32}>
+          <Center w="100%">
+            <Testimonials data-onboarding-tour-id="welcome" testimonial={0} />
+          </Center>
+        </Flex>
+      </Container>
+    </OnboardingTour>
+  );
+}
