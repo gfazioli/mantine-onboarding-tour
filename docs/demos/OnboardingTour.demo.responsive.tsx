@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import {
-  Box,
   Button,
   Container,
   Group,
+  Paper,
   SegmentedControl,
   Stack,
   Switch,
@@ -139,13 +139,12 @@ function Wrapper() {
           mobilePosition={mobilePosition}
         >
           {/* Top section */}
-          <Box
+          <Paper
             h={200}
             p="xl"
+            radius="md"
             style={{
-              borderRadius: 16,
               background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              color: 'white',
               boxShadow: '0 10px 30px rgba(102, 126, 234, 0.3)',
             }}
           >
@@ -158,18 +157,17 @@ function Wrapper() {
             <Button data-onboarding-tour-id="top-button" variant="white" color="dark" radius="xl">
               Responsive Behavior
             </Button>
-          </Box>
+          </Paper>
 
           {/* Middle section with left and right buttons */}
           <Group justify="space-between" mt="xl" gap="xl">
-            <Box
+            <Paper
               w={280}
               h={200}
               p="xl"
+              radius="md"
               style={{
-                borderRadius: 16,
                 background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-                color: 'white',
                 boxShadow: '0 10px 30px rgba(240, 147, 251, 0.3)',
               }}
             >
@@ -187,16 +185,15 @@ function Wrapper() {
               >
                 Mobile Design
               </Button>
-            </Box>
+            </Paper>
 
-            <Box
+            <Paper
               w={280}
               h={200}
               p="xl"
+              radius="md"
               style={{
-                borderRadius: 16,
                 background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-                color: 'white',
                 boxShadow: '0 10px 30px rgba(79, 172, 254, 0.3)',
               }}
             >
@@ -214,18 +211,17 @@ function Wrapper() {
               >
                 Smart Scrolling
               </Button>
-            </Box>
+            </Paper>
           </Group>
 
           {/* Bottom section */}
-          <Box
+          <Paper
             h={200}
             p="xl"
             mt="xl"
+            radius="md"
             style={{
-              borderRadius: 16,
               background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-              color: 'white',
               boxShadow: '0 10px 30px rgba(250, 112, 154, 0.3)',
             }}
           >
@@ -243,17 +239,16 @@ function Wrapper() {
             >
               Ready to Use
             </Button>
-          </Box>
+          </Paper>
 
           {/* Welcome section */}
-          <Box
+          <Paper
             h={120}
             p="lg"
             mt="xl"
+            radius="md"
             style={{
-              borderRadius: 16,
               background: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-              color: '#333',
               boxShadow: '0 10px 30px rgba(168, 237, 234, 0.3)',
             }}
           >
@@ -272,7 +267,7 @@ function Wrapper() {
             >
               Welcome
             </Button>
-          </Box>
+          </Paper>
         </OnboardingTour>
       </Stack>
     </Container>
@@ -281,7 +276,7 @@ function Wrapper() {
 
 const code = `
 import { OnboardingTour, type OnboardingTourStep } from '@gfazioli/mantine-onboarding-tour';
-import { Button, Stack, Title, Group, Box, Text, Switch, Paper, SegmentedControl } from '@mantine/core';
+import { Button, Stack, Title, Group, Paper, Text, Switch, SegmentedControl } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
 
