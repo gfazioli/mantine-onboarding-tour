@@ -11,7 +11,6 @@ import {
   StylesApiProps,
   Transition,
   TransitionOverride,
-  useMatches,
   useProps,
   useStyles,
 } from '@mantine/core';
@@ -350,7 +349,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     // On mobile: use mobilePosition (top/bottom), on desktop: use popoverProps.position (usually left/right)
     const finalPopoverProps = {
       ...popoverProps,
-      position: shouldUseResponsive ? mobilePosition : (popoverProps.position || 'left'),
+      position: shouldUseResponsive ? mobilePosition : popoverProps.position || 'left',
       withinPortal: shouldUseResponsive,
       styles: shouldUseResponsive
         ? {

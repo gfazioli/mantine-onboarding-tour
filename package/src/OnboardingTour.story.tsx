@@ -477,8 +477,8 @@ export function ResponsiveOnboardingTour(props: OnboardingTourProps) {
       started={started}
       onOnboardingTourEnd={close}
       onOnboardingTourClose={close}
-      responsive={true}
-      mobileBreakpoint="(max-width: 768px)"
+      responsive
+      mobileBreakpoint="sm"
       mobilePosition="bottom"
       maw={400}
       {...props}
