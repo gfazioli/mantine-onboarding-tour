@@ -35,7 +35,7 @@ It allows you to create a onboarding-tour effect with overlays, popovers, and on
 [![Demo](https://img.shields.io/badge/-Full_Screen_Demo-blue?style=for-the-badge&labelColor=white
 )](https://gfazioli.github.io/mantine-onboarding-tour/demo)
 [![Demo](https://img.shields.io/badge/-Mantine_Extensions_Hub-blue?style=for-the-badge&labelColor=blue
-)](https://gfazioli.github.io/mantine-onboarding-tour/)
+)](https://mantine-extensions.vercel.app/)
 
 
 👉 You can find more components on the [Mantine Extensions Hub](https://mantine-extensions.vercel.app/) library.
