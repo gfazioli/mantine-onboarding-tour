@@ -1,12 +1,6 @@
-# Mantine OnboardingTour Component
+# Mantine Onboarding Tour Component
 
-<div align="center">
-
-  https://github.com/user-attachments/assets/93d39052-90be-45d7-a470-67f8727bc096
-
-</div>
-
----
+<img width="2752" height="1536" alt="Gemini_Generated_Image_kvtv7ikvtv7ikvtv" src="https://github.com/user-attachments/assets/948902e4-c5d1-46df-bc52-cb4594ae8e2b" />
 
 <div align="center">
   
@@ -97,3 +91,9 @@ function Demo() {
 
 </div>
 
+---
+<div align="center">
+
+  https://github.com/user-attachments/assets/93d39052-90be-45d7-a470-67f8727bc096
+
+</div>
