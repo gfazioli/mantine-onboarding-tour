@@ -31,11 +31,10 @@ export type OnboardingTourPopoverContentStylesNames = 'popoverContent';
 //   popoverContent: '--onboarding-tour-popover-content-stepper-icon-size';
 // };
 
-export interface OnboardingTourPopoverContentBaseProps
-  extends Omit<
-    OnboardingTourOptions,
-    'onOnboardingTourStart' | 'onOnboardingTourEnd' | 'onOnboardingTourChange'
-  > {
+export interface OnboardingTourPopoverContentBaseProps extends Omit<
+  OnboardingTourOptions,
+  'onOnboardingTourStart' | 'onOnboardingTourEnd' | 'onOnboardingTourChange'
+> {
   /** Current onboarding tour returned by useOnboardingTour() hook */
   tourController: OnboardingTourController;
 
@@ -97,7 +96,8 @@ export interface OnboardingTourPopoverContentBaseProps
 }
 
 export interface OnboardingTourPopoverContentProps
-  extends Omit<BoxProps, 'title' | 'description' | 'content'>,
+  extends
+    Omit<BoxProps, 'title' | 'description' | 'content'>,
     OnboardingTourPopoverContentBaseProps,
     StylesApiProps<OnboardingTourPopoverContentFactory> {}
 
