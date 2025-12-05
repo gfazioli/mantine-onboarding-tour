@@ -32,8 +32,7 @@ export type OnboardingTourStylesNames = OnboardingTourPopoverContentStylesNames;
 //export type OnboardingTourCssVariables = OnboardingTourPopoverContentCssVariables;
 
 export interface OnboardingTourBaseProps
-  extends OnboardingTourOptions,
-    Omit<OnboardingTourPopoverContentBaseProps, 'tourController'> {
+  extends OnboardingTourOptions, Omit<OnboardingTourPopoverContentBaseProps, 'tourController'> {
   tour: OnboardingTourStep[];
 
   /** Controlled started state */
@@ -58,9 +57,7 @@ export interface OnboardingTourBaseProps
 }
 
 export interface OnboardingTourProps
-  extends BoxProps,
-    OnboardingTourBaseProps,
-    StylesApiProps<OnboardingTourFactory> {}
+  extends BoxProps, OnboardingTourBaseProps, StylesApiProps<OnboardingTourFactory> {}
 
 export type OnboardingTourFactory = Factory<{
   props: OnboardingTourProps;

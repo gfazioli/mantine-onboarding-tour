@@ -4,8 +4,7 @@ import { OnboardingTourFocusRevealProps } from './OnboardingTourFocusReveal/Onbo
 import { OnboardingTourPopoverContentBaseProps } from './OnboardingTourPopoverContent';
 
 interface OnboardingTourContextValue
-  extends OnboardingTourController,
-    Omit<OnboardingTourPopoverContentBaseProps, 'tourController'> {
+  extends OnboardingTourController, Omit<OnboardingTourPopoverContentBaseProps, 'tourController'> {
   /** Props passed to FocusReveal */
   focusRevealProps?:
     | OnboardingTourFocusRevealProps

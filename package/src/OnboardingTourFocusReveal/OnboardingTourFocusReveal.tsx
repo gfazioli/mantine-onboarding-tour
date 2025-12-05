@@ -54,8 +54,7 @@ export interface OnboardingTourFocusRevealDataAttributes {
   'data-onboarding-tour-focus-reveal-mode'?: OnboardingTourFocusRevealFocusedMode;
 }
 
-export interface OnboardingTourFocusRevealChildProps
-  extends OnboardingTourFocusRevealDataAttributes {
+export interface OnboardingTourFocusRevealChildProps extends OnboardingTourFocusRevealDataAttributes {
   className?: string;
   style?: React.CSSProperties;
   ref?: React.Ref<any>;
@@ -126,7 +125,8 @@ export interface OnboardingTourFocusRevealBaseProps {
 }
 
 export interface OnboardingTourFocusRevealProps
-  extends BoxProps,
+  extends
+    BoxProps,
     OnboardingTourFocusRevealBaseProps,
     StylesApiProps<OnboardingTourFocusRevealFactory> {}
 
