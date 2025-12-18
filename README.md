@@ -15,24 +15,14 @@
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
 
-[![Mantine UI Library](https://img.shields.io/badge/-MANTINE_UI_LIBRARY-blue?style=for-the-badge&labelColor=white&logo=mantine
-)](https://mantine.dev/)
+[Mantine OnboardingTour](https://gfazioli.github.io/mantine-onboarding-tour/) is a flexible onboarding system for React apps built on Mantine. You declare an array of steps (OnboardingTourStep) where header, title, content, and footer can be strings, React nodes, or functions that receive the tour controller for dynamic rendering. Each step can customize focus and reveal behavior via FocusReveal props, including overlay, scroll-into-view, transitions, and popover configuration. Targets can be matched with data-onboarding-tour-id or wrapped using OnboardingTour.Target when elements live outside the tour’s children. A controller exposes current step state and actions (start, next, prev, end), while advanced hooks let you swap popover content, implement custom steppers, and tailor overlays or scroll containers for complex layouts, making product tours both accessible and highly customizable.
 
 
-It allows you to create a onboarding-tour effect with overlays, popovers, and onboarding tours, enhancing element visibility and interactivity.
-
-
-[![Mantine Extensions](https://img.shields.io/badge/-Watch_the_Video-blue?style=for-the-badge&labelColor=black&logo=youtube
-)](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4)
-[![Demo](https://img.shields.io/badge/-Demo_%26_Documentation-blue?style=for-the-badge&labelColor=white&logo=typescript
-)](https://gfazioli.github.io/mantine-onboarding-tour/)
-[![Demo](https://img.shields.io/badge/-Full_Screen_Demo-blue?style=for-the-badge&labelColor=white
-)](https://gfazioli.github.io/mantine-onboarding-tour/demo)
-[![Demo](https://img.shields.io/badge/-Mantine_Extensions_Hub-blue?style=for-the-badge&labelColor=blue
-)](https://mantine-extensions.vercel.app/)
-
-
-👉 You can find more components on the [Mantine Extensions Hub](https://mantine-extensions.vercel.app/) library.
+> [!note]
+>
+> → [Demo and Documentation](https://gfazioli.github.io/mantine-onboarding-tour/) → [Youtube Video](https://www.youtube.com/playlist?list=PL85tTROKkZrWyqCcmNCdWajpx05-cTal4) → [More Mantine Components](https://mantine-extensions.vercel.app/)
+> 
+> → [Full page Demo](https://gfazioli.github.io/mantine-onboarding-tour/demo)
 
 ## Installation
 
@@ -84,11 +74,9 @@ function Demo() {
   );
 }
 ```
+---
+https://github.com/user-attachments/assets/93d39052-90be-45d7-a470-67f8727bc096
 
-<div align="center">
-  
+---  
 [![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-onboarding-tour&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-onboarding-tour&Timeline)
 
-</div>
-
-https://github.com/user-attachments/assets/93d39052-90be-45d7-a470-67f8727bc096
