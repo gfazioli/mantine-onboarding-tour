@@ -1,6 +1,6 @@
 # Mantine Onboarding Tour Component
 
-<img width="2752" height="1536" alt="mantine Onboarding Tour" src="https://github.com/user-attachments/assets/a5142ef4-d442-4404-9660-d8786803b95c" />
+<img alt="Mantine Onboarding Tour" src="https://github.com/gfazioli/mantine-onboarding-tour/blob/master/logo.png" />
 
 <div align="center">
   
