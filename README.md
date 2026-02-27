@@ -1,6 +1,6 @@
 # Mantine Onboarding Tour Component
 
-<img alt="Mantine Onboarding Tour" src="https://github.com/gfazioli/mantine-onboarding-tour/blob/master/logo.png" />
+<img alt="Mantine Onboarding Tour" src="https://github.com/gfazioli/mantine-onboarding-tour/blob/master/logo.jpeg" />
 
 <div align="center">
   
