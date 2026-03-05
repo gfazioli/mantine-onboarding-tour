@@ -63,7 +63,7 @@ export default function HomePage() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       onOnboardingTourChange={setCurrentStep}
       maw={400}
       header={(tourController: OnboardingTourController) => (

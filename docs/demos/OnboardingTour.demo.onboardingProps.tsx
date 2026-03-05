@@ -30,7 +30,7 @@ function Wrapper() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       title="The Title for all steps"
       maw={400}
     >
@@ -89,7 +89,7 @@ function Demo() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       title="The Title for all steps"
       maw={400}
     >

@@ -135,7 +135,7 @@ function Wrapper() {
           tour={onboardingSteps}
           started={started}
           onOnboardingTourEnd={close}
-          onOnboardingTourClose={close}
+          onOnboardingTourSkip={close}
           responsive={responsive}
           mobileBreakpoint={mobileBreakpoint}
           mobilePosition={mobilePosition}
@@ -365,7 +365,7 @@ function Demo() {
         tour={onboardingSteps}
         started={started}
         onOnboardingTourEnd={close}
-        onOnboardingTourClose={close}
+        onOnboardingTourSkip={close}
         responsive={responsive}
         mobileBreakpoint={mobileBreakpoint}
         mobilePosition={mobilePosition}

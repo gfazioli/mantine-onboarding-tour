@@ -210,6 +210,73 @@ describe('useOnboardingTour', () => {
     expect(onChange).toHaveBeenCalledWith(onboardingSteps[0]);
   });
 
+  it('calls onOnboardingTourComplete when tour finishes last step', () => {
+    const onComplete = jest.fn();
+    const onEnd = jest.fn();
+    const { result } = renderHook(
+      () =>
+        useOnboardingTour(onboardingSteps, {
+          onOnboardingTourComplete: onComplete,
+          onOnboardingTourEnd: onEnd,
+        }),
+      { wrapper }
+    );
+
+    act(() => result.current.startTour());
+    act(() => result.current.nextStep());
+    act(() => result.current.nextStep());
+    act(() => result.current.nextStep()); // past last step
+
+    expect(onComplete).toHaveBeenCalledTimes(1);
+    expect(onEnd).toHaveBeenCalledTimes(1);
+  });
+
+  it('calls onOnboardingTourSkip when skipTour is called', () => {
+    const onSkip = jest.fn();
+    const onEnd = jest.fn();
+    const onComplete = jest.fn();
+    const { result } = renderHook(
+      () =>
+        useOnboardingTour(onboardingSteps, {
+          onOnboardingTourSkip: onSkip,
+          onOnboardingTourEnd: onEnd,
+          onOnboardingTourComplete: onComplete,
+        }),
+      { wrapper }
+    );
+
+    act(() => result.current.startTour());
+    act(() => result.current.nextStep()); // go to step 2
+    act(() => result.current.skipTour()); // skip mid-tour
+
+    expect(onSkip).toHaveBeenCalledTimes(1);
+    expect(onEnd).toHaveBeenCalledTimes(1);
+    expect(onComplete).not.toHaveBeenCalled();
+    expect(result.current.currentStepIndex).toBeUndefined();
+  });
+
+  it('endTour does not call onComplete or onSkip', () => {
+    const onSkip = jest.fn();
+    const onComplete = jest.fn();
+    const onEnd = jest.fn();
+    const { result } = renderHook(
+      () =>
+        useOnboardingTour(onboardingSteps, {
+          onOnboardingTourSkip: onSkip,
+          onOnboardingTourComplete: onComplete,
+          onOnboardingTourEnd: onEnd,
+        }),
+      { wrapper }
+    );
+
+    act(() => result.current.startTour());
+    act(() => result.current.endTour());
+
+    expect(onEnd).toHaveBeenCalledTimes(1);
+    expect(onSkip).not.toHaveBeenCalled();
+    expect(onComplete).not.toHaveBeenCalled();
+  });
+
   it('calls onOnboardingTourChange in loop mode on wrap-around', () => {
     const onChange = jest.fn();
     const { result } = renderHook(

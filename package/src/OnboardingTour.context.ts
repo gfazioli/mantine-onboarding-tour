@@ -9,9 +9,6 @@ interface OnboardingTourContextValue
   focusRevealProps?:
     | OnboardingTourFocusRevealProps
     | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);
-
-  /** Triggered when the Close Button is clicked */
-  onOnboardingTourClose?: () => void;
 }
 
 export const [_OnboardingTourProvider, useOnboardingTourContext] =

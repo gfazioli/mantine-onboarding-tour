@@ -56,7 +56,7 @@ function Wrapper() {
       focusRevealProps={focusRevealProps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       stepper={customStepper}
       maw={400}
     >
@@ -141,7 +141,7 @@ function Demo() {
       focusRevealProps={focusRevealProps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       stepper={customStepper}
       maw={400}
     >

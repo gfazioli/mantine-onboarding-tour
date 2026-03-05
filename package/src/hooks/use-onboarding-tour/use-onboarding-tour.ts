@@ -28,13 +28,19 @@ export type OnboardingTourOptions<T extends Record<string, unknown> = Record<str
   /** Loop the tour */
   loop?: boolean;
 
-  /** Triggered when the tour starts   */
+  /** Triggered when the tour starts */
   onOnboardingTourStart?: () => void;
 
-  /** Triggered when the tour ends */
+  /** Triggered when the tour ends (always called, whether completed or skipped) */
   onOnboardingTourEnd?: () => void;
 
-  /** Triggered when the tour changes */
+  /** Triggered when the tour is completed (user finishes the last step) */
+  onOnboardingTourComplete?: () => void;
+
+  /** Triggered when the tour is skipped (user clicks Skip) */
+  onOnboardingTourSkip?: () => void;
+
+  /** Triggered when the active step changes */
   onOnboardingTourChange?: (tourStep: OnboardingTourStep<T>) => void;
 };
 
@@ -58,8 +64,11 @@ export type OnboardingTourController<T extends Record<string, unknown> = Record<
     /** Start the tour */
     startTour: () => void;
 
-    /** End the tour */
+    /** End the tour programmatically */
     endTour: () => void;
+
+    /** Skip the tour (user dismissed) */
+    skipTour: () => void;
 
     /** Go to the next tour */
     nextStep: () => void;
@@ -90,13 +99,19 @@ export function useOnboardingTour<T extends Record<string, unknown> = Record<str
   const mergedOptions = { ...defaultOptions, ...options };
 
   const [currentStepIndex, _setCurrentStepIndex] = useState<number>();
-  // Pending step index for sequential transitions (close → open).
+  // Pending step index for sequential transitions (close -> open).
   // When non-null, selectedStepId is undefined so all popovers close first.
   const [pendingStepIndex, setPendingStepIndex] = useState<number | null>(null);
   const isTransitioning = pendingStepIndex !== null;
 
-  const { loop, onOnboardingTourStart, onOnboardingTourEnd, onOnboardingTourChange } =
-    mergedOptions || {};
+  const {
+    loop,
+    onOnboardingTourStart,
+    onOnboardingTourEnd,
+    onOnboardingTourComplete,
+    onOnboardingTourSkip,
+    onOnboardingTourChange,
+  } = mergedOptions || {};
 
   // Phase 2 of sequential transition: after the "no selection" render is committed
   // (all popovers closed), apply the pending step to open the new popover.
@@ -134,6 +149,7 @@ export function useOnboardingTour<T extends Record<string, unknown> = Record<str
       transitionToStep(0);
     } else {
       _setCurrentStepIndex(undefined);
+      onOnboardingTourComplete?.();
       onOnboardingTourEnd?.();
     }
   };
@@ -154,9 +170,16 @@ export function useOnboardingTour<T extends Record<string, unknown> = Record<str
     }
   };
 
-  /** End the tour */
+  /** End the tour programmatically */
   const endTour = () => {
     _setCurrentStepIndex(undefined);
+    onOnboardingTourEnd?.();
+  };
+
+  /** Skip the tour (user dismissed via Skip button) */
+  const skipTour = () => {
+    _setCurrentStepIndex(undefined);
+    onOnboardingTourSkip?.();
     onOnboardingTourEnd?.();
   };
 
@@ -177,6 +200,7 @@ export function useOnboardingTour<T extends Record<string, unknown> = Record<str
     setCurrentStepIndex,
     startTour,
     endTour,
+    skipTour,
     nextStep,
     prevStep,
     options: mergedOptions,

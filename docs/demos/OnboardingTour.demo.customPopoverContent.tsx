@@ -116,7 +116,7 @@ function Wrapper() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       title={() => null}
       content={customPopoverContent}
       withStepper={false}
@@ -198,7 +198,7 @@ function Demo() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       title={() => null}
       content={customPopoverContent}
       withStepper={false}

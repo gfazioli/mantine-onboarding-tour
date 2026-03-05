@@ -100,7 +100,6 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
           withSkipButton={withSkipButton}
           withStepper={withStepper}
           tourController={ctx}
-          onOnboardingTourClose={ctx.onOnboardingTourClose}
           {...(others as unknown as OnboardingTourPopoverContentBaseProps)}
         />
       }
