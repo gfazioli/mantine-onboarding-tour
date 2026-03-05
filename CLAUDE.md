@@ -46,7 +46,7 @@ OnboardingTour              — Main wrapper; recursively clones children matchi
 └── .Target                 — Declarative target for elements outside the OnboardingTour tree
 ```
 
-**OnboardingTour** is a plain function component (NOT using Mantine's `factory()`).
+**OnboardingTour** uses Mantine's `factory()`.
 **PopoverContent** uses `factory()`. **FocusReveal** and **Target** are plain function components.
 
 ### Data Flow
@@ -82,7 +82,7 @@ started=true → useEffect → startTour() → setCurrentStepIndex(0)
 - Two-phase focus: `_focused` (requested) → `realFocused` (confirmed in viewport). Overlay + popover only show when `realFocused=true`
 - When inside a **Group**, the FocusReveal delegates overlay rendering to the Group (shared overlay) and reports viewport status via context
 - 12 CSS animation modes: `pulse`, `glow`, `glow-blue`, `glow-red`, `glow-green`, `border`, `shake`, `rotate`, `scale`, `elastic`, `zoom`, `none`
-- Responsive: on mobile (detected via `useMediaQuery` with Mantine theme breakpoints), popover moves to top/bottom with full-width styling, scroll alignment changes
+- **Responsive popover positioning** via `ResponsiveProp<T>` type and `useMatches()`. Popover `position`, `offset`, `width`, and `arrowSize` accept responsive objects like `{ base: 'bottom', sm: 'left' }`. Scroll alignment is derived from the resolved position. Floating UI `shift` (padding: 20) and `flip` middlewares handle edge cases. When the tour is active, `document.documentElement.style.overflowX` is set to `hidden` to prevent horizontal scroll from portal-rendered popovers.
 
 ### OnboardingTourStep
 
@@ -99,7 +99,8 @@ Rollup compiles `package/src/index.ts` → ESM (.mjs) + CJS (.cjs) with `'use cl
 ### Docs & Demos (docs/)
 
 Next.js 15 static export. Demos in `docs/demos/` export a `Wrapper` function + metadata object compatible with `@mantinex/demo`. Demo categories:
-- **OnboardingTour.demo.***: configurator, target, responsive, customStepper, customPopoverContent, customEntry, wrapTitle, onboardingTourStep, onboardingTourStepFocusReveal, onboardingProps, targetFocusReveal
+- **OnboardingTour.demo.***: configurator, target, customStepper, customPopoverContent, customEntry, wrapTitle, onboardingTourStep, onboardingTourStepFocusReveal, onboardingProps, targetFocusReveal
+- **Full-page demos** (docs/pages/): `demo.tsx` (main tour), `responsive.tsx` (responsive positioning)
 - **FocusReveal.demo.***: configurator, cycle, group, group-props, overlay, popover, popoverProps, reveal, scrollContainer, focusMode, paper, uncontrolled, disableTargetInteraction, cycleDescription
 
 ## Known Issues
