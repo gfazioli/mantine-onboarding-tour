@@ -741,10 +741,6 @@ const steps: OnboardingTourStep[] = [
 ];
 ```
 
-### Smart Scroll Alignment
+### Scroll Behavior
 
-Scroll alignment is automatically derived from the resolved popover position:
-
-- **`position: 'top'`** → scrolls element to the end of the viewport
-- **`position: 'bottom'`** → scrolls element to the start of the viewport
-- **`position: 'left'` / `'right'`** → scrolls element to the center
+When a step activates, the target element is automatically scrolled into view and **centered** in the viewport. The Floating UI `shift` and `flip` middlewares then ensure the popover stays fully visible regardless of the resolved position.
