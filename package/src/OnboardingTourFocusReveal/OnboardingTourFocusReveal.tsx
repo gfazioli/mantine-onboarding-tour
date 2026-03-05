@@ -292,17 +292,13 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
   const resolvedWidth = useResponsiveProp<PopoverWidth>(popoverProps?.width, 'max-content');
   const resolvedArrowSize = useResponsiveProp<number>(popoverProps?.arrowSize, 16);
 
-  // Scroll alignment: always center the target element in the viewport.
-  // The shift and flip middlewares handle keeping the popover visible.
-  const scrollAlignment = 'center' as const;
-
   useEffect(() => {
     ctx?.setMeInViewport(uuid, inViewport);
 
     if (targetRef.current) {
       if (_focused || defaultFocused) {
         if (withReveal) {
-          scrollIntoView({ alignment: scrollAlignment });
+          scrollIntoView({ alignment: 'center' });
         }
       }
 
@@ -313,7 +309,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         setRealFocused(false);
       }
     }
-  }, [_focused, withReveal, inViewport, scrollAlignment]);
+  }, [_focused, withReveal, inViewport]);
 
   useDidUpdate(() => {
     ctx?.setMeInViewport(uuid, inViewport);
