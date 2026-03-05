@@ -61,6 +61,8 @@ function Wrapper() {
     },
   };
 
+  type CustomStep = { image?: string; freeTrialBadge?: React.ReactNode };
+
   const customPopoverContent = (controller: OnboardingTourController) => {
     const { currentStepIndex, tour, nextStep, endTour } = controller;
 
@@ -68,11 +70,12 @@ function Wrapper() {
       return null;
     }
 
-    const { title, content, image, freeTrialBadge } = controller.currentStep as OnboardingTourStep;
+    const { title, content, image, freeTrialBadge } = controller.currentStep as OnboardingTourStep &
+      CustomStep;
 
     return (
       <>
-        <BackgroundImage src={image} radius="8px 8px 0 0">
+        <BackgroundImage src={image as string} radius="8px 8px 0 0">
           <Stack w={200} m={24} mb={24}>
             <Title
               c="black"

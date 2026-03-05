@@ -24,5 +24,6 @@ export type { OnboardingTourTargetProps } from './OnboardingTourTarget/Onboardin
 
 export type {
   OnboardingTourController,
+  OnboardingTourOptions,
   OnboardingTourStep,
 } from './hooks/use-onboarding-tour/use-onboarding-tour';

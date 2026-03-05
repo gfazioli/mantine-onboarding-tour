@@ -45,7 +45,7 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
     } else {
       setFocused(false);
     }
-  }, [ctx]);
+  }, [ctx?.selectedStepId, id]);
 
   if (!isElement(children)) {
     throw new Error(
@@ -80,6 +80,7 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
   return (
     <OnboardingTourFocusReveal
       {...mergedFocusRevealProps}
+      withOverlay={false}
       popoverContent={
         <OnboardingTourPopoverContent
           header={header}

@@ -10,7 +10,7 @@ import { MantineDemo } from '@mantinex/demo';
 function Wrapper() {
   const [started, { open, close }] = useDisclosure(false);
 
-  const onboardingSteps: OnboardingTourStep[] = [
+  const onboardingSteps: OnboardingTourStep<{ price?: number }>[] = [
     {
       id: 'step-1',
       title: 'Step-1',
@@ -36,7 +36,7 @@ function Wrapper() {
       started={started}
       onOnboardingTourEnd={close}
       onOnboardingTourClose={close}
-      footer={(onboardingTour: OnboardingTourController) => {
+      footer={(onboardingTour: OnboardingTourController<{ price?: number }>) => {
         if (onboardingTour.currentStep?.price) {
           return (
             <Center>
@@ -85,7 +85,7 @@ import { useDisclosure } from '@mantine/hooks';
 function Demo() {
   const [started, { open, close }] = useDisclosure(false);
 
-  const onboardingSteps: OnboardingTourStep[] = [
+  const onboardingSteps: OnboardingTourStep<{ price?: number }>[] = [
     {
       id: 'step-1',
       title: 'Step-1',

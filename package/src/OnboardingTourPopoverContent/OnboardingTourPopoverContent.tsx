@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   Anchor,
   Box,
@@ -24,12 +24,6 @@ import {
 import classes from './OnboardingTourPopoverContent.module.css';
 
 export type OnboardingTourPopoverContentStylesNames = 'popoverContent';
-// | 'stepIcon'
-// | 'separator';
-
-// export type OnboardingTourPopoverContentCssVariables = {
-//   popoverContent: '--onboarding-tour-popover-content-stepper-icon-size';
-// };
 
 export interface OnboardingTourPopoverContentBaseProps extends Omit<
   OnboardingTourOptions,
@@ -105,7 +99,6 @@ export type OnboardingTourPopoverContentFactory = Factory<{
   props: OnboardingTourPopoverContentProps;
   ref: HTMLDivElement;
   stylesNames: OnboardingTourPopoverContentStylesNames;
-  //vars: OnboardingTourPopoverContentCssVariables;
 }>;
 
 export const defaultProps: Partial<OnboardingTourPopoverContentProps> = {
@@ -121,14 +114,6 @@ export const defaultProps: Partial<OnboardingTourPopoverContentProps> = {
     allowStepClick: true,
   },
 };
-
-// const varsResolver = createVarsResolver<OnboardingTourPopoverContentFactory>(() => {
-//   return {
-//     popoverContent: {
-//       '--onboarding-tour-popover-content-stepper-icon-size': 'var(--mantine-size-xs)',
-//     },
-//   };
-// });
 
 export type OnboardingCurrentTour = OnboardingTourStep & {
   step: number;
@@ -183,7 +168,6 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
       styles,
       unstyled,
       vars,
-      //varsResolver,
     });
 
     const {
@@ -311,38 +295,26 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
         </Group>
       ));
 
-    return useMemo(
-      () => (
-        <Box ref={ref} {...getStyles('popoverContent')} {...others}>
-          <Stack>
-            {headerComponent}
-            {titleComponent}
-            {contentComponent}
+    return (
+      <Box ref={ref} {...getStyles('popoverContent')} {...others}>
+        <Stack>
+          {headerComponent}
+          {titleComponent}
+          {contentComponent}
+          <Group justify="space-between">
+            {skipNavigationComponent}
             <Group justify="space-between">
-              {skipNavigationComponent}
-              <Group justify="space-between">
-                {prevNavigationComponent}
-                {nextNavigationComponent}
-                {endNavigationComponent}
-              </Group>
+              {prevNavigationComponent}
+              {nextNavigationComponent}
+              {endNavigationComponent}
             </Group>
+          </Group>
 
-            {stepperComponent}
+          {stepperComponent}
 
-            {footerComponent}
-          </Stack>
-        </Box>
-      ),
-      [
-        withSkipButton,
-        withPrevButton,
-        withNextButton,
-        withStepper,
-        nextStepNavigation,
-        prevStepNavigation,
-        endStepNavigation,
-        skipNavigation,
-      ]
+          {footerComponent}
+        </Stack>
+      </Box>
     );
   }
 );

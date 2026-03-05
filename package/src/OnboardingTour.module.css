@@ -1,12 +1,15 @@
+.tourOverlay {
+  position: fixed;
+  inset: 0;
+  transition:
+    background-color 300ms ease,
+    backdrop-filter 300ms ease,
+    -webkit-backdrop-filter 300ms ease;
+}
+
 .popoverContent {
   --onboarding-tour-popover-content-stepper-icon-size: 16px;
   position: relative;
-}
-
-.closeButton {
-  position: absolute;
-  right: -8px;
-  top: -4px;
 }
 
 /* Stepper */
@@ -20,6 +23,6 @@
 }
 
 .separator {
-  margin: 0 0px;
+  margin: 0;
   height: 4px;
 }

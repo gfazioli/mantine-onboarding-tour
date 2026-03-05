@@ -11,6 +11,7 @@ import {
   StylesApiProps,
   Transition,
   TransitionOverride,
+  useMantineTheme,
   useProps,
   useStyles,
 } from '@mantine/core';
@@ -164,10 +165,6 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
   },
 };
 
-// const varsResolver = createVarsResolver<OnboardingTourFocusRevealFactory>((theme, {}) => {
-//   return {};
-// });
-
 export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps) {
   const ctx = useOnboardingTourFocusRevealGroupContext();
 
@@ -266,19 +263,11 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
 
   const mergedRef = useMergedRef(inViewportRef, targetRef);
 
-  // Mobile detection and responsive behavior
-  // Convert breakpoint name to media query for useMediaQuery
-  // Default to 'sm' breakpoint (typically max-width: 768px) if not specified
+  // Mobile detection and responsive behavior using Mantine theme breakpoints
+  const theme = useMantineTheme();
   const breakpoint = mobileBreakpoint || 'sm';
-  // Mantine breakpoints: xs: 36em, sm: 48em, md: 62em, lg: 75em, xl: 88em
-  const breakpointMap: Record<string, string> = {
-    xs: '(max-width: 36em)',
-    sm: '(max-width: 48em)',
-    md: '(max-width: 62em)',
-    lg: '(max-width: 75em)',
-    xl: '(max-width: 88em)',
-  };
-  const mediaQuery = breakpointMap[breakpoint] || breakpointMap.sm;
+  const breakpointValue = theme.breakpoints[breakpoint] || theme.breakpoints.sm;
+  const mediaQuery = `(max-width: ${breakpointValue})`;
   const isMobile = useMediaQuery(mediaQuery);
   const shouldUseResponsive = responsive !== false && isMobile;
 

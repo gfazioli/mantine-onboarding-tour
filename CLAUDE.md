@@ -33,36 +33,78 @@ Two Yarn workspaces: `package/` (the npm package) and `docs/` (Next.js 15 docume
 
 ### Component Architecture (package/src/)
 
-The library uses **Mantine's Factory pattern** for all components, enabling static component composition:
+The library has two main use cases:
+
+1. **OnboardingTour** — step-by-step guided tour with popover navigation
+2. **FocusReveal** — standalone focus/highlight for individual elements (also used internally by OnboardingTour)
 
 ```
 OnboardingTour              — Main wrapper; recursively clones children matching data-onboarding-tour-id
-├── .FocusReveal            — Overlay + popover manager per step; handles scroll-into-view
-├── .PopoverContent         — Popover body with title, content, footer, navigation, stepper
-├── .Target                 — Declarative target for elements outside the OnboardingTour tree
-└── .FocusRevealGroup       — Manages multiple focus reveals with shared overlay
+├── .FocusReveal            — Overlay + popover + scroll-into-view + animation per element
+│   └── .Group              — Shared overlay for multiple FocusReveals (scroll-reveal pattern)
+├── .PopoverContent         — Popover body: header, title, content, footer, nav buttons, stepper
+└── .Target                 — Declarative target for elements outside the OnboardingTour tree
 ```
 
-**State management** flows through two React contexts:
-- `OnboardingTourContext` — tour state (current step, navigation, start/end)
-- `OnboardingTourFocusRevealGroupContext` — group-level focus coordination
+**OnboardingTour** is a plain function component (NOT using Mantine's `factory()`).
+**PopoverContent** uses `factory()`. **FocusReveal** and **Target** are plain function components.
 
-**`useOnboardingTour` hook** — the primary hook returning `OnboardingTourController` with tour steps, navigation (next/prev/start/end), and current step state.
+### Data Flow
 
-### Key Patterns
+```
+started=true → useEffect → startTour() → setCurrentStepIndex(0)
+  → wrapChildren() recursively walks React children tree
+    → matches data-onboarding-tour-id to tour[currentStepIndex].id
+    → wraps matched child in <FocusReveal focused={true} popoverContent={<PopoverContent/>}>
+      → useScrollIntoView scrolls element into viewport (custom fork of Mantine's hook)
+      → useInViewport detects visibility → sets realFocused=true
+      → shows Overlay (fixed, full-screen) + opens Popover with step content
+  → User clicks Next → nextStep() → setCurrentStepIndex(n+1) → re-render → repeat
+  → Last step + Next → endTour() → setCurrentStepIndex(undefined) → tour ends
+```
 
-- **Data attributes** for element identification: `data-onboarding-tour-id`, `data-onboarding-tour-focus-reveal-focused`, `data-onboarding-tour-focus-reveal-mode`
-- **Responsive design**: mobile detection via `useMediaQuery`, breakpoint-based popover positioning
-- **CSS Modules** with PostCSS scoped names (2 module files)
-- **`useUncontrolled`** from Mantine for flexible controlled/uncontrolled focus state
+**For elements outside the OnboardingTour tree:** `OnboardingTour.Target` subscribes to `OnboardingTourContext` and self-wraps when its `id` matches the active step.
 
-### Docs Site (docs/)
+### State Management
 
-Next.js 15 static export. Pages in `docs/pages/`, interactive demos in `docs/demos/` (30+ demo files). Demos export a `Wrapper` function + metadata compatible with `@mantinex/demo`.
+- **`useOnboardingTour` hook** — manages `currentStepIndex` (useState), derives `currentStep`, `selectedStepId`, exposes `startTour/endTour/nextStep/prevStep/setCurrentStepIndex`
+- **`OnboardingTourContext`** (optional) — propagates tour controller + popover config to `OnboardingTour.Target` components
+- **`OnboardingTourFocusRevealGroupContext`** (optional) — coordinates overlay visibility across multiple FocusReveals in a Group
+
+### FocusReveal Internals
+
+- Supports **controlled** (`focused` prop) and **uncontrolled** (`defaultFocused` prop) modes via `useUncontrolled`
+- Two-phase focus: `_focused` (requested) → `realFocused` (confirmed in viewport). Overlay + popover only show when `realFocused=true`
+- When inside a **Group**, the FocusReveal delegates overlay rendering to the Group (shared overlay) and reports viewport status via context
+- 12 CSS animation modes: `pulse`, `glow`, `glow-blue`, `glow-red`, `glow-green`, `border`, `shake`, `rotate`, `scale`, `elastic`, `zoom`, `none`
+- Responsive: on mobile (detected via `useMediaQuery` with hardcoded breakpoint map), popover moves to top/bottom with full-width styling, scroll alignment changes
+
+### OnboardingTourStep
+
+Each step can use ReactNode or render function `(controller: OnboardingTourController) => ReactNode` for: `header`, `title`, `content`, `footer`, `focusRevealProps`. Steps also accept `[key: string]: any` for arbitrary custom data (used in custom popover demos).
+
+### useScrollIntoView
+
+Custom fork (not `@mantine/hooks` version). Accepts an external `scrollableRef` instead of creating its own. Uses `requestAnimationFrame` loop with easeInOutQuad easing. Cancellable on user scroll (wheel/touchmove).
 
 ### Build Pipeline
 
 Rollup compiles `package/src/index.ts` → ESM (.mjs) + CJS (.cjs) with `'use client'` banner. PostCSS generates scoped CSS modules. A post-build script (`scripts/prepare-css.ts`) creates both regular and `styles.layer.css` variants.
+
+### Docs & Demos (docs/)
+
+Next.js 15 static export. Demos in `docs/demos/` export a `Wrapper` function + metadata object compatible with `@mantinex/demo`. Demo categories:
+- **OnboardingTour.demo.***: configurator, target, responsive, customStepper, customPopoverContent, customEntry, wrapTitle, onboardingTourStep, onboardingTourStepFocusReveal, onboardingProps, targetFocusReveal
+- **FocusReveal.demo.***: configurator, cycle, group, group-props, overlay, popover, popoverProps, reveal, scrollContainer, focusMode, paper, uncontrolled, disableTargetInteraction, cycleDescription
+
+## Known Issues
+
+- **`useMemo` in PopoverContent** (`OnboardingTourPopoverContent.tsx:314`) has incomplete deps — doesn't include step-dependent values. Masked because the parent uses a `key` that changes per step, forcing remount.
+- **Stale closure in nextStep/prevStep** (`use-onboarding-tour.ts:104-127`) — `onOnboardingTourChange` reads `currentStepIndex` from closure, not from functional updater.
+- **`currentStepIndex` compared without undefined check** (`use-onboarding-tour.ts:105,117`) — works by accident because `undefined < N` is `false` in JS.
+- **Hardcoded breakpoint map** (`OnboardingTourFocusReveal.tsx:274-280`) — doesn't read from Mantine theme.
+- **Minimal test coverage** — single render test, no navigation/interaction/hook tests.
+- **No keyboard accessibility** — no focus trap, no Escape to close, no ARIA attributes.
 
 ## Conventions
 
