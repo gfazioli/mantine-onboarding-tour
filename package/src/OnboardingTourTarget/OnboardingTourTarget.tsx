@@ -81,6 +81,10 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
     <OnboardingTourFocusReveal
       {...mergedFocusRevealProps}
       withOverlay={false}
+      popoverProps={{
+        ...mergedFocusRevealProps.popoverProps,
+        withinPortal: true,
+      }}
       popoverContent={
         <OnboardingTourPopoverContent
           header={header}

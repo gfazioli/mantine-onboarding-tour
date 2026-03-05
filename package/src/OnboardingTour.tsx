@@ -201,6 +201,10 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
             <OnboardingTourFocusReveal
               {...mergedFocusRevealProps}
               withOverlay={false}
+              popoverProps={{
+                ...mergedFocusRevealProps.popoverProps,
+                withinPortal: true,
+              }}
               classNames={resolvedClassNames}
               key={`onboarding-tour-${tourId}`}
               popoverContent={

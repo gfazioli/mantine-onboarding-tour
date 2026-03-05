@@ -95,7 +95,7 @@ export interface OnboardingTourFocusRevealBaseProps {
   popoverContent?: React.ReactNode;
 
   /** Props passed down to the `Popover` component */
-  popoverProps?: Omit<PopoverProps, 'withinPortal'>;
+  popoverProps?: PopoverProps;
 
   /** Disable interactions on the target component */
   disableTargetInteraction?: boolean;
@@ -339,7 +339,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     const finalPopoverProps = {
       ...popoverProps,
       position: shouldUseResponsive ? mobilePosition : popoverProps.position || 'left',
-      withinPortal: shouldUseResponsive,
+      withinPortal: popoverProps?.withinPortal ?? shouldUseResponsive,
       styles: shouldUseResponsive
         ? {
             ...popoverProps.styles,
