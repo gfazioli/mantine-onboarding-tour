@@ -159,6 +159,18 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
 
   const isTourActive = started && onboardingTour.currentStepIndex !== undefined;
 
+  // Prevent horizontal scroll when the tour overlay is active (popovers via portal can exceed viewport)
+  useEffect(() => {
+    if (isTourActive) {
+      const prev = document.documentElement.style.overflowX;
+      document.documentElement.style.overflowX = 'hidden';
+      return () => {
+        document.documentElement.style.overflowX = prev;
+      };
+    }
+    return undefined;
+  }, [isTourActive]);
+
   const wrapChildren = (children: React.ReactNode): React.ReactNode => {
     if (!started || !selectedTourId) {
       return children;
