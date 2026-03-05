@@ -1,33 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { OnboardingTourFocusRevealProps } from '../../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
-export type OnboardingTourStep = {
+export type OnboardingTourStep<T extends Record<string, unknown> = Record<string, unknown>> = {
   /** Unique id of the tour. Will be use for the data-onboarding-tour-id attribute */
   id: string;
 
   /** Header of the tour. You can also pass a React component here */
-  header?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
+  header?: React.ReactNode | ((tourController: OnboardingTourController<T>) => React.ReactNode);
 
   /** Title of the tour. You can also pass a React component here */
-  title?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
+  title?: React.ReactNode | ((tourController: OnboardingTourController<T>) => React.ReactNode);
 
   /** Custom Content of the tour. You can also pass a React component here */
-  content?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
+  content?: React.ReactNode | ((tourController: OnboardingTourController<T>) => React.ReactNode);
 
   /** Footer of the tour. You can also pass a React component here */
-  footer?: React.ReactNode | ((tourController: OnboardingTourController) => React.ReactNode);
+  footer?: React.ReactNode | ((tourController: OnboardingTourController<T>) => React.ReactNode);
 
   /** Props passed to FocusReveal */
   focusRevealProps?:
     | OnboardingTourFocusRevealProps
-    | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);
-
-  /** Anything else */
-  [key: string]: any;
-};
+    | ((tourController: OnboardingTourController<T>) => OnboardingTourFocusRevealProps);
+} & T;
 
 /** Options for useOnboardingTour() hook */
-export type OnboardingTourOptions = {
+export type OnboardingTourOptions<T extends Record<string, unknown> = Record<string, unknown>> = {
   /** Loop the tour */
   loop?: boolean;
 
@@ -38,40 +35,41 @@ export type OnboardingTourOptions = {
   onOnboardingTourEnd?: () => void;
 
   /** Triggered when the tour changes */
-  onOnboardingTourChange?: (tourStep: OnboardingTourStep) => void;
+  onOnboardingTourChange?: (tourStep: OnboardingTourStep<T>) => void;
 };
 
-export type OnboardingTourController = Readonly<{
-  /** List of tour steps */
-  tour: OnboardingTourStep[];
+export type OnboardingTourController<T extends Record<string, unknown> = Record<string, unknown>> =
+  Readonly<{
+    /** List of tour steps */
+    tour: OnboardingTourStep<T>[];
 
-  /** Current step */
-  currentStep: OnboardingTourStep | undefined;
+    /** Current step */
+    currentStep: OnboardingTourStep<T> | undefined;
 
-  /** Current step index of the tour. Zero-based index */
-  currentStepIndex: number | undefined;
+    /** Current step index of the tour. Zero-based index */
+    currentStepIndex: number | undefined;
 
-  /** ID of the selected tour */
-  selectedStepId: string | undefined;
+    /** ID of the selected tour */
+    selectedStepId: string | undefined;
 
-  /** Set the current index */
-  setCurrentStepIndex: (index: number) => void;
+    /** Set the current index */
+    setCurrentStepIndex: (index: number) => void;
 
-  /** Start the tour */
-  startTour: () => void;
+    /** Start the tour */
+    startTour: () => void;
 
-  /** End the tour */
-  endTour: () => void;
+    /** End the tour */
+    endTour: () => void;
 
-  /** Go to the next tour */
-  nextStep: () => void;
+    /** Go to the next tour */
+    nextStep: () => void;
 
-  /** Go to the previous tour */
-  prevStep: () => void;
+    /** Go to the previous tour */
+    prevStep: () => void;
 
-  /** Options of the tour */
-  options: OnboardingTourOptions;
-}>;
+    /** Options of the tour */
+    options: OnboardingTourOptions<T>;
+  }>;
 
 /**
  * This hook is used to manage onboarding tours
@@ -81,62 +79,101 @@ export type OnboardingTourController = Readonly<{
  * @param options The options of the tour
  * @returns
  */
-export function useOnboardingTour(tour: OnboardingTourStep[], options?: OnboardingTourOptions) {
+export function useOnboardingTour<T extends Record<string, unknown> = Record<string, unknown>>(
+  tour: OnboardingTourStep<T>[],
+  options?: OnboardingTourOptions<T>
+) {
   const defaultOptions = {
     loop: false,
   };
 
   const mergedOptions = { ...defaultOptions, ...options };
 
-  const [currentStepIndex, setCurrentStepIndex] = useState<number>();
+  const [currentStepIndex, _setCurrentStepIndex] = useState<number>();
+  // Pending step index for sequential transitions (close → open).
+  // When non-null, selectedStepId is undefined so all popovers close first.
+  const [pendingStepIndex, setPendingStepIndex] = useState<number | null>(null);
+  const isTransitioning = pendingStepIndex !== null;
 
   const { loop, onOnboardingTourStart, onOnboardingTourEnd, onOnboardingTourChange } =
     mergedOptions || {};
 
+  // Phase 2 of sequential transition: after the "no selection" render is committed
+  // (all popovers closed), apply the pending step to open the new popover.
+  useEffect(() => {
+    if (pendingStepIndex !== null) {
+      _setCurrentStepIndex(pendingStepIndex);
+      onOnboardingTourChange?.(tour[pendingStepIndex]);
+      setPendingStepIndex(null);
+    }
+  }, [pendingStepIndex]);
+
+  /** Transition to a new step: first close current, then open next */
+  const transitionToStep = (index: number) => {
+    // Phase 1: set pending index — selectedStepId becomes undefined,
+    // causing all FocusReveals to unfocus and close their popovers.
+    setPendingStepIndex(index);
+  };
+
   /** Start the tour */
   const startTour = () => {
-    setCurrentStepIndex(0);
+    _setCurrentStepIndex(0);
     onOnboardingTourStart?.();
     onOnboardingTourChange?.(tour[0]);
   };
 
   /** Go to the next tour */
   const nextStep = () => {
+    if (currentStepIndex === undefined) {
+      return;
+    }
+
     if (currentStepIndex < tour.length - 1) {
-      setCurrentStepIndex((currentStep) => currentStep + 1);
-      onOnboardingTourChange?.(tour[currentStepIndex + 1]);
+      transitionToStep(currentStepIndex + 1);
     } else if (loop) {
-      setCurrentStepIndex(0);
+      transitionToStep(0);
     } else {
-      setCurrentStepIndex(undefined);
+      _setCurrentStepIndex(undefined);
       onOnboardingTourEnd?.();
     }
   };
 
   /** Go to the previous tour */
   const prevStep = () => {
+    if (currentStepIndex === undefined) {
+      return;
+    }
+
     if (currentStepIndex > 0) {
-      setCurrentStepIndex((currentStep) => currentStep - 1);
-      onOnboardingTourChange?.(tour[currentStepIndex - 1]);
+      transitionToStep(currentStepIndex - 1);
     } else if (loop) {
-      setCurrentStepIndex(tour.length - 1);
+      transitionToStep(tour.length - 1);
     } else {
-      setCurrentStepIndex(undefined);
+      _setCurrentStepIndex(undefined);
       onOnboardingTourEnd?.();
     }
   };
 
   /** End the tour */
   const endTour = () => {
-    setCurrentStepIndex(undefined);
+    _setCurrentStepIndex(undefined);
     onOnboardingTourEnd?.();
+  };
+
+  /** Set current step index (used by stepper clicks) */
+  const setCurrentStepIndex = (index: number) => {
+    if (currentStepIndex !== undefined) {
+      transitionToStep(index);
+    } else {
+      _setCurrentStepIndex(index);
+    }
   };
 
   return {
     tour,
     currentStep: tour[currentStepIndex],
     currentStepIndex,
-    selectedStepId: tour[currentStepIndex]?.id,
+    selectedStepId: isTransitioning ? undefined : tour[currentStepIndex]?.id,
     setCurrentStepIndex,
     startTour,
     endTour,

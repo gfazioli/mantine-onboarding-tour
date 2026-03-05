@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
 import {
+  Box,
   BoxProps,
   Factory,
+  factory,
   MantineBreakpoint,
+  rgba,
   StylesApiProps,
   useProps,
   useResolvedStylesApi,
@@ -28,8 +31,6 @@ import { OnboardingTourTarget } from './OnboardingTourTarget/OnboardingTourTarge
 import classes from './OnboardingTour.module.css';
 
 export type OnboardingTourStylesNames = OnboardingTourPopoverContentStylesNames;
-
-//export type OnboardingTourCssVariables = OnboardingTourPopoverContentCssVariables;
 
 export interface OnboardingTourBaseProps
   extends OnboardingTourOptions, Omit<OnboardingTourPopoverContentBaseProps, 'tourController'> {
@@ -63,7 +64,6 @@ export type OnboardingTourFactory = Factory<{
   props: OnboardingTourProps;
   ref: HTMLDivElement;
   stylesNames: OnboardingTourStylesNames;
-  //vars: OnboardingTourCssVariables;
   staticComponents: {
     FocusReveal: typeof OnboardingTourFocusReveal;
     PopoverContent: typeof OnboardingTourPopoverContent;
@@ -77,13 +77,7 @@ export const defaultProps: Partial<OnboardingTourProps> = {
   mobilePosition: 'bottom',
 };
 
-// const varsResolver = createVarsResolver<OnboardingTourFactory>((_, {}) => ({
-//   popoverContent: {
-//     '--onboarding-tour-popover-content-stepper-icon-size': 'var(--mantine-size-xs)',
-//   },
-// }));
-
-export function OnboardingTour(_props: OnboardingTourProps) {
+export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
   const props = useProps('OnboardingTour', defaultProps, _props);
 
   const {
@@ -154,7 +148,36 @@ export function OnboardingTour(_props: OnboardingTourProps) {
     if (started) {
       startTour();
     }
+    // startTour is excluded: it changes on every render and would cause infinite loops.
+    // The component remounts via key changes when tour steps change.
   }, [started]);
+
+  // Resolve current step's focusRevealProps for the persistent overlay
+  const currentStepFocusRevealProps = (() => {
+    const stepProps = onboardingTour.currentStep?.focusRevealProps;
+    if (!stepProps) {
+      return undefined;
+    }
+    return typeof stepProps === 'function' ? stepProps(onboardingTour) : stepProps;
+  })();
+
+  // Persistent overlay: merge tour-level and step-level overlayProps
+  const overlayColor =
+    currentStepFocusRevealProps?.overlayProps?.color ??
+    focusRevealProps?.overlayProps?.color ??
+    '#000';
+  const overlayOpacity =
+    currentStepFocusRevealProps?.overlayProps?.backgroundOpacity ??
+    focusRevealProps?.overlayProps?.backgroundOpacity ??
+    0.5;
+  const overlayBlur =
+    currentStepFocusRevealProps?.overlayProps?.blur ?? focusRevealProps?.overlayProps?.blur ?? 2;
+  const overlayZIndex =
+    currentStepFocusRevealProps?.overlayProps?.zIndex ??
+    focusRevealProps?.overlayProps?.zIndex ??
+    200;
+
+  const isTourActive = started && onboardingTour.currentStepIndex !== undefined;
 
   const wrapChildren = (children: React.ReactNode): React.ReactNode => {
     if (!started || !selectedTourId) {
@@ -177,6 +200,7 @@ export function OnboardingTour(_props: OnboardingTourProps) {
           return (
             <OnboardingTourFocusReveal
               {...mergedFocusRevealProps}
+              withOverlay={false}
               classNames={resolvedClassNames}
               key={`onboarding-tour-${tourId}`}
               popoverContent={
@@ -209,8 +233,26 @@ export function OnboardingTour(_props: OnboardingTourProps) {
     });
   };
 
-  return <_OnboardingTourProvider value={value}>{wrapChildren(children)}</_OnboardingTourProvider>;
-}
+  return (
+    <Box ref={ref}>
+      {isTourActive && (
+        <Box
+          data-onboarding-tour-overlay
+          className={classes.tourOverlay}
+          style={{
+            backgroundColor: rgba(overlayColor, overlayOpacity),
+            ...(Number(overlayBlur) > 0 && {
+              backdropFilter: `blur(${overlayBlur}px)`,
+              WebkitBackdropFilter: `blur(${overlayBlur}px)`,
+            }),
+            zIndex: overlayZIndex,
+          }}
+        />
+      )}
+      <_OnboardingTourProvider value={value}>{wrapChildren(children)}</_OnboardingTourProvider>
+    </Box>
+  );
+});
 
 OnboardingTour.displayName = 'OnboardingTour';
 OnboardingTour.classes = classes;
