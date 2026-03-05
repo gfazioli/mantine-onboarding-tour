@@ -4,7 +4,6 @@ import {
   BoxProps,
   Factory,
   factory,
-  MantineBreakpoint,
   rgba,
   StylesApiProps,
   useProps,
@@ -44,15 +43,6 @@ export interface OnboardingTourBaseProps
     | OnboardingTourFocusRevealProps
     | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);
 
-  /** Enable responsive behavior for mobile devices */
-  responsive?: boolean;
-
-  /** Mobile breakpoint name (e.g., 'sm', 'md') - defaults to 'sm' */
-  mobileBreakpoint?: MantineBreakpoint;
-
-  /** Mobile popover position - 'top' or 'bottom' */
-  mobilePosition?: 'top' | 'bottom';
-
   /** Child elements */
   children: React.ReactNode;
 }
@@ -71,11 +61,7 @@ export type OnboardingTourFactory = Factory<{
   };
 }>;
 
-export const defaultProps: Partial<OnboardingTourProps> = {
-  responsive: true,
-  mobileBreakpoint: 'sm', // Default to 'sm' breakpoint
-  mobilePosition: 'bottom',
-};
+export const defaultProps: Partial<OnboardingTourProps> = {};
 
 export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
   const props = useProps('OnboardingTour', defaultProps, _props);
@@ -85,9 +71,6 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     started,
     loop,
     focusRevealProps: _focusRevealProps,
-    responsive,
-    mobileBreakpoint,
-    mobilePosition,
     onOnboardingTourStart,
     onOnboardingTourEnd,
     onOnboardingTourComplete,
@@ -119,16 +102,11 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     onOnboardingTourChange,
   });
 
-  const focusRevealProps = {
-    ...(_focusRevealProps
-      ? typeof _focusRevealProps === 'function'
-        ? _focusRevealProps(onboardingTour)
-        : _focusRevealProps
-      : {}),
-    responsive,
-    mobileBreakpoint,
-    mobilePosition,
-  };
+  const focusRevealProps = _focusRevealProps
+    ? typeof _focusRevealProps === 'function'
+      ? _focusRevealProps(onboardingTour)
+      : _focusRevealProps
+    : {};
 
   const value = {
     ...onboardingTour,

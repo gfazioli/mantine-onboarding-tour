@@ -14,6 +14,8 @@ export type {
 export type {
   OnboardingTourFocusRevealFactory,
   OnboardingTourFocusRevealProps,
+  ResponsivePopoverProps,
+  ResponsiveProp,
 } from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
 export type { OnboardingTourFocusRevealFocusedMode } from './OnboardingTourFocusReveal/focus-reveal-modes';

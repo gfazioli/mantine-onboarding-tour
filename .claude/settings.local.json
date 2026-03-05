@@ -6,7 +6,9 @@
       "Bash(node:*)",
       "Bash(npx jest:*)",
       "Bash(yarn:*)",
-      "Bash(do:*)"
+      "Bash(do:*)",
+      "Bash(mkdir:*)",
+      "WebFetch(domain:mantine.dev)"
     ]
   }
 }

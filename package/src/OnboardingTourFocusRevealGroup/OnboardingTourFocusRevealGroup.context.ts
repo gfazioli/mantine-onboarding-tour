@@ -2,10 +2,10 @@ import {
   createOptionalContext,
   ElementProps,
   OverlayProps,
-  PopoverProps,
   TransitionOverride,
 } from '@mantine/core';
 import { OnboardingTourFocusRevealFocusedMode } from '../OnboardingTourFocusReveal/focus-reveal-modes';
+import { ResponsivePopoverProps } from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
 interface OnboardingTourFocusRevealGroupContextValue {
   /** Asking for */
@@ -27,8 +27,8 @@ interface OnboardingTourFocusRevealGroupContextValue {
   /** Props passed down to the `Transition` component that used to animate the Overlay, use to configure duration and animation type, `{ duration: 150, transition: 'fade' }` by default */
   transitionProps?: TransitionOverride;
 
-  /** Props passed down to the `Popover` component */
-  popoverProps?: Omit<PopoverProps, 'withinPortal'>;
+  /** Props passed down to the `Popover` component. Position, offset, width, and arrowSize accept responsive objects. */
+  popoverProps?: ResponsivePopoverProps;
 }
 
 export const [OnboardingTourFocusRevealGroupProvider, useOnboardingTourFocusRevealGroupContext] =
