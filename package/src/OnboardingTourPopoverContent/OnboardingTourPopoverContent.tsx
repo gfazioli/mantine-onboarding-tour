@@ -29,7 +29,7 @@ export interface OnboardingTourPopoverContentBaseProps extends Omit<
   OnboardingTourOptions,
   'onOnboardingTourStart' | 'onOnboardingTourEnd' | 'onOnboardingTourChange'
 > {
-  /** Current onboarding tour returned by useOnboardingTour() hook */
+  /** Current onboarding tour controller */
   tourController: OnboardingTourController;
 
   /** Header of the tour. You can also pass a React component here */

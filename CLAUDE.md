@@ -72,7 +72,7 @@ started=true → useEffect → startTour() → setCurrentStepIndex(0)
 
 ### State Management
 
-- **`useOnboardingTour` hook** — manages `currentStepIndex` (useState) + `pendingStepIndex` (for sequential transitions), derives `currentStep`, `selectedStepId`, exposes `startTour/endTour/skipTour/nextStep/prevStep/setCurrentStepIndex`
+- **`useOnboardingTour` hook** (internal, not publicly exported) — manages `currentStepIndex` (useState) + `pendingStepIndex` (for sequential transitions), derives `currentStep`, `selectedStepId`, exposes `startTour/endTour/skipTour/nextStep/prevStep/setCurrentStepIndex`. Used internally by `OnboardingTour` component.
 - **`OnboardingTourContext`** (optional) — propagates tour controller + popover config to `OnboardingTour.Target` components
 - **`OnboardingTourFocusRevealGroupContext`** (optional) — coordinates overlay visibility across multiple FocusReveals in a Group
 
