@@ -1,4 +1,4 @@
-import { Button, rem } from '@mantine/core';
+import { Button, Code, rem, Table } from '@mantine/core';
 import { InstallScript } from './components/InstallScript/InstallScript';
 
 import { IconExternalLink } from '@tabler/icons-react';
@@ -54,41 +54,50 @@ The `OnboardingTour` component allows to create onboarding experiences for your 
 The `OnboardingTourStep` interface defines the structure of each step in the tour.
 
 ```tsx
-export type OnboardingTourStep = {
+export type OnboardingTourStep<
+  T extends Record<string, unknown> = Record<string, unknown>,
+> = {
   /** Unique id of the tour. Will be use for the data-onboarding-tour-id attribute */
   id: string;
 
   /** Header of the tour. You can also pass a React component here */
   header?:
     | React.ReactNode
-    | ((tourController: OnboardingTourController) => React.ReactNode);
+    | ((
+        tourController: OnboardingTourController<T>
+      ) => React.ReactNode);
 
   /** Title of the tour. You can also pass a React component here */
   title?:
     | React.ReactNode
-    | ((tourController: OnboardingTourController) => React.ReactNode);
+    | ((
+        tourController: OnboardingTourController<T>
+      ) => React.ReactNode);
 
   /** Custom Content of the tour. You can also pass a React component here */
   content?:
     | React.ReactNode
-    | ((tourController: OnboardingTourController) => React.ReactNode);
+    | ((
+        tourController: OnboardingTourController<T>
+      ) => React.ReactNode);
 
   /** Footer of the tour. You can also pass a React component here */
   footer?:
     | React.ReactNode
-    | ((tourController: OnboardingTourController) => React.ReactNode);
+    | ((
+        tourController: OnboardingTourController<T>
+      ) => React.ReactNode);
 
   /** Props passed to FocusReveal */
   focusRevealProps?:
     | OnboardingTourFocusRevealProps
     | ((
-        tourController: OnboardingTourController
+        tourController: OnboardingTourController<T>
       ) => OnboardingTourFocusRevealProps);
-
-  /** Anything else */
-  [key: string]: any;
-};
+} & T;
 ```
+
+The type is generic: custom properties are type-safe via the `T` parameter (e.g., `OnboardingTourStep<{ price: number }>`). See the [Custom entry](#custom-entry) section for an example.
 
 Both `header`, `title`, `content`, and `footer` can be a string, a React component, or a function that receives `tourController` and returns a React component.
 You can use the `OnboardingTourController` to access the current step and its properties, such as `currentStep.id`, `currentStep.title`, and so on.
@@ -122,8 +131,11 @@ export type OnboardingTourController = Readonly<{
   /** Start the tour */
   startTour: () => void;
 
-  /** End the tour */
+  /** End the tour programmatically */
   endTour: () => void;
+
+  /** Skip the tour (user dismissed) */
+  skipTour: () => void;
 
   /** Go to the next tour */
   nextStep: () => void;
@@ -134,6 +146,78 @@ export type OnboardingTourController = Readonly<{
   /** Options of the tour */
   options: OnboardingTourOptions;
 }>;
+```
+
+## Tour Lifecycle Callbacks
+
+The `OnboardingTour` component provides callbacks to distinguish between different tour endings:
+
+<Table striped highlightOnHover withTableBorder withColumnBorders>
+  <Table.Thead>
+    <Table.Tr>
+      <Table.Th>Callback</Table.Th>
+      <Table.Th>When it fires</Table.Th>
+    </Table.Tr>
+  </Table.Thead>
+  <Table.Tbody>
+    <Table.Tr>
+      <Table.Td>
+        <Code>onOnboardingTourStart</Code>
+      </Table.Td>
+      <Table.Td>The tour starts</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <Code>onOnboardingTourChange</Code>
+      </Table.Td>
+      <Table.Td>The active step changes</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <Code>onOnboardingTourComplete</Code>
+      </Table.Td>
+      <Table.Td>
+        The user finishes the last step (clicks "End")
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <Code>onOnboardingTourSkip</Code>
+      </Table.Td>
+      <Table.Td>The user clicks the "Skip" button</Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <Code>onOnboardingTourEnd</Code>
+      </Table.Td>
+      <Table.Td>
+        Always fires when the tour ends, whether completed or skipped
+      </Table.Td>
+    </Table.Tr>
+  </Table.Tbody>
+</Table>
+
+Use `onOnboardingTourEnd` if you don't need to distinguish between completion and skip. Use `onOnboardingTourComplete` and `onOnboardingTourSkip` when you need different behavior (e.g., saving progress, showing a different message).
+
+```tsx
+<OnboardingTour
+  tour={onboardingSteps}
+  started={started}
+  onOnboardingTourComplete={() => {
+    // User finished all steps
+    markTourAsCompleted();
+  }}
+  onOnboardingTourSkip={() => {
+    // User dismissed the tour early
+    markTourAsSkipped();
+  }}
+  onOnboardingTourEnd={() => {
+    // Always called — close the tour UI
+    close();
+  }}
+>
+  {/* Your content */}
+</OnboardingTour>
 ```
 
 ## Define the onboarding tour
@@ -486,7 +570,7 @@ Here are some examples of how to use the `OnboardingTour.FocusReveal` component 
 The `OnboardingTour` component supports responsive behavior for mobile devices. You can control the mobile experience using the following props:
 
 - `responsive`: Enable/disable responsive behavior (default: `true`)
-- `mobileBreakpoint`: Media query for mobile detection (default: `'(max-width: 768px)'`)
+- `mobileBreakpoint`: Mantine breakpoint name (default: `'sm'`)
 - `mobilePosition`: Position of the guide on mobile - `'top'` or `'bottom'` (default: `'bottom'`)
 
 ### Basic Responsive Usage
@@ -496,7 +580,7 @@ The `OnboardingTour` component supports responsive behavior for mobile devices. 
   tour={onboardingSteps}
   started={started}
   responsive={true}
-  mobileBreakpoint="(max-width: 768px)"
+  mobileBreakpoint="sm"
   mobilePosition="bottom"
 >
   {/* Your content */}
@@ -523,17 +607,17 @@ When responsive mode is enabled on mobile devices:
 
 ### Custom Breakpoints
 
-You can use any valid CSS media query for mobile detection:
+You can use any Mantine breakpoint name (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`). The breakpoint values are read from the Mantine theme.
 
 ```tsx
-// Tablet and below
-mobileBreakpoint = '(max-width: 1024px)';
+// Extra small devices only
+mobileBreakpoint = 'xs';
 
-// Small mobile only
-mobileBreakpoint = '(max-width: 480px)';
+// Small devices and below (default)
+mobileBreakpoint = 'sm';
 
-// Custom breakpoint
-mobileBreakpoint = '(max-width: 900px) and (orientation: portrait)';
+// Medium devices and below
+mobileBreakpoint = 'md';
 ```
 
 ### Per-Step Responsive Configuration

@@ -5,7 +5,8 @@
       "Bash(npx tsc:*)",
       "Bash(node:*)",
       "Bash(npx jest:*)",
-      "Bash(yarn:*)"
+      "Bash(yarn:*)",
+      "Bash(do:*)"
     ]
   }
 }

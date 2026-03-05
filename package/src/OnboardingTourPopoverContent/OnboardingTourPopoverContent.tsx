@@ -84,9 +84,6 @@ export interface OnboardingTourPopoverContentBaseProps extends Omit<
 
   /** Stepper.Step props */
   stepperStepProps?: Omit<StepperStepProps, 'children'>;
-
-  /** Triggered when the Close Button is clicked */
-  onOnboardingTourClose?: () => void;
 }
 
 export interface OnboardingTourPopoverContentProps
@@ -146,8 +143,6 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
       stepperStepProps,
       stepperProps,
 
-      onOnboardingTourClose,
-
       classNames,
       style,
       styles,
@@ -175,7 +170,7 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
       currentStep,
       currentStepIndex,
       setCurrentStepIndex: setCurrentStep,
-      endTour,
+      skipTour,
       nextStep: nextTour,
       prevStep: prevTour,
     } = tourController;
@@ -215,8 +210,7 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
         <Anchor
           size="xs"
           onClick={() => {
-            endTour();
-            onOnboardingTourClose?.();
+            skipTour();
           }}
         >
           {label}

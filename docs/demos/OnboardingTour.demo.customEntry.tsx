@@ -35,7 +35,7 @@ function Wrapper() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       footer={(onboardingTour: OnboardingTourController<{ price?: number }>) => {
         if (onboardingTour.currentStep?.price) {
           return (
@@ -110,7 +110,7 @@ function Demo() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       footer={(onboardingTour: OnboardingTourController) => {
         if (onboardingTour.currentStep?.price) {
           return (

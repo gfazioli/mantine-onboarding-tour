@@ -45,7 +45,7 @@ function Wrapper(props: Partial<OnboardingTourProps>) {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       maw={400}
       header={(tourController: OnboardingTourController) => (
         <Image
@@ -120,7 +120,7 @@ const [started, { open, close }] = useDisclosure(false);
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       maw={400}
       header={(tourController: OnboardingTourController) => (
         <Image

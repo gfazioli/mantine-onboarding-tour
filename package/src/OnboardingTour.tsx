@@ -90,7 +90,8 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     mobilePosition,
     onOnboardingTourStart,
     onOnboardingTourEnd,
-    onOnboardingTourClose,
+    onOnboardingTourComplete,
+    onOnboardingTourSkip,
     onOnboardingTourChange,
 
     classNames,
@@ -113,6 +114,8 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     loop,
     onOnboardingTourStart,
     onOnboardingTourEnd,
+    onOnboardingTourComplete,
+    onOnboardingTourSkip,
     onOnboardingTourChange,
   });
 
@@ -131,7 +134,6 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     ...onboardingTour,
     ...others,
     focusRevealProps,
-    onOnboardingTourClose,
     getStyles,
     unstyled,
   };
@@ -213,7 +215,6 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
                   styles={resolvedStyles}
                   unstyled={unstyled}
                   tourController={onboardingTour}
-                  onOnboardingTourClose={onOnboardingTourClose}
                   {...(others as unknown as OnboardingTourPopoverContentBaseProps)}
                   key={`onboarding-tour-content-${tourId}`}
                 />

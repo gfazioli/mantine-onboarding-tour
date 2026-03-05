@@ -38,7 +38,7 @@ function Wrapper() {
       }}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       title={(tourController: OnboardingTourController) => (
         <Title c="blue" order={4}>
           {tourController.currentStep?.title as string}
@@ -110,7 +110,7 @@ function Demo() {
       }}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       title={(tourController: OnboardingTourController) => (
         <Title c="blue" order={4}>
           {tourController.currentStep?.title as string}

@@ -53,21 +53,26 @@ OnboardingTour              — Main wrapper; recursively clones children matchi
 
 ```
 started=true → useEffect → startTour() → setCurrentStepIndex(0)
+  → OnboardingTour renders persistent overlay (fixed, full-screen, CSS-transitioned)
   → wrapChildren() recursively walks React children tree
     → matches data-onboarding-tour-id to tour[currentStepIndex].id
-    → wraps matched child in <FocusReveal focused={true} popoverContent={<PopoverContent/>}>
+    → wraps matched child in <FocusReveal focused={true} withOverlay={false} popoverContent={<PopoverContent/>}>
       → useScrollIntoView scrolls element into viewport (custom fork of Mantine's hook)
       → useInViewport detects visibility → sets realFocused=true
-      → shows Overlay (fixed, full-screen) + opens Popover with step content
-  → User clicks Next → nextStep() → setCurrentStepIndex(n+1) → re-render → repeat
-  → Last step + Next → endTour() → setCurrentStepIndex(undefined) → tour ends
+      → opens Popover (withinPortal=true) with step content
+  → User clicks Next → nextStep():
+      Phase 1: setPendingStepIndex(n+1) → selectedStepId=undefined → current popover closes
+      Phase 2: useEffect → setCurrentStepIndex(n+1) → new popover opens
+      (persistent overlay stays visible throughout, CSS-transitions overlayProps changes)
+  → Last step + Next → onOnboardingTourComplete() + onOnboardingTourEnd() → tour ends
+  → User clicks Skip → skipTour() → onOnboardingTourSkip() + onOnboardingTourEnd()
 ```
 
 **For elements outside the OnboardingTour tree:** `OnboardingTour.Target` subscribes to `OnboardingTourContext` and self-wraps when its `id` matches the active step.
 
 ### State Management
 
-- **`useOnboardingTour` hook** — manages `currentStepIndex` (useState), derives `currentStep`, `selectedStepId`, exposes `startTour/endTour/nextStep/prevStep/setCurrentStepIndex`
+- **`useOnboardingTour` hook** — manages `currentStepIndex` (useState) + `pendingStepIndex` (for sequential transitions), derives `currentStep`, `selectedStepId`, exposes `startTour/endTour/skipTour/nextStep/prevStep/setCurrentStepIndex`
 - **`OnboardingTourContext`** (optional) — propagates tour controller + popover config to `OnboardingTour.Target` components
 - **`OnboardingTourFocusRevealGroupContext`** (optional) — coordinates overlay visibility across multiple FocusReveals in a Group
 
@@ -77,7 +82,7 @@ started=true → useEffect → startTour() → setCurrentStepIndex(0)
 - Two-phase focus: `_focused` (requested) → `realFocused` (confirmed in viewport). Overlay + popover only show when `realFocused=true`
 - When inside a **Group**, the FocusReveal delegates overlay rendering to the Group (shared overlay) and reports viewport status via context
 - 12 CSS animation modes: `pulse`, `glow`, `glow-blue`, `glow-red`, `glow-green`, `border`, `shake`, `rotate`, `scale`, `elastic`, `zoom`, `none`
-- Responsive: on mobile (detected via `useMediaQuery` with hardcoded breakpoint map), popover moves to top/bottom with full-width styling, scroll alignment changes
+- Responsive: on mobile (detected via `useMediaQuery` with Mantine theme breakpoints), popover moves to top/bottom with full-width styling, scroll alignment changes
 
 ### OnboardingTourStep
 
@@ -99,11 +104,6 @@ Next.js 15 static export. Demos in `docs/demos/` export a `Wrapper` function + m
 
 ## Known Issues
 
-- **`useMemo` in PopoverContent** (`OnboardingTourPopoverContent.tsx:314`) has incomplete deps — doesn't include step-dependent values. Masked because the parent uses a `key` that changes per step, forcing remount.
-- **Stale closure in nextStep/prevStep** (`use-onboarding-tour.ts:104-127`) — `onOnboardingTourChange` reads `currentStepIndex` from closure, not from functional updater.
-- **`currentStepIndex` compared without undefined check** (`use-onboarding-tour.ts:105,117`) — works by accident because `undefined < N` is `false` in JS.
-- **Hardcoded breakpoint map** (`OnboardingTourFocusReveal.tsx:274-280`) — doesn't read from Mantine theme.
-- **Minimal test coverage** — single render test, no navigation/interaction/hook tests.
 - **No keyboard accessibility** — no focus trap, no Escape to close, no ARIA attributes.
 
 ## Conventions

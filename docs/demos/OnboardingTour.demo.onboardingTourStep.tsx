@@ -46,7 +46,7 @@ function Wrapper() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       maw={400}
     >
       <Stack justify="center" align="center">
@@ -114,7 +114,7 @@ function Demo() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       maw={400}
     >
       <Stack justify="center" align="center">

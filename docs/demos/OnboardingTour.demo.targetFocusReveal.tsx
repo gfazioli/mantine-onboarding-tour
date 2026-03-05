@@ -52,7 +52,7 @@ function Demo() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       title="The Title for all steps"
       withSkipButton={false}
       maw={400}
@@ -124,7 +124,7 @@ function Demo() {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       title="The Title for all steps"
       withSkipButton={false}
       maw={400}

@@ -170,7 +170,7 @@ export function OnboardingTourProvider(props: OnboardingTourProps) {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       maw={400}
       {...props}
     >
@@ -300,7 +300,7 @@ export function FocusRevealProps(props: OnboardingTourProps) {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       content={customPopoverContent}
       focusRevealProps={{
         popoverProps: {
@@ -413,7 +413,7 @@ export function OnboardingTourProviderClasses(props: OnboardingTourProps) {
       tour={onboardingSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       classNames={classes}
       maw={400}
       {...props}
@@ -476,7 +476,7 @@ export function ResponsiveOnboardingTour(props: OnboardingTourProps) {
       tour={responsiveSteps}
       started={started}
       onOnboardingTourEnd={close}
-      onOnboardingTourClose={close}
+      onOnboardingTourSkip={close}
       responsive
       mobileBreakpoint="sm"
       mobilePosition="bottom"
