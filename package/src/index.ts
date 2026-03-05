@@ -1,7 +1,5 @@
 export { OnboardingTour } from './OnboardingTour';
 
-export { useOnboardingTour } from './hooks/use-onboarding-tour/use-onboarding-tour';
-
 export {
   focusRevealModes,
   getAllOnboardingTourFocusRevealModes,
@@ -24,6 +22,5 @@ export type { OnboardingTourTargetProps } from './OnboardingTourTarget/Onboardin
 
 export type {
   OnboardingTourController,
-  OnboardingTourOptions,
   OnboardingTourStep,
 } from './hooks/use-onboarding-tour/use-onboarding-tour';
