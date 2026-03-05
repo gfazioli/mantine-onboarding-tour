@@ -40,9 +40,10 @@ function Wrapper() {
         if (onboardingTour.currentStep?.price) {
           return (
             <Center>
-              <Text size="xs">
-                Price: <Badge color="orange">${onboardingTour.currentStep?.price}</Badge>
-              </Text>
+              <Group gap={4}>
+                <Text size="xs">Price:</Text>
+                <Badge color="orange">${onboardingTour.currentStep?.price}</Badge>
+              </Group>
             </Center>
           );
         }
@@ -115,9 +116,10 @@ function Demo() {
         if (onboardingTour.currentStep?.price) {
           return (
             <Center>
-              <Text size="xs">
-                Price: <Badge color="orange">\${onboardingTour.currentStep?.price}</Badge>
-              </Text>
+              <Group gap={4}>
+                <Text size="xs">Price:</Text>
+                <Badge color="orange">\${onboardingTour.currentStep?.price}</Badge>
+              </Group>
             </Center>
           );
         }
