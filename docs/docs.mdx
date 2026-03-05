@@ -567,81 +567,90 @@ Here are some examples of how to use the `OnboardingTour.FocusReveal` component 
 
 ## Responsive Behavior
 
-The `OnboardingTour` component supports responsive behavior for mobile devices. You can control the mobile experience using the following props:
+The `OnboardingTour` component is responsive by default. Popover `position`, `offset`, `width`, and `arrowSize` accept responsive objects that map Mantine breakpoints to values, powered by `useMatches()` under the hood.
 
-- `responsive`: Enable/disable responsive behavior (default: `true`)
-- `mobileBreakpoint`: Mantine breakpoint name (default: `'sm'`)
-- `mobilePosition`: Position of the guide on mobile - `'top'` or `'bottom'` (default: `'bottom'`)
-
-### Basic Responsive Usage
+By default, the popover appears at the **bottom** on mobile (`base`) and on the **left** on larger screens (`sm`+):
 
 ```tsx
-<OnboardingTour
-  tour={onboardingSteps}
-  started={started}
-  responsive={true}
-  mobileBreakpoint="sm"
-  mobilePosition="bottom"
->
-  {/* Your content */}
-</OnboardingTour>
+// Default popover props (you don't need to set these explicitly)
+popoverProps: {
+  position: { base: 'bottom', sm: 'left' },
+  withArrow: true,
+  arrowSize: 16,
+  offset: -4,
+  middlewares: { shift: { padding: 20 }, flip: true },
+}
 ```
 
 ### Responsive Demo
 
-<Demo data={demos.responsive} />
+Try the full-page responsive demo to see the behavior at different screen sizes:
 
-### Responsive Features
+<Button
+  component="a"
+  href="responsive"
+  target="_blank"
+  rightSection={
+    <IconExternalLink
+      style={{ width: rem(18), height: rem(18) }}
+      stroke={1.5}
+    />
+  }
+  fullWidth
+  justify="space-between"
+  h={50}
+  px={20}
+  radius="md"
+>
+  Open Responsive Onboarding Tour example page
+</Button>
 
-When responsive mode is enabled on mobile devices:
+### Responsive Props
 
-- **Smart Positioning**: The guide automatically positions itself at the top or bottom of the screen
-- **Optimized Scrolling**: Elements are scrolled into view with appropriate alignment
-- **Mobile-First Design**: The guide uses full-width layout with proper spacing
-- **Configurable Breakpoints**: You can customize when responsive behavior kicks in
+The following popover props accept responsive objects (`ResponsiveProp<T>`):
 
-### Mobile Position Options
+- **`position`**: `FloatingPosition | { base: 'bottom', sm: 'left', lg: 'top' }`
+- **`offset`**: `number | { base: 8, sm: -4 }`
+- **`width`**: `PopoverWidth | { base: 'target', sm: 300 }`
+- **`arrowSize`**: `number | { base: 12, sm: 16 }`
 
-- **`bottom`** (default): Guide appears at the bottom of the screen
-- **`top`**: Guide appears at the top of the screen
-
-### Custom Breakpoints
-
-You can use any Mantine breakpoint name (`'xs'`, `'sm'`, `'md'`, `'lg'`, `'xl'`). The breakpoint values are read from the Mantine theme.
-
-```tsx
-// Extra small devices only
-mobileBreakpoint = 'xs';
-
-// Small devices and below (default)
-mobileBreakpoint = 'sm';
-
-// Medium devices and below
-mobileBreakpoint = 'md';
-```
+All other `PopoverProps` (e.g., `withArrow`, `radius`, `shadow`, `middlewares`) work as usual.
 
 ### Per-Step Responsive Configuration
 
-You can also configure responsive behavior per step using `focusRevealProps`:
+Each step can define its own responsive positioning via `focusRevealProps`:
 
 ```tsx
-const steps = [
+const steps: OnboardingTourStep[] = [
   {
     id: 'step1',
-    title: 'Desktop Step',
-    content: 'This step uses standard positioning',
+    title: 'Bottom on mobile, right on desktop',
+    content: 'Position adapts to screen size',
     focusRevealProps: {
-      responsive: false, // Disable responsive for this step
+      popoverProps: {
+        position: { base: 'bottom', sm: 'right' },
+        offset: { base: 8, sm: -4 },
+      },
     },
   },
   {
     id: 'step2',
-    title: 'Mobile Step',
-    content: 'This step uses mobile positioning',
+    title: 'Top on mobile, left on large screens',
+    content: 'Different breakpoints per step',
     focusRevealProps: {
-      responsive: true,
-      mobilePosition: 'top', // Override global setting
+      popoverProps: {
+        position: { base: 'top', lg: 'left' },
+        width: { base: 'target', md: 350 },
+      },
     },
   },
 ];
 ```
+
+### Smart Scroll Alignment
+
+Scroll alignment is automatically derived from the resolved popover position:
+
+- **`position: 'top'`** → scrolls element to the end of the viewport
+- **`position: 'bottom'`** → scrolls element to the start of the viewport
+- **`position: 'left'` / `'right'`** → scrolls element to the center

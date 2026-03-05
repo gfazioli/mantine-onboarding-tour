@@ -8,25 +8,57 @@ import {
   OverlayProps,
   Popover,
   PopoverProps,
+  PopoverWidth,
   StylesApiProps,
   Transition,
   TransitionOverride,
-  useMantineTheme,
+  useMatches,
   useProps,
   useStyles,
 } from '@mantine/core';
-import {
-  useDidUpdate,
-  useInViewport,
-  useMediaQuery,
-  useMergedRef,
-  useUncontrolled,
-} from '@mantine/hooks';
+import { FloatingAxesOffsets, FloatingPosition } from '@mantine/core/lib/utils/Floating';
+import { useDidUpdate, useInViewport, useMergedRef, useUncontrolled } from '@mantine/hooks';
 import { useScrollIntoView } from '../hooks/use-scroll-into-view/use-scroll-into-view';
 import { OnboardingTourFocusRevealGroup } from '../OnboardingTourFocusRevealGroup/OnboardingTourFocusRevealGroup';
 import { useOnboardingTourFocusRevealGroupContext } from '../OnboardingTourFocusRevealGroup/OnboardingTourFocusRevealGroup.context';
 import { OnboardingTourFocusRevealFocusedMode } from './focus-reveal-modes';
 import classes from './OnboardingTourFocusReveal.module.css';
+
+/** A value that can be either a scalar or a responsive object mapping breakpoints to values */
+export type ResponsiveProp<T> = T | Partial<Record<MantineBreakpoint, T>>;
+
+/** Check if a value is a responsive object (has breakpoint keys) */
+function isResponsiveObject<T>(value: unknown): value is Partial<Record<MantineBreakpoint, T>> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return false;
+  }
+  const keys = Object.keys(value);
+  const breakpoints = ['base', 'xs', 'sm', 'md', 'lg', 'xl'];
+  return keys.length > 0 && keys.every((k) => breakpoints.includes(k));
+}
+
+/** Resolve a ResponsiveProp using useMatches. Always called (hooks rules). */
+function useResponsiveProp<T>(value: ResponsiveProp<T> | undefined, defaultValue: T): T {
+  const matchesInput = isResponsiveObject<T>(value)
+    ? (value as Partial<Record<MantineBreakpoint, T>>)
+    : { base: (value as T) ?? defaultValue };
+  return useMatches<T>(matchesInput);
+}
+
+/** PopoverProps with responsive-aware overrides for position, offset, width, and arrowSize */
+export interface ResponsivePopoverProps extends Omit<
+  PopoverProps,
+  'position' | 'offset' | 'width' | 'arrowSize'
+> {
+  /** Popover position, supports responsive objects: `{ base: 'bottom', sm: 'left' }` */
+  position?: ResponsiveProp<FloatingPosition>;
+  /** Popover offset, supports responsive objects: `{ base: 8, sm: -4 }` */
+  offset?: ResponsiveProp<number | FloatingAxesOffsets>;
+  /** Popover width, supports responsive objects: `{ base: 'target', sm: 300 }` */
+  width?: ResponsiveProp<PopoverWidth>;
+  /** Arrow size, supports responsive objects: `{ base: 12, sm: 16 }` */
+  arrowSize?: ResponsiveProp<number>;
+}
 
 export interface RevealProps {
   /** Duration of scroll in milliseconds */
@@ -94,8 +126,8 @@ export interface OnboardingTourFocusRevealBaseProps {
   /** Dropdown content for Popover */
   popoverContent?: React.ReactNode;
 
-  /** Props passed down to the `Popover` component */
-  popoverProps?: PopoverProps;
+  /** Props passed down to the `Popover` component. Position, offset, width, and arrowSize accept responsive objects. */
+  popoverProps?: ResponsivePopoverProps;
 
   /** Disable interactions on the target component */
   disableTargetInteraction?: boolean;
@@ -103,14 +135,8 @@ export interface OnboardingTourFocusRevealBaseProps {
   /** Called when OnboardingTourFocusReveal focused state changes */
   onChange?: (focused: boolean) => void;
 
-  /** Enable responsive behavior for mobile devices */
-  responsive?: boolean;
-
-  /** Mobile breakpoint name (e.g., 'sm', 'md') - defaults to 'sm' */
-  mobileBreakpoint?: MantineBreakpoint;
-
-  /** Mobile popover position - 'top' or 'bottom' */
-  mobilePosition?: 'top' | 'bottom';
+  /** z-index for the focused element (should be above the overlay). Defaults to 201. */
+  focusedZIndex?: number;
 
   /** Called when OnboardingTourFocusReveal is focused */
   onFocus?: () => void;
@@ -145,9 +171,7 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
   focusedMode: 'none',
   withReveal: true,
   withOverlay: true,
-  responsive: true,
-  mobileBreakpoint: 'sm', // Default to 'sm' breakpoint
-  mobilePosition: 'bottom',
+  focusedZIndex: 201,
   overlayProps: {
     blur: 2,
     backgroundOpacity: 0.5,
@@ -155,13 +179,14 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
   },
   transitionProps: { transition: 'fade', duration: 150 },
   popoverProps: {
-    position: 'left',
+    position: { base: 'bottom', sm: 'left' },
     withArrow: true,
     arrowSize: 16,
     arrowRadius: 4,
     offset: -4,
     radius: 'md',
     shadow: 'xl',
+    middlewares: { shift: { padding: 20 }, flip: true },
   },
 };
 
@@ -196,9 +221,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     focusedMode,
     popoverContent,
     popoverProps,
-    responsive,
-    mobileBreakpoint,
-    mobilePosition,
+    focusedZIndex,
 
     scrollableRef,
     onChange,
@@ -263,13 +286,26 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
 
   const mergedRef = useMergedRef(inViewportRef, targetRef);
 
-  // Mobile detection and responsive behavior using Mantine theme breakpoints
-  const theme = useMantineTheme();
-  const breakpoint = mobileBreakpoint || 'sm';
-  const breakpointValue = theme.breakpoints[breakpoint] || theme.breakpoints.sm;
-  const mediaQuery = `(max-width: ${breakpointValue})`;
-  const isMobile = useMediaQuery(mediaQuery);
-  const shouldUseResponsive = responsive !== false && isMobile;
+  // Resolve responsive popover props via useMatches
+  const resolvedPosition = useResponsiveProp<FloatingPosition>(popoverProps?.position, 'left');
+  const resolvedOffset = useResponsiveProp<number | FloatingAxesOffsets>(popoverProps?.offset, -4);
+  const resolvedWidth = useResponsiveProp<PopoverWidth>(popoverProps?.width, 'max-content');
+  const resolvedArrowSize = useResponsiveProp<number>(popoverProps?.arrowSize, 16);
+
+  // Derive scroll alignment from resolved popover position
+  const scrollAlignment = useMemo(() => {
+    if (!resolvedPosition) {
+      return 'center' as const;
+    }
+    const pos = resolvedPosition.toString();
+    if (pos.startsWith('top')) {
+      return 'end' as const;
+    }
+    if (pos.startsWith('bottom')) {
+      return 'start' as const;
+    }
+    return 'center' as const;
+  }, [resolvedPosition]);
 
   useEffect(() => {
     ctx?.setMeInViewport(uuid, inViewport);
@@ -277,16 +313,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     if (targetRef.current) {
       if (_focused || defaultFocused) {
         if (withReveal) {
-          // Responsive scroll behavior
-          if (shouldUseResponsive) {
-            if (mobilePosition === 'top') {
-              scrollIntoView({ alignment: 'start' });
-            } else {
-              scrollIntoView({ alignment: 'end' });
-            }
-          } else {
-            scrollIntoView({ alignment: 'center' });
-          }
+          scrollIntoView({ alignment: scrollAlignment });
         }
       }
 
@@ -297,7 +324,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         setRealFocused(false);
       }
     }
-  }, [_focused, withReveal, inViewport, shouldUseResponsive, mobilePosition]);
+  }, [_focused, withReveal, inViewport, scrollAlignment]);
 
   useDidUpdate(() => {
     ctx?.setMeInViewport(uuid, inViewport);
@@ -327,44 +354,33 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
       style: {
         position: 'relative',
         ...child.props.style,
-        zIndex: realFocused ? 201 : 0,
+        zIndex: realFocused ? (focusedZIndex ?? 201) : 0,
         pointerEvents: realFocused && disableTargetInteraction ? 'none' : undefined,
       },
     };
 
     newProps['data-popover-dropdown'] = !!popoverContent;
 
-    // Create popover props with responsive behavior
-    // On mobile: use mobilePosition (top/bottom), on desktop: use popoverProps.position (usually left/right)
+    // Build final popover props with resolved responsive values
+    const {
+      position: _pos,
+      offset: _off,
+      width: _w,
+      arrowSize: _as,
+      ...restPopoverProps
+    } = popoverProps || {};
     const finalPopoverProps = {
-      ...popoverProps,
-      position: shouldUseResponsive ? mobilePosition : popoverProps.position || 'left',
-      withinPortal: popoverProps?.withinPortal ?? shouldUseResponsive,
-      styles: shouldUseResponsive
-        ? {
-            ...popoverProps.styles,
-            dropdown: {
-              ...(typeof popoverProps.styles === 'object' && popoverProps.styles?.dropdown),
-              // For mobile, use full width but keep standard positioning
-              left: '20px',
-              right: '20px',
-              width: 'auto',
-              maxWidth: 'none',
-              transform: 'none',
-            },
-          }
-        : popoverProps.styles,
+      ...restPopoverProps,
+      position: resolvedPosition,
+      offset: resolvedOffset,
+      width: resolvedWidth,
+      arrowSize: resolvedArrowSize,
     };
 
     return (
       <Popover opened={realFocused && !!popoverContent} {...finalPopoverProps}>
         <Popover.Target>{cloneElement(child, newProps)}</Popover.Target>
-        <Popover.Dropdown
-          className={shouldUseResponsive ? classes.mobilePopover : undefined}
-          data-position={shouldUseResponsive ? mobilePosition : undefined}
-        >
-          {popoverContent}
-        </Popover.Dropdown>
+        <Popover.Dropdown>{popoverContent}</Popover.Dropdown>
       </Popover>
     );
   }, [
@@ -373,10 +389,12 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     _focused,
     inViewport,
     defaultFocused,
-    shouldUseResponsive,
-    mobilePosition,
+    resolvedPosition,
+    resolvedOffset,
+    resolvedWidth,
+    resolvedArrowSize,
+    focusedZIndex,
     popoverProps,
-    classes.mobilePopover,
   ]);
 
   if (ctx) {
