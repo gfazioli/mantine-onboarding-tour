@@ -292,20 +292,9 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
   const resolvedWidth = useResponsiveProp<PopoverWidth>(popoverProps?.width, 'max-content');
   const resolvedArrowSize = useResponsiveProp<number>(popoverProps?.arrowSize, 16);
 
-  // Derive scroll alignment from resolved popover position
-  const scrollAlignment = useMemo(() => {
-    if (!resolvedPosition) {
-      return 'center' as const;
-    }
-    const pos = resolvedPosition.toString();
-    if (pos.startsWith('top')) {
-      return 'end' as const;
-    }
-    if (pos.startsWith('bottom')) {
-      return 'start' as const;
-    }
-    return 'center' as const;
-  }, [resolvedPosition]);
+  // Scroll alignment: always center the target element in the viewport.
+  // The shift and flip middlewares handle keeping the popover visible.
+  const scrollAlignment = 'center' as const;
 
   useEffect(() => {
     ctx?.setMeInViewport(uuid, inViewport);

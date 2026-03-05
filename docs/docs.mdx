@@ -4,6 +4,100 @@ import { InstallScript } from './components/InstallScript/InstallScript';
 import { IconExternalLink } from '@tabler/icons-react';
 import * as demos from './demos';
 
+## Migrating from v2 to v3
+
+### Breaking changes
+
+**1. `onOnboardingTourClose` has been removed**
+
+Replace it with `onOnboardingTourComplete`, `onOnboardingTourSkip`, or `onOnboardingTourEnd`:
+
+```tsx
+// v2
+<OnboardingTour onOnboardingTourClose={() => setStarted(false)} />
+
+// v3
+<OnboardingTour
+  onOnboardingTourComplete={() => markAsCompleted()}
+  onOnboardingTourSkip={() => markAsSkipped()}
+  onOnboardingTourEnd={() => setStarted(false)}
+/>
+```
+
+If you don't need to distinguish between completion and skip, use `onOnboardingTourEnd` alone — it fires in both cases.
+
+**2. `responsive`, `mobileBreakpoint`, and `mobilePosition` have been removed**
+
+The popover is now always responsive. Use responsive objects on `popoverProps` instead:
+
+```tsx
+// v2
+<OnboardingTour responsive mobileBreakpoint="sm" mobilePosition="bottom" />
+
+// v3 — responsive by default, no props needed
+// Default position: { base: 'bottom', sm: 'left' }
+// To customize:
+<OnboardingTour
+  focusRevealProps={{
+    popoverProps: {
+      position: { base: 'bottom', sm: 'right' },
+    },
+  }}
+/>
+```
+
+Per-step responsive positioning via `focusRevealProps`:
+
+```tsx
+const steps: OnboardingTourStep[] = [
+  {
+    id: 'step1',
+    title: 'Welcome',
+    content: 'Hello!',
+    focusRevealProps: {
+      popoverProps: {
+        position: { base: 'top', md: 'right' },
+        offset: { base: 8, md: -4 },
+      },
+    },
+  },
+];
+```
+
+**3. `useOnboardingTour` hook has been removed from the public API**
+
+This hook was internal and created isolated state disconnected from the `<OnboardingTour>` component. All tour control is available through props and render functions:
+
+```tsx
+// v2
+import { useOnboardingTour } from '@gfazioli/mantine-onboarding-tour';
+
+// v3 — remove the import, use component props instead
+<OnboardingTour
+  content={(controller) => (
+    <div>Step {controller.currentStepIndex}</div>
+  )}
+/>;
+```
+
+**4. `OnboardingTourStep` now requires a generic for custom properties**
+
+```tsx
+// v2
+const steps: OnboardingTourStep[] = [
+  { id: 'step1', title: 'Hello', price: 9.99 },
+];
+
+// v3
+const steps: OnboardingTourStep<{ price: number }>[] = [
+  { id: 'step1', title: 'Hello', price: 9.99 },
+];
+```
+
+**5. `popoverProps` type changed to `ResponsivePopoverProps`**
+
+The `position`, `offset`, `width`, and `arrowSize` properties now accept `ResponsiveProp<T>` (a scalar or a breakpoint-to-value object). All other `PopoverProps` work as before.
+
 ## Installation
 
 <InstallScript packages="@gfazioli/mantine-onboarding-tour" />
