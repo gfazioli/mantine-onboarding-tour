@@ -21,16 +21,31 @@ import { useDisclosure } from '@mantine/hooks';
 const onboardingSteps: OnboardingTourStep[] = [
   {
     id: 'hero',
-    title: 'Step 1 — Default responsive',
+    title: 'Step 1 — Wide element, bottom everywhere',
     content:
-      'By default, the popover is at the bottom on mobile and on the left on sm+. Resize the browser to see it move.',
-    // No focusRevealProps → uses default { base: "bottom", sm: "left" }
+      'For wide elements like banners, bottom/top positions work best. This step uses bottom on all breakpoints.',
+    focusRevealProps: {
+      popoverProps: {
+        position: 'bottom',
+      },
+    },
+  },
+  {
+    id: 'sidebar-item',
+    title: 'Step 2 — Bottom on mobile, right on sm+',
+    content:
+      'For narrow elements like sidebar links, left/right positions work great on desktop. Resize below sm to see it snap to bottom.',
+    focusRevealProps: {
+      popoverProps: {
+        position: { base: 'bottom', sm: 'right' },
+      },
+    },
   },
   {
     id: 'card-left',
-    title: 'Step 2 — Bottom on mobile, right on sm+',
+    title: 'Step 3 — Bottom on mobile, right on sm+',
     content:
-      'This step overrides position to appear on the right on desktop. Shrink the window below the sm breakpoint to see it snap to the bottom.',
+      'Cards are medium-width elements. On desktop the popover appears to the right, on mobile it drops below.',
     focusRevealProps: {
       popoverProps: {
         position: { base: 'bottom', sm: 'right' },
@@ -39,9 +54,9 @@ const onboardingSteps: OnboardingTourStep[] = [
   },
   {
     id: 'card-center',
-    title: 'Step 3 — Top on mobile, bottom on md+',
+    title: 'Step 4 — Top on mobile, bottom on md+',
     content:
-      'Here the popover sits on top on small screens, and below on md+. Notice the scroll alignment changes too.',
+      'This step flips direction at the md breakpoint. Notice how the scroll alignment also adapts automatically.',
     focusRevealProps: {
       popoverProps: {
         position: { base: 'top', md: 'bottom' },
@@ -51,35 +66,23 @@ const onboardingSteps: OnboardingTourStep[] = [
   },
   {
     id: 'card-right',
-    title: 'Step 4 — Bottom on mobile, left on lg+',
+    title: 'Step 5 — Bottom on mobile, left on lg+',
     content:
-      'This step only switches at the lg breakpoint. On anything below lg, the popover stays at the bottom.',
+      'This step only switches at the lg breakpoint. Below lg the popover stays at the bottom.',
     focusRevealProps: {
       popoverProps: {
         position: { base: 'bottom', lg: 'left' },
-        width: { base: 280, lg: 320 },
-      },
-    },
-  },
-  {
-    id: 'sidebar-item',
-    title: 'Step 5 — Right on all screens',
-    content:
-      'This step forces the popover to the right regardless of screen size. No responsive object needed — just a plain string.',
-    focusRevealProps: {
-      popoverProps: {
-        position: 'right',
       },
     },
   },
   {
     id: 'bottom-banner',
-    title: 'Step 6 — Top on mobile, right on sm, top on lg',
+    title: 'Step 6 — Three breakpoints',
     content:
-      'Three breakpoints! The popover jumps from top → right → top as you widen the browser. This demonstrates multiple breakpoint transitions.',
+      'This step uses three breakpoints: bottom on base, right on sm, top on lg. Widen and narrow the browser to see all three positions.',
     focusRevealProps: {
       popoverProps: {
-        position: { base: 'top', sm: 'right', lg: 'top' },
+        position: { base: 'bottom', sm: 'right', lg: 'top' },
         arrowSize: { base: 12, sm: 16 },
       },
     },
@@ -99,7 +102,7 @@ export default function ResponsivePage() {
       started={started}
       onOnboardingTourEnd={close}
       onOnboardingTourSkip={close}
-      maw={380}
+      maw={{ base: 280, sm: 380 }}
     >
       <Box mih="100vh" bg="gray.0">
         {/* Header */}
