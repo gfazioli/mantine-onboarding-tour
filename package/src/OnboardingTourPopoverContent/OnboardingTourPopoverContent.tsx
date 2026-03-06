@@ -143,6 +143,11 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
       stepperStepProps,
       stepperProps,
 
+      // Destructure callbacks inherited from OnboardingTourOptions
+      // to prevent them from leaking into DOM via ...others
+      onOnboardingTourComplete: _onComplete,
+      onOnboardingTourSkip: _onSkip,
+
       classNames,
       style,
       styles,

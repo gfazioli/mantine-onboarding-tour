@@ -402,12 +402,16 @@ describe('FocusReveal', () => {
 
 describe('Edge cases', () => {
   it('handles empty tour array', () => {
-    const { result } = renderHook(() => useOnboardingTour([]), { wrapper });
+    const onStart = jest.fn();
+    const { result } = renderHook(() => useOnboardingTour([], { onOnboardingTourStart: onStart }), {
+      wrapper,
+    });
 
     act(() => result.current.startTour());
 
-    expect(result.current.currentStepIndex).toBe(0);
+    expect(result.current.currentStepIndex).toBeUndefined();
     expect(result.current.currentStep).toBeUndefined();
+    expect(onStart).not.toHaveBeenCalled();
   });
 
   it('handles single step tour', () => {
