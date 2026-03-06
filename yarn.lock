@@ -2495,23 +2495,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@mantine/code-highlight@npm:8.3.15":
-  version: 8.3.15
-  resolution: "@mantine/code-highlight@npm:8.3.15"
+"@mantine/code-highlight@npm:8.3.16":
+  version: 8.3.16
+  resolution: "@mantine/code-highlight@npm:8.3.16"
   dependencies:
     clsx: "npm:^2.1.1"
   peerDependencies:
-    "@mantine/core": 8.3.15
-    "@mantine/hooks": 8.3.15
+    "@mantine/core": 8.3.16
+    "@mantine/hooks": 8.3.16
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/7b703b9ca9412711e19dd850ce91361b3fc106dc67067153b654a07a54fc2382a5cf1e33e671cf627f3b624438594d228bb25aca1129e1c6d11237701b638ad5
+  checksum: 10c0/521b7a0cce3133be8616af7d4d7f63c9a940a981e51aa61c58934729e4aac0dcd18a895004de2c01b8228c08a959a1ff18ddaf65e2c6a8901185da1139ce1b0a
   languageName: node
   linkType: hard
 
-"@mantine/core@npm:8.3.15":
-  version: 8.3.15
-  resolution: "@mantine/core@npm:8.3.15"
+"@mantine/core@npm:8.3.16":
+  version: 8.3.16
+  resolution: "@mantine/core@npm:8.3.16"
   dependencies:
     "@floating-ui/react": "npm:^0.27.16"
     clsx: "npm:^2.1.1"
@@ -2520,19 +2520,19 @@ __metadata:
     react-textarea-autosize: "npm:8.5.9"
     type-fest: "npm:^4.41.0"
   peerDependencies:
-    "@mantine/hooks": 8.3.15
+    "@mantine/hooks": 8.3.16
     react: ^18.x || ^19.x
     react-dom: ^18.x || ^19.x
-  checksum: 10c0/e43a55ecd7fa8b69834cf86d6fa44ee4e2718eb1d477e9456e9b49017c48175766d6cf7bbb9b136a136320b6f7d27c4a9b86d2cd1d7cfa33ef406ee446866140
+  checksum: 10c0/91dc73440067cb556cb65e51c9a191441527256ddb95384fdec23945dea0cb4add44b60f2acf2a423d0ce17fa3ad02b4a8f23f77419fe4f50623440f2171ee84
   languageName: node
   linkType: hard
 
-"@mantine/hooks@npm:8.3.15":
-  version: 8.3.15
-  resolution: "@mantine/hooks@npm:8.3.15"
+"@mantine/hooks@npm:8.3.16":
+  version: 8.3.16
+  resolution: "@mantine/hooks@npm:8.3.16"
   peerDependencies:
     react: ^18.x || ^19.x
-  checksum: 10c0/e4b8af33243fbf5a09385874b8c0349acd8992b3b1d19551e22d5574b09f8871ec62c2254a48529c81e84b25a48888b38f98c1aec4d3ec0cfc47600c689e9327
+  checksum: 10c0/2457a5aac1b614470691e0f5c57336d439ed10da3c18c85c05362c7f55398cb2bf97c7d3dfc477e01af94eb3ad7f0de5b9ad29f674de906fe417b453d06b63d8
   languageName: node
   linkType: hard
 
@@ -3654,21 +3654,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tabler/icons-react@npm:^3.38.0":
-  version: 3.38.0
-  resolution: "@tabler/icons-react@npm:3.38.0"
+"@tabler/icons-react@npm:^3.39.0":
+  version: 3.39.0
+  resolution: "@tabler/icons-react@npm:3.39.0"
   dependencies:
-    "@tabler/icons": "npm:3.38.0"
+    "@tabler/icons": "npm:3.39.0"
   peerDependencies:
     react: ">= 16"
-  checksum: 10c0/b0744a4dcd9eef77b7cbc39b11a7eed561dec0d3e42d388ab69389616c5d1623bb863093fff306025cfae679c8dae28b2cef22753756812365b4a90b31e78c9c
+  checksum: 10c0/bc61569cc645db14a613599822246294c3976aa1f9dda3a1d736867cb1320493b8f69722d3aebc9a3fbf84763c16d107471d9eea2f5a2351458ee75ce295b702
   languageName: node
   linkType: hard
 
-"@tabler/icons@npm:3.38.0":
-  version: 3.38.0
-  resolution: "@tabler/icons@npm:3.38.0"
-  checksum: 10c0/209f89e6ec3df40eea2d13700082855006e6f2e0535ddbd99823230eb03d743a562fccb4f91849f9b9736d762b956c015ddfb51ee6f7b5ab8958ec15dcf4fab4
+"@tabler/icons@npm:3.39.0":
+  version: 3.39.0
+  resolution: "@tabler/icons@npm:3.39.0"
+  checksum: 10c0/30aef378d9b2513dbf4076506d74ea1b414af781cd0631c12b26833d3add109d786cdcf50fb37c4e1935f2254cf72044330ec3846ef03ab558c5a1db53873530
   languageName: node
   linkType: hard
 
@@ -4062,12 +4062,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.19.13":
-  version: 22.19.13
-  resolution: "@types/node@npm:22.19.13"
+"@types/node@npm:^22.19.15":
+  version: 22.19.15
+  resolution: "@types/node@npm:22.19.15"
   dependencies:
     undici-types: "npm:~6.21.0"
-  checksum: 10c0/ad8a0b6a69dd8ef663701573eca94ef6d20ce093f54f05bed823c826374eb1ea8b06e6f2c5d7f6cfc203b82dfd60293296bf80ea987ddb77775840bc2ef9f803
+  checksum: 10c0/f17eaf3d0d1da5e93ad9e287efb78201f8a5282973c004c5f70d91675c5c6b926a23acaa7b158a42b3d7e27e36b349d65a531710c91c308fca53dd7fa280ef98
   languageName: node
   linkType: hard
 
@@ -7644,9 +7644,9 @@ __metadata:
   resolution: "extension-template-docs@workspace:docs"
   dependencies:
     "@gfazioli/mantine-onboarding-tour": "workspace:*"
-    "@mantine/code-highlight": "npm:8.3.15"
-    "@mantine/core": "npm:8.3.15"
-    "@mantine/hooks": "npm:8.3.15"
+    "@mantine/code-highlight": "npm:8.3.16"
+    "@mantine/core": "npm:8.3.16"
+    "@mantine/hooks": "npm:8.3.16"
     "@mantinex/demo": "npm:^2.0.0"
     "@mantinex/dev-icons": "npm:^2.0.0"
     "@mantinex/mantine-header": "npm:^2.0.0"
@@ -7656,9 +7656,9 @@ __metadata:
     "@mdx-js/loader": "npm:^3.1.1"
     "@mdx-js/react": "npm:^3.1.1"
     "@next/mdx": "npm:^15.5.12"
-    "@tabler/icons-react": "npm:^3.38.0"
+    "@tabler/icons-react": "npm:^3.39.0"
     "@types/mdx": "npm:^2.0.13"
-    "@types/node": "npm:^22.19.13"
+    "@types/node": "npm:^22.19.15"
     "@types/react": "npm:^19.2.14"
     "@types/react-dom": "npm:^19.2.3"
     next: "npm:15.5.12"
@@ -10886,8 +10886,8 @@ __metadata:
     "@eslint/js": "npm:^9.39.3"
     "@ianvs/prettier-plugin-sort-imports": "npm:^4.7.1"
     "@mantine-tests/core": "npm:^2.1.0"
-    "@mantine/core": "npm:8.3.15"
-    "@mantine/hooks": "npm:8.3.15"
+    "@mantine/core": "npm:8.3.16"
+    "@mantine/hooks": "npm:8.3.16"
     "@rollup/plugin-node-resolve": "npm:^16.0.3"
     "@rollup/plugin-replace": "npm:^6.0.3"
     "@storybook/addon-essentials": "npm:^8.6.17"
@@ -10902,7 +10902,7 @@ __metadata:
     "@types/fs-extra": "npm:^11.0.4"
     "@types/identity-obj-proxy": "npm:^3.0.2"
     "@types/jest": "npm:^29.5.14"
-    "@types/node": "npm:^22.19.13"
+    "@types/node": "npm:^22.19.15"
     "@types/react": "npm:^19.2.14"
     "@types/react-dom": "npm:^19.2.3"
     "@types/signale": "npm:^1.4.7"
