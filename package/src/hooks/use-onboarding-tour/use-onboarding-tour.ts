@@ -121,7 +121,7 @@ export function useOnboardingTour<T extends Record<string, unknown> = Record<str
       onOnboardingTourChange?.(tour[pendingStepIndex]);
       setPendingStepIndex(null);
     }
-  }, [pendingStepIndex]);
+  }, [pendingStepIndex, tour, onOnboardingTourChange]);
 
   /** Transition to a new step: first close current, then open next */
   const transitionToStep = (index: number) => {
@@ -132,6 +132,9 @@ export function useOnboardingTour<T extends Record<string, unknown> = Record<str
 
   /** Start the tour */
   const startTour = () => {
+    if (tour.length === 0) {
+      return;
+    }
     _setCurrentStepIndex(0);
     onOnboardingTourStart?.();
     onOnboardingTourChange?.(tour[0]);

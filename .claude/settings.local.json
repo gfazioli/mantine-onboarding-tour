@@ -8,7 +8,9 @@
       "Bash(yarn:*)",
       "Bash(do:*)",
       "Bash(mkdir:*)",
-      "WebFetch(domain:mantine.dev)"
+      "WebFetch(domain:mantine.dev)",
+      "Bash(gh pr:*)",
+      "Bash(gh api:*)"
     ]
   }
 }

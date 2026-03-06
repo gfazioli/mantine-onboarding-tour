@@ -56,7 +56,7 @@ const onboardingSteps: OnboardingTourStep[] = [
     id: 'card-center',
     title: 'Step 4 — Top on mobile, bottom on md+',
     content:
-      'This step flips direction at the md breakpoint. Notice how the scroll alignment also adapts automatically.',
+      'This step flips direction at the md breakpoint. The focused element is scrolled into view and kept centered.',
     focusRevealProps: {
       popoverProps: {
         position: { base: 'top', md: 'bottom' },
