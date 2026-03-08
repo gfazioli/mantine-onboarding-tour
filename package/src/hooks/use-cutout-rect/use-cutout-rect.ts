@@ -8,7 +8,7 @@ export interface CutoutRect {
 }
 
 /** Build an SVG path string with an evenodd hole for the cutout overlay.
- *  The outer rect covers the full viewport; the inner rounded rect (opposite winding) creates the hole. */
+ *  The outer rect covers the full viewport; the inner rounded rect defines the hole region when rendered with fill-rule="evenodd". */
 export function buildCutoutPath(
   vw: number,
   vh: number,
