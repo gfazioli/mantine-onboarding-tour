@@ -10,6 +10,7 @@ import {
   useResolvedStylesApi,
   useStyles,
 } from '@mantine/core';
+import { buildCutoutPath, useCutoutRect } from './hooks/use-cutout-rect/use-cutout-rect';
 import {
   OnboardingTourController,
   useOnboardingTour,
@@ -60,6 +61,9 @@ export type OnboardingTourFactory = Factory<{
     Target: typeof OnboardingTourTarget;
   };
 }>;
+
+const CUTOUT_PADDING = 8;
+const CUTOUT_RADIUS = 8;
 
 export const defaultProps: Partial<OnboardingTourProps> = {};
 
@@ -158,6 +162,7 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     200;
 
   const isTourActive = started && onboardingTour.currentStepIndex !== undefined;
+  const cutoutRect = useCutoutRect(isTourActive, selectedTourId);
 
   // Prevent horizontal scroll when the tour overlay is active (popovers via portal can exceed viewport)
   useEffect(() => {
@@ -228,6 +233,17 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     });
   };
 
+  // Use CSS clip-path: path(evenodd, "...") directly — no inline SVG needed
+  const cssClipPath = cutoutRect
+    ? `path(evenodd, "${buildCutoutPath(
+        typeof window !== 'undefined' ? window.innerWidth : 0,
+        typeof window !== 'undefined' ? window.innerHeight : 0,
+        cutoutRect,
+        CUTOUT_PADDING,
+        CUTOUT_RADIUS
+      )}")`
+    : undefined;
+
   return (
     <Box ref={ref}>
       {isTourActive && (
@@ -239,6 +255,10 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
             ...(Number(overlayBlur) > 0 && {
               backdropFilter: `blur(${overlayBlur}px)`,
               WebkitBackdropFilter: `blur(${overlayBlur}px)`,
+            }),
+            ...(cssClipPath && {
+              clipPath: cssClipPath,
+              WebkitClipPath: cssClipPath,
             }),
             zIndex: overlayZIndex,
           }}
