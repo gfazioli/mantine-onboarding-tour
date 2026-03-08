@@ -68,7 +68,7 @@ export function useCutoutRect(active: boolean, stepId: string | undefined): Cuto
       return undefined;
     }
 
-    let rafId: number;
+    let rafId = 0;
     const onUpdate = () => {
       cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(measure);
