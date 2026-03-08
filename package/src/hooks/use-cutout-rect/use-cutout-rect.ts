@@ -7,6 +7,12 @@ export interface CutoutRect {
   height: number;
 }
 
+export interface CutoutState {
+  rect: CutoutRect;
+  vw: number;
+  vh: number;
+}
+
 /** Build an SVG path string with an evenodd hole for the cutout overlay.
  *  The outer rect covers the full viewport; the inner rounded rect defines the hole region when rendered with fill-rule="evenodd". */
 export function buildCutoutPath(
@@ -37,34 +43,38 @@ export function buildCutoutPath(
   ].join(' ');
 }
 
-/** Track the bounding rect of the focused tour element via DOM query + polling/events. */
-export function useCutoutRect(active: boolean, stepId: string | undefined): CutoutRect | null {
-  const [rect, setRect] = useState<CutoutRect | null>(null);
+/** Track the bounding rect of the focused tour element and viewport size via DOM query + polling/events. */
+export function useCutoutRect(active: boolean, stepId: string | undefined): CutoutState | null {
+  const [state, setState] = useState<CutoutState | null>(null);
 
   const measure = useCallback(() => {
     const el = document.querySelector('[data-onboarding-tour-focus-reveal-focused]');
     if (el) {
       const r = el.getBoundingClientRect();
-      setRect((prev) => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      setState((prev) => {
         if (
           prev &&
-          prev.x === r.x &&
-          prev.y === r.y &&
-          prev.width === r.width &&
-          prev.height === r.height
+          prev.rect.x === r.x &&
+          prev.rect.y === r.y &&
+          prev.rect.width === r.width &&
+          prev.rect.height === r.height &&
+          prev.vw === vw &&
+          prev.vh === vh
         ) {
           return prev;
         }
-        return { x: r.x, y: r.y, width: r.width, height: r.height };
+        return { rect: { x: r.x, y: r.y, width: r.width, height: r.height }, vw, vh };
       });
     } else {
-      setRect(null);
+      setState(null);
     }
   }, []);
 
   useEffect(() => {
     if (!active) {
-      setRect(null);
+      setState(null);
       return undefined;
     }
 
@@ -90,5 +100,5 @@ export function useCutoutRect(active: boolean, stepId: string | undefined): Cuto
     };
   }, [active, stepId, measure]);
 
-  return rect;
+  return state;
 }
