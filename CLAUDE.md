@@ -53,7 +53,7 @@ OnboardingTour              — Main wrapper; recursively clones children matchi
 
 ```
 started=true → useEffect → startTour() → setCurrentStepIndex(0)
-  → OnboardingTour renders persistent overlay (fixed, full-screen, CSS-transitioned)
+  → OnboardingTour renders persistent overlay (fixed, full-screen, CSS clip-path cutout)
   → wrapChildren() recursively walks React children tree
     → matches data-onboarding-tour-id to tour[currentStepIndex].id
     → wraps matched child in <FocusReveal focused={true} withOverlay={false} popoverContent={<PopoverContent/>}>
@@ -84,9 +84,15 @@ started=true → useEffect → startTour() → setCurrentStepIndex(0)
 - 12 CSS animation modes: `pulse`, `glow`, `glow-blue`, `glow-red`, `glow-green`, `border`, `shake`, `rotate`, `scale`, `elastic`, `zoom`, `none`
 - **Responsive popover positioning** via `ResponsiveProp<T>` type and `useMatches()`. Popover `position`, `offset`, `width`, and `arrowSize` accept responsive objects like `{ base: 'bottom', sm: 'left' }`. Scroll alignment is derived from the resolved position. Floating UI `shift` (padding: 20) and `flip` middlewares handle edge cases. When the tour is active, `document.documentElement.style.overflowX` is set to `hidden` to prevent horizontal scroll from portal-rendered popovers.
 
+### Cutout Overlay
+
+The persistent overlay uses a CSS `clip-path: path(evenodd, "...")` to create a transparent hole around the focused element, allowing it to be visible and interactive even inside CSS stacking contexts (e.g., Mantine's AppShell with fixed Header/Navbar). The `useCutoutRect` hook (`package/src/hooks/use-cutout-rect/`) measures the focused element via `getBoundingClientRect()` on the element with `[data-onboarding-tour-focus-reveal-focused]` attribute. The `buildCutoutPath` helper generates an SVG path with an outer viewport rect and an inner rounded rect (opposite winding = hole via evenodd rule).
+
+Configurable via `cutoutPadding` (default: 8) and `cutoutRadius` (default: 8) props on both `<OnboardingTour>` (tour-level) and `OnboardingTourStep` (per-step override). Use `cutoutRadius: 9999` for circular elements like avatars.
+
 ### OnboardingTourStep
 
-Each step can use ReactNode or render function `(controller: OnboardingTourController) => ReactNode` for: `header`, `title`, `content`, `footer`, `focusRevealProps`. Steps also accept `[key: string]: any` for arbitrary custom data (used in custom popover demos).
+Each step can use ReactNode or render function `(controller: OnboardingTourController) => ReactNode` for: `header`, `title`, `content`, `footer`, `focusRevealProps`. Steps also accept `cutoutPadding` and `cutoutRadius` for per-step cutout customization, plus `[key: string]: any` for arbitrary custom data (used in custom popover demos).
 
 ### useScrollIntoView
 
@@ -99,7 +105,7 @@ Rollup compiles `package/src/index.ts` → ESM (.mjs) + CJS (.cjs) with `'use cl
 ### Docs & Demos (docs/)
 
 Next.js 15 static export. Demos in `docs/demos/` export a `Wrapper` function + metadata object compatible with `@mantinex/demo`. Demo categories:
-- **OnboardingTour.demo.***: configurator, target, customStepper, customPopoverContent, customEntry, wrapTitle, onboardingTourStep, onboardingTourStepFocusReveal, onboardingProps, targetFocusReveal
+- **OnboardingTour.demo.***: configurator, cutout, target, customStepper, customPopoverContent, customEntry, wrapTitle, onboardingTourStep, onboardingTourStepFocusReveal, onboardingProps, targetFocusReveal
 - **Full-page demos** (docs/pages/): `demo.tsx` (main tour), `responsive.tsx` (responsive positioning)
 - **FocusReveal.demo.***: configurator, cycle, group, group-props, overlay, popover, popoverProps, reveal, scrollContainer, focusMode, paper, uncontrolled, disableTargetInteraction, cycleDescription
 

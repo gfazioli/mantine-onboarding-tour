@@ -14,6 +14,7 @@ export { focusRevealScrollContainer } from './FocusReveal.demo.scrollContainer';
 export { focusRevealUncontrolled } from './FocusReveal.demo.uncontrolled';
 
 export { configurator } from './OnboardingTour.demo.configurator';
+export { cutout } from './OnboardingTour.demo.cutout';
 export { customEntry } from './OnboardingTour.demo.customEntry';
 export { customPopoverContent } from './OnboardingTour.demo.customPopoverContent';
 export { customStepper } from './OnboardingTour.demo.customStepper';

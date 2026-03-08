@@ -188,6 +188,12 @@ export type OnboardingTourStep<
     | ((
         tourController: OnboardingTourController<T>
       ) => OnboardingTourFocusRevealProps);
+
+  /** Padding around the cutout highlight area for this step (px). Overrides tour-level cutoutPadding. */
+  cutoutPadding?: number;
+
+  /** Border radius of the cutout highlight area for this step (px). Overrides tour-level cutoutRadius. */
+  cutoutRadius?: number;
 } & T;
 ```
 
@@ -744,3 +750,84 @@ const steps: OnboardingTourStep[] = [
 ## Scroll Behavior
 
 When a step activates, the target element is automatically scrolled into view and **centered** in the viewport. The Floating UI `shift` and `flip` middlewares then ensure the popover stays fully visible regardless of the resolved position.
+
+## Cutout Highlight
+
+When the tour is active, a persistent overlay covers the page with a **cutout hole** around the focused element. By default the cutout has `8px` padding and `8px` border radius, but you can customize both values at the tour level and per step.
+
+### Props
+
+<Table striped highlightOnHover withTableBorder withColumnBorders>
+  <Table.Thead>
+    <Table.Tr>
+      <Table.Th>Prop</Table.Th>
+      <Table.Th>Type</Table.Th>
+      <Table.Th>Default</Table.Th>
+      <Table.Th>Description</Table.Th>
+    </Table.Tr>
+  </Table.Thead>
+  <Table.Tbody>
+    <Table.Tr>
+      <Table.Td>
+        <Code>cutoutPadding</Code>
+      </Table.Td>
+      <Table.Td>
+        <Code>number</Code>
+      </Table.Td>
+      <Table.Td>
+        <Code>8</Code>
+      </Table.Td>
+      <Table.Td>
+        Padding around the cutout highlight area (px)
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <Code>cutoutRadius</Code>
+      </Table.Td>
+      <Table.Td>
+        <Code>number</Code>
+      </Table.Td>
+      <Table.Td>
+        <Code>8</Code>
+      </Table.Td>
+      <Table.Td>
+        Border radius of the cutout. Use <Code>9999</Code> for
+        circular elements.
+      </Table.Td>
+    </Table.Tr>
+  </Table.Tbody>
+</Table>
+
+Both props can be set on `<OnboardingTour>` (tour-level default) and on individual `OnboardingTourStep` objects (per-step override). The resolution order is: **step > tour > default (8)**.
+
+### Circular and custom cutouts
+
+For circular elements like avatars or icon buttons, set `cutoutRadius: 9999` on the step. For pill-shaped buttons, use a moderate radius like `24`. Steps that don't specify these props inherit the tour-level values.
+
+```tsx
+const steps: OnboardingTourStep[] = [
+  {
+    id: 'avatar',
+    title: 'Your Profile',
+    content: 'Click your avatar to open settings.',
+    cutoutPadding: 4,
+    cutoutRadius: 9999, // circular cutout
+  },
+  {
+    id: 'action-button',
+    title: 'Get Started',
+    content: 'This uses a pill-shaped cutout.',
+    cutoutPadding: 6,
+    cutoutRadius: 24,
+  },
+  {
+    id: 'panel',
+    title: 'Dashboard',
+    content: 'Default rectangular cutout (8px padding, 8px radius).',
+    // inherits tour-level defaults
+  },
+];
+```
+
+<Demo data={demos.cutout} />
