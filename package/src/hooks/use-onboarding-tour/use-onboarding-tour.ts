@@ -21,6 +21,12 @@ export type OnboardingTourStep<T extends Record<string, unknown> = Record<string
   focusRevealProps?:
     | OnboardingTourFocusRevealProps
     | ((tourController: OnboardingTourController<T>) => OnboardingTourFocusRevealProps);
+
+  /** Padding around the cutout highlight area for this step. Overrides tour-level `cutoutPadding`. */
+  cutoutPadding?: number;
+
+  /** Border radius of the cutout highlight area for this step. Overrides tour-level `cutoutRadius`. */
+  cutoutRadius?: number;
 } & T;
 
 /** Options for useOnboardingTour() hook */
