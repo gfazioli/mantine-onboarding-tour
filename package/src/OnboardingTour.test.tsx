@@ -2,6 +2,7 @@ import React from 'react';
 import { act, renderHook } from '@testing-library/react';
 import { Button, MantineProvider, Title } from '@mantine/core';
 import { render, screen } from '@mantine-tests/core';
+import { buildCutoutPath } from './hooks/use-cutout-rect/use-cutout-rect';
 import {
   OnboardingTourStep,
   useOnboardingTour,
@@ -453,5 +454,94 @@ describe('Edge cases', () => {
     );
     expect(container).toBeTruthy();
     expect(screen.getByText('Nested Title')).toBeInTheDocument();
+  });
+});
+
+// ─── Cutout overlay tests ──────────────────────────────────────────────────
+
+describe('buildCutoutPath', () => {
+  it('generates a valid path string with outer and inner rects', () => {
+    const path = buildCutoutPath(1024, 768, { x: 100, y: 200, width: 50, height: 30 }, 8, 8);
+    expect(path).toContain('M0,0 H1024 V768 H0 Z');
+    expect(path).toContain('Q');
+    expect(path).toContain('Z');
+  });
+
+  it('clamps radius to half the smallest dimension', () => {
+    const path = buildCutoutPath(1024, 768, { x: 100, y: 200, width: 10, height: 10 }, 0, 9999);
+    // With width=10, height=10, padding=0: r = Math.min(9999, 5, 5) = 5
+    // Inner rect starts at M105,200 (x + r = 100 + 5)
+    expect(path).toContain('M105,200');
+  });
+
+  it('handles zero padding and zero radius', () => {
+    const path = buildCutoutPath(800, 600, { x: 50, y: 50, width: 100, height: 100 }, 0, 0);
+    expect(path).toContain('M0,0 H800 V600 H0 Z');
+    // With r=0, the inner rect is a simple rectangle (Q commands degenerate)
+    expect(path).toContain('M50,50');
+  });
+});
+
+describe('Cutout overlay rendering', () => {
+  it('renders overlay element when tour is started', () => {
+    const { container } = render(
+      <OnboardingTour tour={onboardingSteps} started>
+        <Title data-onboarding-tour-id="welcome" order={4}>
+          Welcome
+        </Title>
+      </OnboardingTour>
+    );
+    const overlay = container.querySelector('[data-onboarding-tour-overlay]');
+    expect(overlay).toBeInTheDocument();
+  });
+
+  it('does not render overlay when tour is not started', () => {
+    const { container } = render(
+      <OnboardingTour tour={onboardingSteps} started={false}>
+        <Title data-onboarding-tour-id="welcome" order={4}>
+          Welcome
+        </Title>
+      </OnboardingTour>
+    );
+    const overlay = container.querySelector('[data-onboarding-tour-overlay]');
+    expect(overlay).toBeNull();
+  });
+
+  it('accepts cutoutPadding and cutoutRadius props without errors', () => {
+    const { container } = render(
+      <OnboardingTour tour={onboardingSteps} started cutoutPadding={12} cutoutRadius={9999}>
+        <Title data-onboarding-tour-id="welcome" order={4}>
+          Welcome
+        </Title>
+      </OnboardingTour>
+    );
+    expect(container).toBeTruthy();
+    const overlay = container.querySelector('[data-onboarding-tour-overlay]');
+    expect(overlay).toBeInTheDocument();
+  });
+
+  it('accepts per-step cutoutPadding and cutoutRadius', () => {
+    const stepsWithCutout: OnboardingTourStep[] = [
+      {
+        id: 'step1',
+        title: 'Step 1',
+        cutoutPadding: 4,
+        cutoutRadius: 9999,
+      },
+      {
+        id: 'step2',
+        title: 'Step 2',
+        // inherits tour-level defaults
+      },
+    ];
+    const { container } = render(
+      <OnboardingTour tour={stepsWithCutout} started cutoutPadding={16} cutoutRadius={16}>
+        <Title data-onboarding-tour-id="step1" order={4}>
+          Step 1
+        </Title>
+        <Button data-onboarding-tour-id="step2">Step 2</Button>
+      </OnboardingTour>
+    );
+    expect(container).toBeTruthy();
   });
 });
