@@ -242,10 +242,17 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
   };
 
   // Resolve cutout padding/radius: per-step overrides > tour-level props > defaults
-  const resolvedCutoutPadding =
+  // Clamp to >= 0 and guard against non-finite values (public props)
+  const rawCutoutPadding =
     onboardingTour.currentStep?.cutoutPadding ?? _cutoutPadding ?? DEFAULT_CUTOUT_PADDING;
-  const resolvedCutoutRadius =
+  const rawCutoutRadius =
     onboardingTour.currentStep?.cutoutRadius ?? _cutoutRadius ?? DEFAULT_CUTOUT_RADIUS;
+  const resolvedCutoutPadding = Number.isFinite(rawCutoutPadding)
+    ? Math.max(0, rawCutoutPadding)
+    : DEFAULT_CUTOUT_PADDING;
+  const resolvedCutoutRadius = Number.isFinite(rawCutoutRadius)
+    ? Math.max(0, rawCutoutRadius)
+    : DEFAULT_CUTOUT_RADIUS;
 
   // Use CSS clip-path: path(evenodd, "...") directly — no inline SVG needed
   const cssClipPath = cutoutRect
