@@ -4,7 +4,17 @@ import {
   type OnboardingTourController,
   type OnboardingTourStep,
 } from '@gfazioli/mantine-onboarding-tour';
-import { AppShell, Burger, Button, Center, Group, Image, NavLink, ScrollArea } from '@mantine/core';
+import {
+  AppShell,
+  Avatar,
+  Burger,
+  Button,
+  Center,
+  Group,
+  Image,
+  NavLink,
+  ScrollArea,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineLogo } from '@mantinex/mantine-logo';
 import { Testimonials } from '../demos/Testimonials';
@@ -43,6 +53,13 @@ const onboardingSteps: OnboardingTourStep[] = [
     id: 'item-10',
     title: 'Feedback',
     content: 'Check the latest feedback and feature requests from your users.',
+  },
+  {
+    id: 'avatar',
+    title: 'Your Profile',
+    content: 'Click on your avatar to access your profile settings.',
+    cutoutPadding: 4,
+    cutoutRadius: 9999,
   },
   {
     id: 'login',
@@ -91,6 +108,12 @@ export default function HomePage() {
               <Group>
                 <MantineLogo data-onboarding-tour-id="logo" size={30} />
               </Group>
+              <Avatar
+                data-onboarding-tour-id="avatar"
+                src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
+                radius="xl"
+                size="md"
+              />
               <Button data-onboarding-tour-id="login">Login</Button>
             </Group>
           </Group>

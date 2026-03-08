@@ -44,6 +44,12 @@ export interface OnboardingTourBaseProps
     | OnboardingTourFocusRevealProps
     | ((tourController: OnboardingTourController) => OnboardingTourFocusRevealProps);
 
+  /** Padding around the cutout highlight area in pixels. Default: `8` */
+  cutoutPadding?: number;
+
+  /** Border radius of the cutout highlight area in pixels. Use a large value (e.g. `9999`) for circular elements. Default: `8` */
+  cutoutRadius?: number;
+
   /** Child elements */
   children: React.ReactNode;
 }
@@ -62,8 +68,8 @@ export type OnboardingTourFactory = Factory<{
   };
 }>;
 
-const CUTOUT_PADDING = 8;
-const CUTOUT_RADIUS = 8;
+const DEFAULT_CUTOUT_PADDING = 8;
+const DEFAULT_CUTOUT_RADIUS = 8;
 
 export const defaultProps: Partial<OnboardingTourProps> = {};
 
@@ -75,6 +81,8 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     started,
     loop,
     focusRevealProps: _focusRevealProps,
+    cutoutPadding: _cutoutPadding,
+    cutoutRadius: _cutoutRadius,
     onOnboardingTourStart,
     onOnboardingTourEnd,
     onOnboardingTourComplete,
@@ -233,14 +241,20 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     });
   };
 
+  // Resolve cutout padding/radius: per-step overrides > tour-level props > defaults
+  const resolvedCutoutPadding =
+    onboardingTour.currentStep?.cutoutPadding ?? _cutoutPadding ?? DEFAULT_CUTOUT_PADDING;
+  const resolvedCutoutRadius =
+    onboardingTour.currentStep?.cutoutRadius ?? _cutoutRadius ?? DEFAULT_CUTOUT_RADIUS;
+
   // Use CSS clip-path: path(evenodd, "...") directly — no inline SVG needed
   const cssClipPath = cutoutRect
     ? `path(evenodd, "${buildCutoutPath(
         typeof window !== 'undefined' ? window.innerWidth : 0,
         typeof window !== 'undefined' ? window.innerHeight : 0,
         cutoutRect,
-        CUTOUT_PADDING,
-        CUTOUT_RADIUS
+        resolvedCutoutPadding,
+        resolvedCutoutRadius
       )}")`
     : undefined;
 
