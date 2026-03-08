@@ -170,7 +170,7 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     200;
 
   const isTourActive = started && onboardingTour.currentStepIndex !== undefined;
-  const cutoutRect = useCutoutRect(isTourActive, selectedTourId);
+  const cutoutState = useCutoutRect(isTourActive, selectedTourId);
 
   // Prevent horizontal scroll when the tour overlay is active (popovers via portal can exceed viewport)
   useEffect(() => {
@@ -255,11 +255,11 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     : DEFAULT_CUTOUT_RADIUS;
 
   // Use CSS clip-path: path(evenodd, "...") directly — no inline SVG needed
-  const cssClipPath = cutoutRect
+  const cssClipPath = cutoutState
     ? `path(evenodd, "${buildCutoutPath(
-        typeof window !== 'undefined' ? window.innerWidth : 0,
-        typeof window !== 'undefined' ? window.innerHeight : 0,
-        cutoutRect,
+        cutoutState.vw,
+        cutoutState.vh,
+        cutoutState.rect,
         resolvedCutoutPadding,
         resolvedCutoutRadius
       )}")`
