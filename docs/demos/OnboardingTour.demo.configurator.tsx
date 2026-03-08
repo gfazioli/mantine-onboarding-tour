@@ -225,5 +225,23 @@ export const configurator: MantineDemo = {
       initialValue: 'Skip',
       libraryValue: 'Skip',
     },
+    {
+      prop: 'cutoutPadding',
+      type: 'number',
+      initialValue: 8,
+      libraryValue: 8,
+      min: 0,
+      max: 32,
+      step: 1,
+    },
+    {
+      prop: 'cutoutRadius',
+      type: 'number',
+      initialValue: 8,
+      libraryValue: 8,
+      min: 0,
+      max: 9999,
+      step: 1,
+    },
   ],
 };
