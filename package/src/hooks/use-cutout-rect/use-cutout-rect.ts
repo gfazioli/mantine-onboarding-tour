@@ -91,6 +91,9 @@ export function useCutoutRect(active: boolean, stepId: string | undefined): Cuto
     window.addEventListener('scroll', onUpdate, true);
     window.addEventListener('resize', onUpdate);
 
+    // Measure immediately so the cutout is applied on the first frame
+    onUpdate();
+
     return () => {
       cancelAnimationFrame(rafId);
       clearInterval(poll);
