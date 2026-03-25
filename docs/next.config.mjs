@@ -19,11 +19,16 @@ try {
   process.exit(1);
 }
 
+const basePath = process.env.NODE_ENV === 'production' ? `/${repository}` : '';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   output: 'export',
-  basePath: process.env.NODE_ENV === 'production' ? `/${repository}` : undefined,
+  basePath: basePath || undefined,
+  env: {
+    NEXT_PUBLIC_BASE_PATH: basePath,
+  },
   pageExtensions: ['ts', 'tsx', 'mdx'],
   eslint: {
     ignoreDuringBuilds: true,

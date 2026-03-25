@@ -120,7 +120,7 @@ Here is a full page example of an Onboarding Tour.
 
 <Button
   component="a"
-  href="demo"
+  href={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/demo`}
   target="_blank"
   rightSection={
     <IconExternalLink
@@ -688,7 +688,7 @@ Try the full-page responsive demo to see the behavior at different screen sizes:
 
 <Button
   component="a"
-  href="responsive"
+  href={`${process.env.NEXT_PUBLIC_BASE_PATH || ''}/responsive`}
   target="_blank"
   rightSection={
     <IconExternalLink
