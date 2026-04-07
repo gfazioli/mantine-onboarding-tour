@@ -213,6 +213,7 @@ export function CustomShell(props: OnboardingTourProps) {
 
   useEffect(() => {
     open();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

@@ -45,6 +45,7 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
     } else {
       setFocused(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ctx?.selectedStepId, id]);
 
   if (!isElement(children)) {
@@ -53,7 +54,7 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
     );
   }
 
-  if (!focused) {
+  if (!focused || !ctx) {
     return children;
   }
 
@@ -99,8 +100,8 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
           withPrevButton={withPrevButton}
           withSkipButton={withSkipButton}
           withStepper={withStepper}
-          tourController={ctx}
           {...(others as unknown as OnboardingTourPopoverContentBaseProps)}
+          tourController={ctx}
         />
       }
       focused

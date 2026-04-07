@@ -203,9 +203,10 @@ export function useOnboardingTour<T extends Record<string, unknown> = Record<str
 
   return {
     tour,
-    currentStep: tour[currentStepIndex],
+    currentStep: currentStepIndex !== undefined ? tour[currentStepIndex] : undefined,
     currentStepIndex,
-    selectedStepId: isTransitioning ? undefined : tour[currentStepIndex]?.id,
+    selectedStepId:
+      isTransitioning || currentStepIndex === undefined ? undefined : tour[currentStepIndex]?.id,
     setCurrentStepIndex,
     startTour,
     endTour,

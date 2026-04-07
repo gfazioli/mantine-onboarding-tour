@@ -98,6 +98,7 @@ const titleOnboarding: OnboardingTourStep[] = [
 export function Usage(props: OnboardingTourPopoverContentProps) {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -112,6 +113,7 @@ export function Usage(props: OnboardingTourPopoverContentProps) {
 export function With(props: OnboardingTourPopoverContentProps) {
   const onboardingTour = useOnboardingTour(simpleOnboarding, { loop: props.loop });
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -126,6 +128,7 @@ export function With(props: OnboardingTourPopoverContentProps) {
 export function SingleCustomTitle(props: OnboardingTourPopoverContentProps) {
   const onboardingTour = useOnboardingTour(titleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -140,6 +143,7 @@ export function SingleCustomTitle(props: OnboardingTourPopoverContentProps) {
 export function WholeCustomTitle(props: OnboardingTourPopoverContentProps) {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -154,6 +158,7 @@ export function WholeCustomTitle(props: OnboardingTourPopoverContentProps) {
 export function WholeCustomTitleFunction() {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -188,13 +193,14 @@ export function SingleCustomContent() {
     title: 'Login',
     content: (tourController: OnboardingTourController) => (
       <Text c="green" fs="italic">
-        By function {tourController.currentStepIndex}
+        By function {tourController.currentStepIndex ?? 0}
       </Text>
     ),
   };
 
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -209,6 +215,7 @@ export function SingleCustomContent() {
 export function WholeCustomContent() {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -223,6 +230,7 @@ export function WholeCustomContent() {
 export function WholeCustomContentFunction() {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -231,7 +239,7 @@ export function WholeCustomContentFunction() {
         <OnboardingTour.PopoverContent
           tourController={onboardingTour}
           content={(tourController: OnboardingTourController) => (
-            <Text>Always, the same {tourController.currentStepIndex}</Text>
+            <Text>Always, the same {tourController.currentStepIndex ?? 0}</Text>
           )}
         />
       </Paper>
@@ -255,6 +263,7 @@ export function SingleCustomContentFunction() {
 
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   return (
@@ -269,6 +278,7 @@ export function SingleCustomContentFunction() {
 export function WholeCustomContentComponent() {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   function Content() {
@@ -294,10 +304,11 @@ export function WholeCustomContentComponent() {
 export function CustomNavigation() {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   const customPrev = (tourController: OnboardingTourController) => {
-    if (tourController.currentStepIndex === 2) {
+    if ((tourController.currentStepIndex ?? 0) === 2) {
       return 'Previous for 2';
     }
     return <Badge>Previous</Badge>;
@@ -319,6 +330,7 @@ export function CustomNavigation() {
 export function CustomStepper() {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   const customStepper = (tourController: OnboardingTourController) => {
@@ -327,9 +339,9 @@ export function CustomStepper() {
     return (
       <Center>
         <Rating
-          readOnly={tourController.currentStepIndex === 2}
+          readOnly={(tourController.currentStepIndex ?? 0) === 2}
           count={tourController.tour.length}
-          value={tourController.currentStepIndex + 1}
+          value={(tourController.currentStepIndex ?? 0) + 1}
           onChange={(value) => tourController.setCurrentStepIndex(value - 1)}
         />
       </Center>
@@ -348,15 +360,16 @@ export function CustomStepper() {
 export function CustomFooter() {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   const customFooter = (tourController: OnboardingTourController) => {
-    if (tourController.currentStepIndex === 1) {
-      return <Badge color="blue">{tourController.currentStep.title as string}</Badge>;
+    if ((tourController.currentStepIndex ?? 0) === 1) {
+      return <Badge color="blue">{tourController.currentStep?.title as string}</Badge>;
     }
     return (
       <Badge color="gray" size="xs">
-        {tourController.currentStep.title as string}
+        {tourController.currentStep?.title as string}
       </Badge>
     );
   };
@@ -406,11 +419,12 @@ export function CustomFooterWithDesc() {
 
   const onboardingTour = useOnboardingTour(onboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   const customFooter = (tourController: OnboardingTourController) => {
     if (tourController?.currentStep?.footer) {
-      return <Badge color="red">{tourController.currentStep.footer as string}</Badge>;
+      return <Badge color="red">{tourController.currentStep?.footer as string}</Badge>;
     }
     return null;
   };
@@ -427,10 +441,11 @@ export function CustomFooterWithDesc() {
 export function CustomContent() {
   const onboardingTour = useOnboardingTour(simpleOnboarding);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(onboardingTour.startTour, []);
 
   const handleCounter = (tourController: OnboardingTourController) => {
-    if (tourController.currentStepIndex === 1) {
+    if ((tourController.currentStepIndex ?? 0) === 1) {
       return <Badge>{tourController.currentStep?.title as string}</Badge>;
     }
     return <Text size="xs">{tourController.currentStep?.title as string}</Text>;

@@ -94,7 +94,7 @@ export default function ResponsivePage() {
 
   useEffect(() => {
     open();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <OnboardingTour

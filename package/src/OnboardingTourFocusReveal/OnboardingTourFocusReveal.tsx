@@ -16,7 +16,15 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import { FloatingAxesOffsets, FloatingPosition } from '@mantine/core/lib/utils/Floating';
+// Floating types — inlined because @mantine/core internal paths are not resolvable with moduleResolution: bundler
+type FloatingSide = 'top' | 'right' | 'bottom' | 'left';
+type FloatingPlacement = 'start' | 'end';
+type FloatingPosition = FloatingSide | `${FloatingSide}-${FloatingPlacement}`;
+interface FloatingAxesOffsets {
+  mainAxis?: number;
+  crossAxis?: number;
+  alignmentAxis?: number | null;
+}
 import { useDidUpdate, useInViewport, useMergedRef, useUncontrolled } from '@mantine/hooks';
 import { useScrollIntoView } from '../hooks/use-scroll-into-view/use-scroll-into-view';
 import { OnboardingTourFocusRevealGroup } from '../OnboardingTourFocusRevealGroup/OnboardingTourFocusRevealGroup';
@@ -121,7 +129,7 @@ export interface OnboardingTourFocusRevealBaseProps {
   transitionProps?: TransitionOverride;
 
   /** Ref to scrollable element */
-  scrollableRef?: React.RefObject<HTMLDivElement>;
+  scrollableRef?: React.RefObject<HTMLDivElement | null>;
 
   /** Dropdown content for Popover */
   popoverContent?: React.ReactNode;
@@ -293,7 +301,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
   const resolvedArrowSize = useResponsiveProp<number>(popoverProps?.arrowSize, 16);
 
   useEffect(() => {
-    ctx?.setMeInViewport(uuid, inViewport);
+    ctx?.setMeInViewport?.(uuid, inViewport);
 
     if (targetRef.current) {
       if (_focused || defaultFocused) {
@@ -309,21 +317,22 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         setRealFocused(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [_focused, withReveal, inViewport]);
 
   useDidUpdate(() => {
-    ctx?.setMeInViewport(uuid, inViewport);
+    ctx?.setMeInViewport?.(uuid, inViewport);
 
     if (_focused && !inViewport) {
       blur();
       setRealFocused(false);
-      ctx?.setRequestOverlay(false);
+      ctx?.setRequestOverlay?.(false);
     }
 
     if (inViewport && !controlled && defaultFocused === true) {
       focus();
       setRealFocused(true);
-      ctx?.setRequestOverlay(true);
+      ctx?.setRequestOverlay?.(true);
     }
   }, [inViewport, defaultFocused]);
 
@@ -344,7 +353,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
       },
     };
 
-    newProps['data-popover-dropdown'] = !!popoverContent;
+    (newProps as Record<string, unknown>)['data-popover-dropdown'] = !!popoverContent;
 
     // Build final popover props with resolved responsive values
     const {
@@ -368,6 +377,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         <Popover.Dropdown>{popoverContent}</Popover.Dropdown>
       </Popover>
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     children,
     realFocused,
