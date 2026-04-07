@@ -84,7 +84,7 @@ export function OnboardingTourFocusRevealGroup(_props: OnboardingTourFocusReveal
 
   const [overlay, setOverlay] = useState(false);
 
-  const listInViewport = useRef({});
+  const listInViewport = useRef<Record<string, boolean>>({});
 
   // Check if all children are not in viewport
   const areAllNotVisible = () => Object.values(listInViewport.current).every((visible) => !visible);

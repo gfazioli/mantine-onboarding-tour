@@ -1,9 +1,5 @@
-import {
-  createOptionalContext,
-  ElementProps,
-  OverlayProps,
-  TransitionOverride,
-} from '@mantine/core';
+import { createContext, useContext } from 'react';
+import { ElementProps, OverlayProps, TransitionOverride } from '@mantine/core';
 import { OnboardingTourFocusRevealFocusedMode } from '../OnboardingTourFocusReveal/focus-reveal-modes';
 import { ResponsivePopoverProps } from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
@@ -31,5 +27,12 @@ interface OnboardingTourFocusRevealGroupContextValue {
   popoverProps?: ResponsivePopoverProps;
 }
 
-export const [OnboardingTourFocusRevealGroupProvider, useOnboardingTourFocusRevealGroupContext] =
-  createOptionalContext<OnboardingTourFocusRevealGroupContextValue>();
+const FocusRevealGroupContext = createContext<OnboardingTourFocusRevealGroupContextValue | null>(
+  null
+);
+
+export const OnboardingTourFocusRevealGroupProvider = FocusRevealGroupContext.Provider;
+
+export function useOnboardingTourFocusRevealGroupContext(): OnboardingTourFocusRevealGroupContextValue | null {
+  return useContext(FocusRevealGroupContext);
+}

@@ -1,11 +1,12 @@
 {
   "include": ["package", "scripts", "@types"],
+  "exclude": ["**/*.story.tsx", "**/*.story.ts"],
   "compilerOptions": {
     "types": ["node", "jest", "@testing-library/jest-dom"],
     "target": "ES2015",
     "lib": ["DOM", "ESNext"],
     "module": "ESNext",
-    "moduleResolution": "Node",
+    "moduleResolution": "bundler",
     "jsx": "react",
     "skipLibCheck": true,
     "outDir": "temp",

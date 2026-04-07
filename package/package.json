@@ -7,8 +7,11 @@
   "license": "MIT",
   "author": "Giovambattista Fazioli <giovambattista.fazioli@gmail.com>",
   "keywords": [
+    "component",
     "extension",
     "mantine",
+    "mantine-ui",
+    "mantine-v9",
     "onboarding",
     "onboarding-tour",
     "react",

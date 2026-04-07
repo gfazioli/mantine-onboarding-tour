@@ -73,7 +73,7 @@ const DEFAULT_CUTOUT_RADIUS = 8;
 
 export const defaultProps: Partial<OnboardingTourProps> = {};
 
-export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
+export const OnboardingTour = factory<OnboardingTourFactory>((_props) => {
   const props = useProps('OnboardingTour', defaultProps, _props);
 
   const {
@@ -142,6 +142,7 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     }
     // startTour is excluded: it changes on every render and would cause infinite loops.
     // The component remounts via key changes when tour steps change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [started]);
 
   // Resolve current step's focusRevealProps for the persistent overlay
@@ -189,11 +190,12 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
       return children;
     }
 
-    return React.Children.map(children, (child: React.ReactElement<any>) => {
+    return React.Children.map(children, (child) => {
       // Let's verify that the child is a valid React element.
       if (React.isValidElement(child)) {
         // If the element has the data-onboarding-tour attribute set to true
-        const tourId = child.props['data-onboarding-tour-id'];
+        const childProps = child.props as Record<string, unknown>;
+        const tourId = childProps['data-onboarding-tour-id'] as string | undefined;
         if (tourId) {
           const mergedFocusRevealProps = {
             ...focusRevealProps,
@@ -217,8 +219,8 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
                   classNames={resolvedClassNames}
                   styles={resolvedStyles}
                   unstyled={unstyled}
-                  tourController={onboardingTour}
                   {...(others as unknown as OnboardingTourPopoverContentBaseProps)}
+                  tourController={onboardingTour}
                   key={`onboarding-tour-content-${tourId}`}
                 />
               }
@@ -230,9 +232,9 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
           );
         }
         // If the element has children, we apply the function recursively.
-        if ((child as React.ReactElement<any>).props.children) {
+        if (childProps.children) {
           return React.cloneElement(child as React.ReactElement<{ children?: React.ReactNode }>, {
-            children: wrapChildren((child.props as { children?: React.ReactNode }).children),
+            children: wrapChildren(childProps.children as React.ReactNode),
           });
         }
       }
@@ -266,7 +268,7 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props, ref) => {
     : undefined;
 
   return (
-    <Box ref={ref}>
+    <Box>
       {isTourActive && (
         <Box
           data-onboarding-tour-overlay

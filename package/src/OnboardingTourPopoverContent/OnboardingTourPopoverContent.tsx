@@ -118,7 +118,7 @@ export type OnboardingCurrentTour = OnboardingTourStep & {
 };
 
 export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContentFactory>(
-  (_props, ref) => {
+  (_props) => {
     const props = useProps('OnboardingTourPopoverContent', defaultProps, _props);
 
     const {
@@ -211,7 +211,7 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
 
     /** Skip button */
     const skipNavigationComponent = (withSkipButton &&
-      withFunction(skipNavigation, (label: string) => (
+      withFunction(skipNavigation, (label: string | null | undefined) => (
         <Anchor
           size="xs"
           onClick={() => {
@@ -242,8 +242,8 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
 
     /** Prev button */
     const prevNavigationComponent =
-      withPrevButton && (currentStepIndex > 0 || loop) ? (
-        withFunction(prevStepNavigation, (label: string) => (
+      withPrevButton && ((currentStepIndex ?? 0) > 0 || loop) ? (
+        withFunction(prevStepNavigation, (label: string | null | undefined) => (
           <Button variant="light" size="xs" onClick={prevTour}>
             {label}
           </Button>
@@ -255,8 +255,8 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
     /** Next button */
     const nextNavigationComponent =
       withNextButton &&
-      (currentStepIndex < tour.length - 1 || loop) &&
-      withFunction(nextStepNavigation, (label: string) => (
+      ((currentStepIndex ?? 0) < tour.length - 1 || loop) &&
+      withFunction(nextStepNavigation, (label: string | null | undefined) => (
         <Button variant="light" size="xs" onClick={nextTour}>
           {label}
         </Button>
@@ -265,9 +265,9 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
     /** End button */
     const endNavigationComponent =
       withNextButton &&
-      currentStepIndex === tour.length - 1 &&
+      (currentStepIndex ?? 0) === tour.length - 1 &&
       !loop &&
-      withFunction(endStepNavigation, (label: string) => (
+      withFunction(endStepNavigation, (label: string | null | undefined) => (
         <Button size="xs" onClick={nextTour}>
           {label}
         </Button>
@@ -284,7 +284,7 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
               stepIcon: classes.stepIcon,
               separator: classes.separator,
             }}
-            active={currentStepIndex}
+            active={currentStepIndex ?? 0}
             size="xs"
           >
             {tour.map((step) => (
@@ -295,7 +295,7 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
       ));
 
     return (
-      <Box ref={ref} {...getStyles('popoverContent')} {...others}>
+      <Box {...getStyles('popoverContent')} {...others}>
         <Stack>
           {headerComponent}
           {titleComponent}

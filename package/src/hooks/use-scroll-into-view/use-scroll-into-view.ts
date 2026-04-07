@@ -32,7 +32,7 @@ interface ScrollIntoViewParams {
   /** Prevents content jumping in scrolling lists with multiple targets */
   isList?: boolean;
 
-  scrollableRef?: React.RefObject<HTMLElement>;
+  scrollableRef?: React.RefObject<HTMLElement | null>;
 }
 
 interface ScrollIntoViewReturnType<
@@ -81,17 +81,17 @@ export function useScrollIntoView<
         cancel();
       }
 
-      const start = getScrollStart({ parent: scrollableRef.current, axis }) ?? 0;
+      const start = getScrollStart({ parent: scrollableRef?.current, axis }) ?? 0;
 
       const change =
         getRelativePosition({
-          parent: scrollableRef.current,
+          parent: scrollableRef?.current,
           target: targetRef.current,
           axis,
           alignment,
           offset,
           isList,
-        }) - (scrollableRef.current ? 0 : start);
+        }) - (scrollableRef?.current ? 0 : start);
 
       function animateScroll() {
         if (startTime.current === 0) {
@@ -107,7 +107,7 @@ export function useScrollIntoView<
         const distance = start + change * easing(t);
 
         setScrollParam({
-          parent: scrollableRef.current,
+          parent: scrollableRef?.current,
           axis,
           distance,
         });
@@ -123,6 +123,7 @@ export function useScrollIntoView<
       }
       animateScroll();
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [axis, duration, easing, isList, offset, onScrollFinish, reducedMotion]
   );
 
