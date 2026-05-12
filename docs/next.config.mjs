@@ -1,11 +1,10 @@
 import createMDX from '@next/mdx';
 import fs from 'fs-extra';
-import remarkSlug from 'remark-slug';
 import signale from 'signale';
 
 const withMDX = createMDX({
   options: {
-    remarkPlugins: [remarkSlug],
+    remarkPlugins: ['remark-slug'],
   },
 });
 
@@ -30,9 +29,6 @@ const nextConfig = {
     NEXT_PUBLIC_BASE_PATH: basePath,
   },
   pageExtensions: ['ts', 'tsx', 'mdx'],
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
 };
 
 export default withMDX(nextConfig);
