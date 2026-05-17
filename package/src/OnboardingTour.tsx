@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react';
 import {
   Box,
   BoxProps,
@@ -10,6 +9,7 @@ import {
   useResolvedStylesApi,
   useStyles,
 } from '@mantine/core';
+import React, { useEffect } from 'react';
 import { buildCutoutPath, useCutoutRect } from './hooks/use-cutout-rect/use-cutout-rect';
 import {
   OnboardingTourController,

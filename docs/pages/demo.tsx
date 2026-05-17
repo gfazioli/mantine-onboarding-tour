@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import {
   OnboardingTour,
   type OnboardingTourController,
@@ -17,6 +16,7 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineLogo } from '@mantinex/mantine-logo';
+import { useEffect } from 'react';
 import { Testimonials } from '../demos/Testimonials';
 
 const navItems = [

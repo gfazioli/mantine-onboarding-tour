@@ -1,12 +1,3 @@
-import React from 'react';
-import {
-  IconActivity,
-  IconBrandMantine,
-  IconChevronRight,
-  IconCircleOff,
-  IconGauge,
-  IconHome2,
-} from '@tabler/icons-react';
 import {
   BackgroundImage,
   Badge,
@@ -23,6 +14,15 @@ import {
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import {
+  IconActivity,
+  IconBrandMantine,
+  IconChevronRight,
+  IconCircleOff,
+  IconGauge,
+  IconHome2,
+} from '@tabler/icons-react';
+import React from 'react';
 import { Testimonials } from '../../docs/demos/Testimonials';
 import {
   OnboardingTourController,

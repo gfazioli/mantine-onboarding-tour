@@ -1,6 +1,6 @@
-import React, { useRef } from 'react';
 import { Button, Center, Container, Group, Paper, ScrollArea, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import React, { useRef } from 'react';
 import { LoginForm } from '../../../docs/demos/LoginForm';
 import { Testimonials } from '../../../docs/demos/Testimonials';
 import { focusRevealModes } from './focus-reveal-modes';

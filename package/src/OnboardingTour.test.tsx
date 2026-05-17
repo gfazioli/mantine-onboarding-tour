@@ -1,7 +1,7 @@
-import React from 'react';
-import { act, renderHook } from '@testing-library/react';
-import { Button, MantineProvider, Title } from '@mantine/core';
 import { render, screen } from '@mantine-tests/core';
+import { Button, MantineProvider, Title } from '@mantine/core';
+import { act, renderHook } from '@testing-library/react';
+import React from 'react';
 import { buildCutoutPath } from './hooks/use-cutout-rect/use-cutout-rect';
 import {
   OnboardingTourStep,

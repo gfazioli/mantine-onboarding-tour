@@ -1,8 +1,8 @@
 import { OnboardingTour, type OnboardingTourStep } from '@gfazioli/mantine-onboarding-tour';
-import { IconBell, IconSettings } from '@tabler/icons-react';
 import { Avatar, Button, Divider, Group, Stack, Text, ThemeIcon } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
+import { IconBell, IconSettings } from '@tabler/icons-react';
 
 function Demo() {
   const [started, { open, close }] = useDisclosure(false);

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   focusRevealModes,
   OnboardingTour,
@@ -6,6 +5,7 @@ import {
 } from '@gfazioli/mantine-onboarding-tour';
 import { Center, Code, Divider, Group, Select, Stack, Text, Title } from '@mantine/core';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 import { Testimonials } from './Testimonials';
 
 function Wrapper() {

@@ -1,6 +1,6 @@
-import React from 'react';
 import { Button, Center, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import React from 'react';
 import { Testimonials } from '../../../docs/demos/Testimonials';
 import { focusRevealModes } from './focus-reveal-modes';
 import {

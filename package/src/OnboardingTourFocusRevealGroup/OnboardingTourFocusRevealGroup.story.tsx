@@ -1,5 +1,5 @@
-import React from 'react';
 import { Center, Stack, Title } from '@mantine/core';
+import React from 'react';
 import { Testimonials } from '../../../docs/demos/Testimonials';
 import { OnboardingTourFocusReveal } from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
