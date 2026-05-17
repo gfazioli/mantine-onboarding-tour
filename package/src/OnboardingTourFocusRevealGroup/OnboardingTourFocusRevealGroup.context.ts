@@ -1,5 +1,5 @@
-import { createContext, useContext } from 'react';
 import { ElementProps, OverlayProps, TransitionOverride } from '@mantine/core';
+import { createContext, useContext } from 'react';
 import { OnboardingTourFocusRevealFocusedMode } from '../OnboardingTourFocusReveal/focus-reveal-modes';
 import { ResponsivePopoverProps } from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 

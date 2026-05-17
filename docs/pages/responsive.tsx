@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { OnboardingTour, type OnboardingTourStep } from '@gfazioli/mantine-onboarding-tour';
 import {
   Badge,
@@ -17,6 +16,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { useEffect } from 'react';
 
 const onboardingSteps: OnboardingTourStep[] = [
   {

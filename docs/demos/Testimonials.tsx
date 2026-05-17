@@ -1,5 +1,5 @@
-import React, { forwardRef } from 'react';
 import { Avatar, Button, Card, Group, Rating, Stack, Text, Title } from '@mantine/core';
+import React, { forwardRef } from 'react';
 
 const text =
   'Scroll the page 👆up or 👇down to remove the focus from the card. In practice, make this component invisible so that the onBlur event will be triggered.';

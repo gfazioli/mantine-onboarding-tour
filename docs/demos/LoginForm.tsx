@@ -1,5 +1,5 @@
-import React from 'react';
 import { Anchor, Button, Checkbox, Group, Paper, PasswordInput, TextInput } from '@mantine/core';
+import React from 'react';
 
 export const LoginForm: React.FC = () => {
   return (

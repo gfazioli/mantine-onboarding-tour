@@ -1,4 +1,3 @@
-import React, { cloneElement, useEffect, useId, useMemo, useRef, useState } from 'react';
 import {
   BoxProps,
   ElementProps,
@@ -16,6 +15,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
+import React, { cloneElement, useEffect, useId, useMemo, useRef, useState } from 'react';
 // Floating types — inlined because @mantine/core internal paths are not resolvable with moduleResolution: bundler
 type FloatingSide = 'top' | 'right' | 'bottom' | 'left';
 type FloatingPlacement = 'start' | 'end';

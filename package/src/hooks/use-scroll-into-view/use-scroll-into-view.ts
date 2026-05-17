@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useRef } from 'react';
 import { useReducedMotion, useWindowEvent } from '@mantine/hooks';
+import { useCallback, useEffect, useRef } from 'react';
 import { easeInOutQuad } from './utils/ease-in-out-quad';
 import { getRelativePosition } from './utils/get-relative-position';
 import { getScrollStart } from './utils/get-scroll-start';

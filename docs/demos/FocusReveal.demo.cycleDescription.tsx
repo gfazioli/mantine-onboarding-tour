@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Group, Paper, Stack, Text, Title } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
+import { useState } from 'react';
 import { Testimonials, testimonials } from './Testimonials';
 
 function Wrapper() {

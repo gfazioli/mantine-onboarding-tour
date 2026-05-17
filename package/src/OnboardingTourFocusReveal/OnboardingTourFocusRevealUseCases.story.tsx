@@ -1,6 +1,6 @@
-import React from 'react';
 import { Button, Center, Container, Group, Paper, Title } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
+import React from 'react';
 import { Testimonials, testimonials } from '../../../docs/demos/Testimonials';
 import { focusRevealModes } from './focus-reveal-modes';
 import {

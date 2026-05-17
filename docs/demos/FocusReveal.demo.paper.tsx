@@ -1,8 +1,8 @@
-import { useRef } from 'react';
 import { OnboardingTour } from '@gfazioli/mantine-onboarding-tour';
 import { Button, Center, Divider, Paper, Stack, Title } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineDemo } from '@mantinex/demo';
+import { useRef } from 'react';
 import { Testimonials } from './Testimonials';
 
 function Wrapper() {

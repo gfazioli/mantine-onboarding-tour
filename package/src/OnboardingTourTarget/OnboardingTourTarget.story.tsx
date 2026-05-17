@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-import { IconBrandMantine } from '@tabler/icons-react';
 import {
   AppShell,
   Burger,
@@ -15,6 +13,8 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { MantineLogo } from '@mantinex/mantine-logo';
+import { IconBrandMantine } from '@tabler/icons-react';
+import React, { useEffect } from 'react';
 import { Testimonials } from '../../../docs/demos/Testimonials';
 import type { OnboardingTourStep } from '../hooks/use-onboarding-tour/use-onboarding-tour';
 import { OnboardingTour, OnboardingTourProps } from '../OnboardingTour';

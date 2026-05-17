@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
 import { isElement, useProps } from '@mantine/core';
+import React, { useEffect, useState } from 'react';
 import { OnboardingTourController } from '../hooks/use-onboarding-tour/use-onboarding-tour';
 import { useOnboardingTourContext } from '../OnboardingTour.context';
 import {

@@ -1,4 +1,3 @@
-import React, { useRef, useState } from 'react';
 import {
   ElementProps,
   Factory,
@@ -8,6 +7,7 @@ import {
   TransitionOverride,
   useProps,
 } from '@mantine/core';
+import React, { useRef, useState } from 'react';
 import { OnboardingTourFocusRevealFocusedMode } from '../OnboardingTourFocusReveal/focus-reveal-modes';
 import { ResponsivePopoverProps } from '../OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 import { OnboardingTourFocusRevealGroupProvider } from './OnboardingTourFocusRevealGroup.context';

@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Anchor,
   Box,
@@ -16,6 +15,7 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
+import React from 'react';
 import {
   OnboardingTourStep,
   type OnboardingTourController,

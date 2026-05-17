@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
 import { Badge, Button, Center, Group, Image, Paper, Rating, Text, Title } from '@mantine/core';
+import React, { useEffect } from 'react';
 import {
   OnboardingTourController,
   OnboardingTourStep,
