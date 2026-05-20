@@ -13,7 +13,7 @@
     "clean": "rimraf package/dist",
     "dev": "cd docs && npm run dev",
     "docgen": "tsx scripts/docgen",
-    "docs:build": "npm run docgen && cd docs && npm run build",
+    "docs:build": "npm run docgen && tsx scripts/copy-social-image && cd docs && npm run build",
     "docs:deploy": "npm run docs:build && tsx scripts/nojekyll && gh-pages -d docs/out -t",
     "jest": "jest",
     "lint": "npm run oxlint && npm run stylelint",
