@@ -103,7 +103,3 @@ Your help truly matters.
 
 ---
 https://github.com/user-attachments/assets/93d39052-90be-45d7-a470-67f8727bc096
-
----  
-[![Star History Chart](https://api.star-history.com/svg?repos=gfazioli/mantine-onboarding-tour&type=Timeline)](https://www.star-history.com/#gfazioli/mantine-onboarding-tour&Timeline)
-
