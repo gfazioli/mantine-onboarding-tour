@@ -197,11 +197,20 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props) => {
         const childProps = child.props as Record<string, unknown>;
         const tourId = childProps['data-onboarding-tour-id'] as string | undefined;
         if (tourId) {
+          // Deep-merge tour-level and step-level focusRevealProps so a step that defines its own
+          // `popoverProps`/`overlayProps` doesn't drop the tour-level ones — a plain spread would
+          // replace the whole nested object. `currentStepFocusRevealProps` is the resolved step value.
           const mergedFocusRevealProps = {
             ...focusRevealProps,
-            ...(typeof onboardingTour.currentStep?.focusRevealProps === 'function'
-              ? onboardingTour.currentStep.focusRevealProps(onboardingTour)
-              : onboardingTour.currentStep?.focusRevealProps),
+            ...currentStepFocusRevealProps,
+            popoverProps: {
+              ...focusRevealProps?.popoverProps,
+              ...currentStepFocusRevealProps?.popoverProps,
+            },
+            overlayProps: {
+              ...focusRevealProps?.overlayProps,
+              ...currentStepFocusRevealProps?.overlayProps,
+            },
           };
 
           return (

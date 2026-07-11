@@ -8,7 +8,10 @@ import {
   useOnboardingTour,
 } from './hooks/use-onboarding-tour/use-onboarding-tour';
 import { OnboardingTour } from './OnboardingTour';
-import { OnboardingTourFocusReveal } from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
+import {
+  defaultProps as focusRevealDefaultProps,
+  OnboardingTourFocusReveal,
+} from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
 const onboardingSteps: OnboardingTourStep[] = [
   {
@@ -396,6 +399,44 @@ describe('FocusReveal', () => {
       </OnboardingTourFocusReveal>
     );
     expect(container.querySelector('[data-onboarding-tour-focus-reveal-overlay]')).toBeNull();
+  });
+});
+
+// ─── Popover dropdown sizing (issue #44) ────────────────────────────────────
+
+describe('Popover dropdown sizing (#44)', () => {
+  it('sets a default max-width on the popover dropdown', () => {
+    // Without a width ceiling the dropdown is `width: max-content` / `max-width: none`, so wide or
+    // non-wrapping content overflows the viewport and — combined with the tour's `overflow-x: hidden`
+    // — makes `position` look broken. Locking the default here prevents a regression.
+    const styles = (
+      focusRevealDefaultProps.popoverProps as { styles?: { dropdown?: React.CSSProperties } }
+    )?.styles;
+    expect(styles?.dropdown?.maxWidth).toBe(400);
+  });
+
+  it('renders with both tour-level and step-level focusRevealProps.popoverProps (deep-merge path)', () => {
+    // A step that sets its own popoverProps must not drop the tour-level popoverProps; this exercises
+    // the deep-merge in wrapChildren without throwing.
+    const steps: OnboardingTourStep[] = [
+      {
+        id: 'welcome',
+        title: 'Welcome',
+        content: 'Content',
+        focusRevealProps: { popoverProps: { position: 'top' } },
+      },
+    ];
+    const { container } = render(
+      <OnboardingTour
+        tour={steps}
+        started
+        focusRevealProps={{ popoverProps: { styles: { dropdown: { maxWidth: 500 } } } }}
+      >
+        <Button data-onboarding-tour-id="welcome">Target</Button>
+      </OnboardingTour>
+    );
+    expect(container).toBeTruthy();
+    expect(screen.getByText('Target')).toBeInTheDocument();
   });
 });
 

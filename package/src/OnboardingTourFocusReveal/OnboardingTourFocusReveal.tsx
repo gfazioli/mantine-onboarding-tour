@@ -195,6 +195,12 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
     radius: 'md',
     shadow: 'xl',
     middlewares: { shift: { padding: 20 }, flip: true },
+    // Cap the dropdown width by default. `width: 'max-content'` alone has `max-width: none`,
+    // so wide/non-wrapping content (images, code, fixed layouts) overflows past the viewport
+    // and — combined with the tour's `overflow-x: hidden` — makes `position` look broken.
+    // `styles.dropdown` is applied after the internal `width`, so this max-width wins.
+    // Override per tour/step via `popoverProps.styles.dropdown.maxWidth` or `popoverProps.width`.
+    styles: { dropdown: { maxWidth: 400 } },
   },
 };
 

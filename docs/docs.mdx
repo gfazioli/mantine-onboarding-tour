@@ -563,6 +563,28 @@ You can use the `popoverProps` prop (are the same as the Mantine `Popover` compo
 
 <Demo data={demos.focusRevealPopoverProps} />
 
+### Popover width
+
+The popover dropdown has a **default `max-width` of `400px`**, so wide or non-wrapping content (images, code blocks, fixed-width layouts) stays inside the viewport instead of overflowing. Note that `maw` set on `<OnboardingTour>` (or a step) sizes the **inner content box**, not the dropdown itself — to size the dropdown, use `popoverProps`:
+
+```tsx
+<OnboardingTour
+  focusRevealProps={{
+    popoverProps: {
+      // Fixed width…
+      width: 320,
+      // …or change the ceiling (overrides the 400px default; use 'none' to remove it):
+      styles: { dropdown: { maxWidth: 560 } },
+    },
+  }}
+  tour={steps}
+>
+  {/* ... */}
+</OnboardingTour>
+```
+
+`styles.dropdown` is applied after the internal `width`, so `max-width` wins over the default `width: 'max-content'`. Both `popoverProps.width` and `popoverProps.styles.dropdown.maxWidth` accept per-tour and per-step values via `focusRevealProps`.
+
 ## Example: Cycle
 
 Here are some examples of how to use the `OnboardingTour.FocusReveal` component in different scenarios.
@@ -587,6 +609,7 @@ popoverProps: {
   arrowSize: 16,
   offset: -4,
   middlewares: { shift: { padding: 20 }, flip: true },
+  styles: { dropdown: { maxWidth: 400 } },
 }
 ```
 
