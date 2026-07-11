@@ -585,6 +585,10 @@ The popover dropdown has a **default `max-width` of `400px`**, so wide or non-wr
 
 `styles.dropdown` is applied after the internal `width`, so `max-width` wins over the default `width: 'max-content'`. Both `popoverProps.width` and `popoverProps.styles.dropdown.maxWidth` accept per-tour and per-step values via `focusRevealProps`.
 
+Reveal the card below: the popover holds a long paragraph but stays capped at `400px` and wraps instead of overflowing.
+
+<Demo data={demos.focusRevealPopoverWidth} />
+
 ## Example: Cycle
 
 Here are some examples of how to use the `OnboardingTour.FocusReveal` component in different scenarios.
