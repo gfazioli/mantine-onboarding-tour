@@ -1,6 +1,6 @@
 import { render, screen } from '@mantine-tests/core';
 import { Button, MantineProvider, Title } from '@mantine/core';
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 import { buildCutoutPath } from './hooks/use-cutout-rect/use-cutout-rect';
 import {
@@ -8,10 +8,7 @@ import {
   useOnboardingTour,
 } from './hooks/use-onboarding-tour/use-onboarding-tour';
 import { OnboardingTour } from './OnboardingTour';
-import {
-  defaultProps as focusRevealDefaultProps,
-  OnboardingTourFocusReveal,
-} from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
+import { OnboardingTourFocusReveal } from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
 const onboardingSteps: OnboardingTourStep[] = [
   {
@@ -405,19 +402,31 @@ describe('FocusReveal', () => {
 // ─── Popover dropdown sizing (issue #44) ────────────────────────────────────
 
 describe('Popover dropdown sizing (#44)', () => {
-  it('sets a default max-width on the popover dropdown', () => {
-    // Without a width ceiling the dropdown is `width: max-content` / `max-width: none`, so wide or
-    // non-wrapping content overflows the viewport and — combined with the tour's `overflow-x: hidden`
-    // — makes `position` look broken. Locking the default here prevents a regression.
-    const styles = (
-      focusRevealDefaultProps.popoverProps as { styles?: { dropdown?: React.CSSProperties } }
-    )?.styles;
-    expect(styles?.dropdown?.maxWidth).toBe(400);
+  // The popover only opens once its target is in the viewport; the IntersectionObserver mock in
+  // jsdom.mocks.cjs reports elements as visible so the dropdown mounts.
+  const findDropdown = () =>
+    waitFor(() => {
+      const el = document.querySelector('.mantine-Popover-dropdown');
+      expect(el).toBeInTheDocument();
+      return el as HTMLElement;
+    });
+
+  it('applies the default width-cap class to the tour popover dropdown', async () => {
+    // The default `max-width: 400px` ships as a CSS class (not inline `styles`) so it survives
+    // consumer `styles.dropdown` overrides of other properties. CSS modules are mocked with
+    // identity-obj-proxy, so the class token equals its key ('dropdown').
+    render(
+      <OnboardingTour tour={onboardingSteps} started>
+        <Button data-onboarding-tour-id="welcome">Target</Button>
+      </OnboardingTour>
+    );
+    const dropdown = await findDropdown();
+    expect(dropdown.classList.contains('dropdown')).toBe(true);
   });
 
-  it('renders with both tour-level and step-level focusRevealProps.popoverProps (deep-merge path)', () => {
-    // A step that sets its own popoverProps must not drop the tour-level popoverProps; this exercises
-    // the deep-merge in wrapChildren without throwing.
+  it('deep-merges tour-level and step-level popoverProps (step does not drop tour settings)', async () => {
+    // The step overrides only `position`; the tour-level `styles.dropdown` must survive the merge
+    // (a shallow spread would replace the whole popoverProps and lose it).
     const steps: OnboardingTourStep[] = [
       {
         id: 'welcome',
@@ -426,17 +435,21 @@ describe('Popover dropdown sizing (#44)', () => {
         focusRevealProps: { popoverProps: { position: 'top' } },
       },
     ];
-    const { container } = render(
+    render(
       <OnboardingTour
         tour={steps}
         started
-        focusRevealProps={{ popoverProps: { styles: { dropdown: { maxWidth: 500 } } } }}
+        focusRevealProps={{
+          popoverProps: { styles: { dropdown: { backgroundColor: 'rgb(1, 2, 3)' } } },
+        }}
       >
         <Button data-onboarding-tour-id="welcome">Target</Button>
       </OnboardingTour>
     );
-    expect(container).toBeTruthy();
-    expect(screen.getByText('Target')).toBeInTheDocument();
+    const dropdown = await findDropdown();
+    expect(dropdown).toHaveStyle({ backgroundColor: 'rgb(1, 2, 3)' });
+    // The default cap class is still applied alongside the consumer's styles override.
+    expect(dropdown.classList.contains('dropdown')).toBe(true);
   });
 });
 

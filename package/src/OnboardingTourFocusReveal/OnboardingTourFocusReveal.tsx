@@ -195,12 +195,6 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
     radius: 'md',
     shadow: 'xl',
     middlewares: { shift: { padding: 20 }, flip: true },
-    // Cap the dropdown width by default. `width: 'max-content'` alone has `max-width: none`,
-    // so wide/non-wrapping content (images, code, fixed layouts) overflows past the viewport
-    // and — combined with the tour's `overflow-x: hidden` — makes `position` look broken.
-    // `styles.dropdown` is applied after the internal `width`, so this max-width wins.
-    // Override per tour/step via `popoverProps.styles.dropdown.maxWidth` or `popoverProps.width`.
-    styles: { dropdown: { maxWidth: 400 } },
   },
 };
 
@@ -380,7 +374,9 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     return (
       <Popover opened={realFocused && !!popoverContent} {...finalPopoverProps}>
         <Popover.Target>{cloneElement(child, newProps)}</Popover.Target>
-        <Popover.Dropdown>{popoverContent}</Popover.Dropdown>
+        {/* Default width cap via class so it survives consumer `styles.dropdown` overrides;
+            Mantine merges this className with any `popoverProps.classNames.dropdown`. */}
+        <Popover.Dropdown className={classes.dropdown}>{popoverContent}</Popover.Dropdown>
       </Popover>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps

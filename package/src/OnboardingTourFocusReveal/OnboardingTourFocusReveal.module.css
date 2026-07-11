@@ -137,6 +137,17 @@
   inset: 0;
 }
 
+/*
+ * Default width ceiling for the tour popover dropdown. `width: 'max-content'` alone has
+ * `max-width: none`, so wide/non-wrapping content overflows the viewport. Applied as a class
+ * (not inline `styles`) so it survives consumer `popoverProps.styles.dropdown` overrides of
+ * other properties (e.g. padding). Override the cap with `styles.dropdown.maxWidth` (inline
+ * wins over the class) or with `popoverProps.width`.
+ */
+.dropdown {
+  max-width: 400px;
+}
+
 .focused {
   &[data-onboarding-tour-focus-reveal-focused] {
     &[data-onboarding-tour-focus-reveal-mode='pulse'] {
