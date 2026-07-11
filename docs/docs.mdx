@@ -613,6 +613,7 @@ popoverProps: {
   arrowSize: 16,
   offset: -4,
   middlewares: { shift: { padding: 20 }, flip: true },
+  preventPositionChangeWhenVisible: false,
 }
 // The dropdown is additionally capped at `max-width: 400px` by default (see "Popover width").
 ```
@@ -685,6 +686,17 @@ const steps: OnboardingTourStep[] = [
 ## Scroll Behavior
 
 When a step activates, the target element is automatically scrolled into view and **centered** in the viewport. The Floating UI `shift` and `flip` middlewares then ensure the popover stays fully visible regardless of the resolved position.
+
+Because the tour keeps moving the target around, the popover keeps re-positioning **while a step is visible** by default — the library sets `preventPositionChangeWhenVisible: false` in its default `popoverProps`. Mantine 9.3 changed the `Popover` default for this prop to `true` (the popover picks its side on open and no longer flips or shifts while it stays visible); the tour opts out so its scroll-and-reposition behavior is identical across Mantine versions. To pin the popover's side on open instead, set it back to `true`:
+
+```tsx
+<OnboardingTour
+  focusRevealProps={{ popoverProps: { preventPositionChangeWhenVisible: true } }}
+  tour={steps}
+>
+  {/* ... */}
+</OnboardingTour>
+```
 
 ## Cutout Highlight
 

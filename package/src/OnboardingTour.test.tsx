@@ -8,7 +8,10 @@ import {
   useOnboardingTour,
 } from './hooks/use-onboarding-tour/use-onboarding-tour';
 import { OnboardingTour } from './OnboardingTour';
-import { OnboardingTourFocusReveal } from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
+import {
+  defaultProps as focusRevealDefaultProps,
+  OnboardingTourFocusReveal,
+} from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
 const onboardingSteps: OnboardingTourStep[] = [
   {
@@ -450,6 +453,20 @@ describe('Popover dropdown sizing (#44)', () => {
     expect(dropdown).toHaveStyle({ backgroundColor: 'rgb(1, 2, 3)' });
     // The default cap class is still applied alongside the consumer's styles override.
     expect(dropdown.classList.contains('dropdown')).toBe(true);
+  });
+});
+
+// ─── Popover positioning defaults (issue #41) ───────────────────────────────
+
+describe('Popover positioning defaults (#41)', () => {
+  it('opts out of preventPositionChangeWhenVisible so the popover keeps re-positioning', () => {
+    // Mantine 9.3 flipped Popover's `preventPositionChangeWhenVisible` default to `true` (pins the
+    // side on open). The tour scrolls targets around, so it must keep flipping/shifting while a step
+    // is visible — lock the opt-out here so it can't silently regress across Mantine versions.
+    expect(
+      (focusRevealDefaultProps.popoverProps as { preventPositionChangeWhenVisible?: boolean })
+        ?.preventPositionChangeWhenVisible
+    ).toBe(false);
   });
 });
 
