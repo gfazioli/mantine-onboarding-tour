@@ -141,8 +141,9 @@
  * Default width ceiling for the tour popover dropdown. `width: 'max-content'` alone has
  * `max-width: none`, so wide/non-wrapping content overflows the viewport. Applied as a class
  * (not inline `styles`) so it survives consumer `popoverProps.styles.dropdown` overrides of
- * other properties (e.g. padding). Override the cap with `styles.dropdown.maxWidth` (inline
- * wins over the class) or with `popoverProps.width`.
+ * other properties (e.g. padding). `popoverProps.width` sizes the dropdown up to this cap; to
+ * make it wider than 400px, raise or remove the cap with `styles.dropdown.maxWidth` (inline wins
+ * over the class; `'none'` removes it).
  */
 .dropdown {
   max-width: 400px;
