@@ -1,6 +1,6 @@
 import { render, screen } from '@mantine-tests/core';
 import { Button, MantineProvider, Title } from '@mantine/core';
-import { act, renderHook } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 import { buildCutoutPath } from './hooks/use-cutout-rect/use-cutout-rect';
 import {
@@ -8,7 +8,10 @@ import {
   useOnboardingTour,
 } from './hooks/use-onboarding-tour/use-onboarding-tour';
 import { OnboardingTour } from './OnboardingTour';
-import { OnboardingTourFocusReveal } from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
+import {
+  defaultProps as focusRevealDefaultProps,
+  OnboardingTourFocusReveal,
+} from './OnboardingTourFocusReveal/OnboardingTourFocusReveal';
 
 const onboardingSteps: OnboardingTourStep[] = [
   {
@@ -396,6 +399,74 @@ describe('FocusReveal', () => {
       </OnboardingTourFocusReveal>
     );
     expect(container.querySelector('[data-onboarding-tour-focus-reveal-overlay]')).toBeNull();
+  });
+});
+
+// ─── Popover dropdown sizing (issue #44) ────────────────────────────────────
+
+describe('Popover dropdown sizing (#44)', () => {
+  // The popover only opens once its target is in the viewport; the IntersectionObserver mock in
+  // jsdom.mocks.cjs reports elements as visible so the dropdown mounts.
+  const findDropdown = () =>
+    waitFor(() => {
+      const el = document.querySelector('.mantine-Popover-dropdown');
+      expect(el).toBeInTheDocument();
+      return el as HTMLElement;
+    });
+
+  it('applies the default width-cap class to the tour popover dropdown', async () => {
+    // The default `max-width: 400px` ships as a CSS class (not inline `styles`) so it survives
+    // consumer `styles.dropdown` overrides of other properties. CSS modules are mocked with
+    // identity-obj-proxy, so the class token equals its key ('dropdown').
+    render(
+      <OnboardingTour tour={onboardingSteps} started>
+        <Button data-onboarding-tour-id="welcome">Target</Button>
+      </OnboardingTour>
+    );
+    const dropdown = await findDropdown();
+    expect(dropdown.classList.contains('dropdown')).toBe(true);
+  });
+
+  it('deep-merges tour-level and step-level popoverProps (step does not drop tour settings)', async () => {
+    // The step overrides only `position`; the tour-level `styles.dropdown` must survive the merge
+    // (a shallow spread would replace the whole popoverProps and lose it).
+    const steps: OnboardingTourStep[] = [
+      {
+        id: 'welcome',
+        title: 'Welcome',
+        content: 'Content',
+        focusRevealProps: { popoverProps: { position: 'top' } },
+      },
+    ];
+    render(
+      <OnboardingTour
+        tour={steps}
+        started
+        focusRevealProps={{
+          popoverProps: { styles: { dropdown: { backgroundColor: 'rgb(1, 2, 3)' } } },
+        }}
+      >
+        <Button data-onboarding-tour-id="welcome">Target</Button>
+      </OnboardingTour>
+    );
+    const dropdown = await findDropdown();
+    expect(dropdown).toHaveStyle({ backgroundColor: 'rgb(1, 2, 3)' });
+    // The default cap class is still applied alongside the consumer's styles override.
+    expect(dropdown.classList.contains('dropdown')).toBe(true);
+  });
+});
+
+// ─── Popover positioning defaults (issue #41) ───────────────────────────────
+
+describe('Popover positioning defaults (#41)', () => {
+  it('opts out of preventPositionChangeWhenVisible so the popover keeps re-positioning', () => {
+    // Mantine 9.3 flipped Popover's `preventPositionChangeWhenVisible` default to `true` (pins the
+    // side on open). The tour scrolls targets around, so it must keep flipping/shifting while a step
+    // is visible — lock the opt-out here so it can't silently regress across Mantine versions.
+    expect(
+      (focusRevealDefaultProps.popoverProps as { preventPositionChangeWhenVisible?: boolean })
+        ?.preventPositionChangeWhenVisible
+    ).toBe(false);
   });
 });
 

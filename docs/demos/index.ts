@@ -9,6 +9,7 @@ export { focusRevealOverlay } from './FocusReveal.demo.overlay';
 export { focusRevealPaper } from './FocusReveal.demo.paper';
 export { focusRevealPopover } from './FocusReveal.demo.popover';
 export { focusRevealPopoverProps } from './FocusReveal.demo.popoverProps';
+export { focusRevealPopoverWidth } from './FocusReveal.demo.popoverWidth';
 export { focusRevealReveal } from './FocusReveal.demo.reveal';
 export { focusRevealScrollContainer } from './FocusReveal.demo.scrollContainer';
 export { focusRevealUncontrolled } from './FocusReveal.demo.uncontrolled';

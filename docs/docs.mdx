@@ -563,6 +563,32 @@ You can use the `popoverProps` prop (are the same as the Mantine `Popover` compo
 
 <Demo data={demos.focusRevealPopoverProps} />
 
+### Popover width
+
+The popover dropdown has a **default `max-width` of `400px`**, so wide or non-wrapping content (images, code blocks, fixed-width layouts) stays inside the viewport instead of overflowing. Note that `maw` set on `<OnboardingTour>` (or a step) sizes the **inner content box**, not the dropdown itself — to size the dropdown, use `popoverProps`:
+
+```tsx
+<OnboardingTour
+  focusRevealProps={{
+    popoverProps: {
+      // Size the dropdown *up to* the 400px cap:
+      width: 320,
+      // Go wider than 400px — raise or remove the cap (`width` alone cannot exceed max-width; use 'none' to remove it):
+      styles: { dropdown: { maxWidth: 560 } },
+    },
+  }}
+  tour={steps}
+>
+  {/* ... */}
+</OnboardingTour>
+```
+
+`styles.dropdown.maxWidth` is applied after the internal `width`, so it wins over the default `width: 'max-content'`. Because the cap is a `max-width`, `popoverProps.width` can only make the dropdown **narrower** than `400px` — to make it **wider**, raise (or remove) the cap via `styles.dropdown.maxWidth`. Both accept per-tour and per-step values via `focusRevealProps`.
+
+Reveal the card below: the popover holds a long paragraph but stays capped at `400px` and wraps instead of overflowing.
+
+<Demo data={demos.focusRevealPopoverWidth} />
+
 ## Example: Cycle
 
 Here are some examples of how to use the `OnboardingTour.FocusReveal` component in different scenarios.
@@ -587,7 +613,9 @@ popoverProps: {
   arrowSize: 16,
   offset: -4,
   middlewares: { shift: { padding: 20 }, flip: true },
+  preventPositionChangeWhenVisible: false,
 }
+// The dropdown is additionally capped at `max-width: 400px` by default (see "Popover width").
 ```
 
 ### Responsive Demo
@@ -658,6 +686,17 @@ const steps: OnboardingTourStep[] = [
 ## Scroll Behavior
 
 When a step activates, the target element is automatically scrolled into view and **centered** in the viewport. The Floating UI `shift` and `flip` middlewares then ensure the popover stays fully visible regardless of the resolved position.
+
+Because the tour keeps moving the target around, the popover keeps re-positioning **while a step is visible** by default — the library sets `preventPositionChangeWhenVisible: false` in its default `popoverProps`. Mantine 9.3 changed the `Popover` default for this prop to `true` (the popover picks its side on open and no longer flips or shifts while it stays visible); the tour opts out so its scroll-and-reposition behavior is identical across Mantine versions. To pin the popover's side on open instead, set it back to `true`:
+
+```tsx
+<OnboardingTour
+  focusRevealProps={{ popoverProps: { preventPositionChangeWhenVisible: true } }}
+  tour={steps}
+>
+  {/* ... */}
+</OnboardingTour>
+```
 
 ## Cutout Highlight
 

@@ -195,6 +195,11 @@ export const defaultProps: Partial<OnboardingTourFocusRevealProps> = {
     radius: 'md',
     shadow: 'xl',
     middlewares: { shift: { padding: 20 }, flip: true },
+    // Keep flipping/shifting the popover while a step stays visible, regardless of the installed
+    // Mantine version. Mantine 9.3 flipped Popover's `preventPositionChangeWhenVisible` default to
+    // `true` (pins the side on open); the tour scrolls targets around, so it relies on live
+    // re-positioning. Consumers can opt back in with `popoverProps.preventPositionChangeWhenVisible`.
+    preventPositionChangeWhenVisible: false,
   },
 };
 
@@ -374,7 +379,9 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     return (
       <Popover opened={realFocused && !!popoverContent} {...finalPopoverProps}>
         <Popover.Target>{cloneElement(child, newProps)}</Popover.Target>
-        <Popover.Dropdown>{popoverContent}</Popover.Dropdown>
+        {/* Default width cap via class so it survives consumer `styles.dropdown` overrides;
+            Mantine merges this className with any `popoverProps.classNames.dropdown`. */}
+        <Popover.Dropdown className={classes.dropdown}>{popoverContent}</Popover.Dropdown>
       </Popover>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
