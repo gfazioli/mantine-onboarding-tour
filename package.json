@@ -28,7 +28,7 @@
     "typecheck": "tsc --noEmit && cd docs && npm run typecheck",
     "format:test": "oxfmt --check \"**/*.{ts,tsx,css}\"",
     "format:write": "oxfmt --write \"**/*.{ts,tsx,css}\"",
-    "oxlint": "oxlint ."
+    "oxlint": "oxlint -c oxlint.config.mjs ."
   },
   "devDependencies": {
     "@mantine-tests/core": "^2.1.0",
@@ -62,6 +62,7 @@
     "jest-axe": "^11.0.0",
     "jest-environment-jsdom": "^29.7.0",
     "mantine-docgen-script": "^1.6.0",
+    "oxc-config-mantine": "^1.0.0",
     "oxfmt": "^0.60.0",
     "oxlint": "^1.75.0",
     "postcss": "^8.5.23",
