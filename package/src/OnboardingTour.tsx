@@ -152,7 +152,7 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props) => {
     unstyled,
   });
 
-  const onboardingTour = useOnboardingTour(tour, {
+  const tourState = useOnboardingTour(tour, {
     loop,
     onOnboardingTourStart,
     onOnboardingTourEnd,
@@ -160,6 +160,34 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props) => {
     onOnboardingTourSkip,
     onOnboardingTourChange,
   });
+
+  // The element to give the focus back to, read the moment the tour starts — whoever starts it:
+  // the `started` prop, or the controller (a restart button kept from a step's render function,
+  // while `started` stays true). Not once the tour is active: by then the first step may already
+  // hold the focus.
+  const focusBeforeTourRef = useRef<HTMLElement | null>(null);
+  // Read through a ref: a controller kept from an earlier render (one where the tour was open)
+  // would otherwise see a stale `currentStepIndex` and never capture.
+  const tourOpenRef = useRef(false);
+  tourOpenRef.current = tourState.currentStepIndex !== undefined;
+  const captureFocusBeforeTour = () => {
+    if (!tourOpenRef.current) {
+      focusBeforeTourRef.current =
+        document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    }
+  };
+  const onboardingTour: typeof tourState = {
+    ...tourState,
+    startTour: () => {
+      captureFocusBeforeTour();
+      tourState.startTour();
+    },
+    // with no step open, setting one starts the tour as well
+    setCurrentStepIndex: (index: number) => {
+      captureFocusBeforeTour();
+      tourState.setCurrentStepIndex(index);
+    },
+  };
 
   const focusRevealProps = _focusRevealProps
     ? typeof _focusRevealProps === 'function'
@@ -185,6 +213,11 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props) => {
   // `OnboardingTour.Target` ids: a step whose id matches neither a child nor a Target is shown in
   // the middle of the screen.
   const [targetIds, setTargetIds] = useState<string[]>([]);
+
+  // A Target that mounts together with its step registers in its own effect, after the render that
+  // selected the step. The centered fallback waits for the commit in which the step has settled, so
+  // it can never mount (and take the focus) before that registration lands.
+  const [settledStepId, setSettledStepId] = useState<string | undefined>(undefined);
   const registerTarget = useCallback((id: string) => {
     setTargetIds((ids) => [...ids, id]);
     return () =>
@@ -214,14 +247,13 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props) => {
 
   const { selectedStepId: selectedTourId, startTour } = onboardingTour;
 
-  // The element to give the focus back to. It is read here, as the tour starts, and not once the
-  // tour is active: by then the first step's popover may already have taken the focus.
-  const focusBeforeTourRef = useRef<HTMLElement | null>(null);
+  // Child effects (a Target's registration) run before this one in the same commit
+  useEffect(() => {
+    setSettledStepId(selectedTourId);
+  }, [selectedTourId]);
 
   useEffect(() => {
     if (started) {
-      focusBeforeTourRef.current =
-        document.activeElement instanceof HTMLElement ? document.activeElement : null;
       startTour();
     }
     // startTour is excluded: it changes on every render and would cause infinite loops.
@@ -451,7 +483,11 @@ export const OnboardingTour = factory<OnboardingTourFactory>((_props) => {
   const wrappedChildren = wrapChildren(children);
 
   const isCenteredStep =
-    isTourActive && !!selectedTourId && !selectedStepMatched && !targetIds.includes(selectedTourId);
+    isTourActive &&
+    !!selectedTourId &&
+    settledStepId === selectedTourId &&
+    !selectedStepMatched &&
+    !targetIds.includes(selectedTourId);
   const centeredPopoverProps = mergedFocusRevealProps.popoverProps;
 
   return (

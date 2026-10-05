@@ -4,6 +4,7 @@ import { act, fireEvent, renderHook, waitFor } from '@testing-library/react';
 import React from 'react';
 import { buildCutoutPath } from './hooks/use-cutout-rect/use-cutout-rect';
 import {
+  OnboardingTourController,
   OnboardingTourStep,
   useOnboardingTour,
 } from './hooks/use-onboarding-tour/use-onboarding-tour';
@@ -1029,5 +1030,94 @@ describe('Children across the tour lifecycle', () => {
       </OnboardingTour>
     );
     expect(screen.getByText('from render prop')).toBeInTheDocument();
+  });
+});
+
+describe('Review follow-ups (#56)', () => {
+  it('gives the focus back after a restart through the controller', async () => {
+    let controller: OnboardingTourController | undefined;
+    render(
+      <>
+        <Button>Again</Button>
+        <OnboardingTour
+          tour={onboardingSteps}
+          started
+          header={(ctrl: OnboardingTourController) => {
+            controller = ctrl;
+            return null;
+          }}
+        >
+          <Button data-onboarding-tour-id="welcome">Target</Button>
+        </OnboardingTour>
+      </>
+    );
+    await waitFor(() =>
+      expect(document.querySelector('.mantine-Popover-dropdown')).toBeInTheDocument()
+    );
+    fireEvent.keyDown(window, { key: 'Escape' });
+    await waitFor(() =>
+      expect(document.querySelector('[data-onboarding-tour-overlay]')).not.toBeInTheDocument()
+    );
+
+    // `started` is still true: the tour comes back through the controller, not the prop
+    const again = screen.getByRole('button', { name: 'Again' });
+    again.focus();
+    act(() => controller!.startTour());
+    const dialog = await waitFor(() => {
+      const el = document.querySelector('.mantine-Popover-dropdown');
+      expect(el).toBeInTheDocument();
+      return el as HTMLElement;
+    });
+    await waitFor(() => expect(dialog).toHaveFocus());
+
+    fireEvent.keyDown(window, { key: 'Escape' });
+    await waitFor(() => expect(again).toHaveFocus());
+  });
+
+  it('never flashes the centered fallback for a Target that mounts with its step', async () => {
+    const seen: string[] = [];
+    const observer = new MutationObserver((records) => {
+      records.forEach((r) =>
+        r.addedNodes.forEach((n) => {
+          if (
+            n instanceof HTMLElement &&
+            (n.matches('[data-onboarding-tour-centered]') ||
+              n.querySelector('[data-onboarding-tour-centered]'))
+          ) {
+            seen.push('centered');
+          }
+        })
+      );
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    function Outside() {
+      return (
+        <OnboardingTour.Target id="welcome">
+          <Button>Outside</Button>
+        </OnboardingTour.Target>
+      );
+    }
+    function Demo() {
+      const [stepId, setStepId] = React.useState<string>();
+      return (
+        <OnboardingTour
+          tour={onboardingSteps}
+          started
+          onOnboardingTourChange={(s) => setStepId(s.id)}
+        >
+          {stepId === 'welcome' && <Outside />}
+          <Button data-onboarding-tour-id="my-button">Features</Button>
+        </OnboardingTour>
+      );
+    }
+    render(<Demo />);
+    await waitFor(() =>
+      expect(document.querySelector('.mantine-Popover-dropdown')).toHaveTextContent(
+        onboardingSteps[0].title as string
+      )
+    );
+    observer.disconnect();
+    expect(seen).toEqual([]);
   });
 });
