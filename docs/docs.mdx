@@ -1,7 +1,7 @@
-import { Button, Code, rem, Table } from '@mantine/core';
+import { Button, Code, rem, Table, Text } from '@mantine/core';
 import { InstallScript } from './components/InstallScript/InstallScript';
 
-import { IconExternalLink } from '@tabler/icons-react';
+import { IconCheck, IconExternalLink, IconX } from '@tabler/icons-react';
 import * as demos from './demos';
 
 > **Upgrading from an older major version?** See the [Upgrade guide](/?t=migrations) for breaking changes and step-by-step migration instructions.
@@ -21,6 +21,135 @@ You can import styles within a layer `@layer mantine-onboarding-tour` by importi
 ```tsx
 import '@gfazioli/mantine-onboarding-tour/styles.layer.css';
 ```
+
+## Comparison with Mantine core Tour
+
+Since version 9.7, Mantine core ships a first-party [Tour](https://mantine.dev/core/tour/) component. The basics overlap — a spotlight overlay around each target, a step tooltip with Skip / Back / Next, keyboard navigation and focus management — but the two make different trade-offs.
+
+export const Yes = () => <IconCheck size={20} stroke={2.5} color="var(--mantine-color-teal-6)" aria-label="Supported" />;
+
+export const No = () => <IconX size={18} stroke={2} color="var(--mantine-color-red-6)" aria-label="Not available" />;
+
+export const Cap = ({ title, note }) => (
+  <>
+    <Text size="sm" fw={500}>{title}</Text>
+    {note && <Text size="xs" c="dimmed">{note}</Text>}
+  </>
+);
+
+<Table striped withTableBorder withColumnBorders verticalSpacing="sm" my="md">
+  <Table.Thead>
+    <Table.Tr>
+      <Table.Th>Capability</Table.Th>
+      <Table.Th ta="center" w={140}>OnboardingTour</Table.Th>
+      <Table.Th ta="center" w={140}>Core Tour</Table.Th>
+    </Table.Tr>
+  </Table.Thead>
+  <Table.Tbody>
+    <Table.Tr>
+      <Table.Td><Cap title="Typed step data and render functions" note="OnboardingTourStep<T> carries your own typed fields, and header, title, content and footer can be functions of the tour controller" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Focus effects on the target" note="11 focusedMode effects — pulse, glow in four colors, border, shake, rotate, scale, elastic, zoom — or none" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Backdrop blur" note="overlayProps.blur (2px by default) besides color and opacity — core sets overlayColor" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Built-in stepper" note="Clickable step dots under the content (withStepper), or your own via stepper — core shows a text counter" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Responsive popover placement" note="position, offset, width and arrowSize accept breakpoint maps, e.g. bottom on mobile and left from sm" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Loop mode" note="loop wraps from the last step to the first and back" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Completion and skip told apart" note="onOnboardingTourComplete and onOnboardingTourSkip, plus onOnboardingTourEnd for both — core reports onClose either way" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Standalone highlight" note="OnboardingTour.FocusReveal and FocusReveal.Group highlight and reveal elements outside a tour" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Steps without a target" note="Both show them in the middle of the screen, for a welcome or a closing step" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Keyboard navigation" note="Both: ← / → between steps, mirrored in right-to-left layouts" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Close on Escape or overlay click" note="Both: closeOnEscape (on by default) and closeOnOverlayClick (off by default)" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Accessible step dialog" note="Both: a dialog named by the step title, focus moved in and given back at the end, step counter announced — core also traps the focus inside the tooltip while the overlay is shown" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Interactive target" note="OnboardingTour leaves the highlighted element clickable (disableTargetInteraction blocks it) — core blocks it unless withOverlayInteraction" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Scroll the target into view" note="OnboardingTour: eased scrolling inside any container (scrollableRef) that stops when the user scrolls — core: scrollIntoView when the target is not visible, or your scrollToHandler" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Spotlight padding and radius per step" note="cutoutPadding / cutoutRadius here, spotlightPadding / spotlightRadius in core" /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Target by selector or ref" note="core points each step at a CSS selector or a ref, anywhere in the page, and waits for a selector that mounts later — OnboardingTour matches data-onboarding-tour-id on its children, or OnboardingTour.Target" /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Beacon mode" note="mode=&quot;beacon&quot; puts a pulsing beacon on every target, opened in any order" /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Controlled current step" note="step, defaultStep and onStepChange — OnboardingTour is started from outside and moves through its controller" /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Per-step open and close callbacks" note="onStepOpen / onStepClose on the tour and on each step — OnboardingTour reports every change with onOnboardingTourChange" /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td><Cap title="Animated move between steps" note="Spotlight and tooltip glide to the next target (stepTransitionDuration) — OnboardingTour closes one popover and opens the next" /></Table.Td>
+      <Table.Td ta="center"><No /></Table.Td>
+      <Table.Td ta="center"><Yes /></Table.Td>
+    </Table.Tr>
+  </Table.Tbody>
+</Table>
+
+**When to use which.** Reach for the core `Tour` when steps should point at any element by selector or ref, when you want beacons the user opens in any order, or when the current step lives in your own state. Reach for `OnboardingTour` when the tour is part of the design — focus effects, a blurred backdrop, a stepper, popovers that move with the breakpoint — when steps carry their own typed data, when it loops, when you need to know whether the user finished or skipped, or when you want to highlight elements without a tour at all.
 
 ## Example
 
