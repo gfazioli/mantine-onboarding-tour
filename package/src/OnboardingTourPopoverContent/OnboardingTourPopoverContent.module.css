@@ -3,6 +3,10 @@
   position: relative;
 }
 
+.stepCounter {
+  white-space: nowrap;
+}
+
 /* Stepper */
 .stepIcon {
   border-width: 2px;

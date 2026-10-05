@@ -228,6 +228,77 @@ Use `onOnboardingTourEnd` if you don't need to distinguish between completion an
 </OnboardingTour>
 ```
 
+## Keyboard navigation
+
+The tour can be driven from the keyboard. The arrow keys are left to the highlighted element and to any field that uses them itself (inputs, sliders, tabs, menus…), and a key pressed with a modifier is ignored.
+
+<Table striped highlightOnHover withTableBorder withColumnBorders>
+  <Table.Thead>
+    <Table.Tr>
+      <Table.Th>Key</Table.Th>
+      <Table.Th>Action</Table.Th>
+      <Table.Th>Prop</Table.Th>
+    </Table.Tr>
+  </Table.Thead>
+  <Table.Tbody>
+    <Table.Tr>
+      <Table.Td>
+        <Code>→</Code>
+      </Table.Td>
+      <Table.Td>Next step, completes the tour on the last step</Table.Td>
+      <Table.Td>
+        <Code>withKeyboardNavigation</Code> (default <Code>true</Code>)
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <Code>←</Code>
+      </Table.Td>
+      <Table.Td>Previous step, never ends the tour from the first step</Table.Td>
+      <Table.Td>
+        <Code>withKeyboardNavigation</Code> (default <Code>true</Code>)
+      </Table.Td>
+    </Table.Tr>
+    <Table.Tr>
+      <Table.Td>
+        <Code>Escape</Code>
+      </Table.Td>
+      <Table.Td>Skips the tour, like the Skip button</Table.Td>
+      <Table.Td>
+        <Code>closeOnEscape</Code> (default <Code>true</Code>)
+      </Table.Td>
+    </Table.Tr>
+  </Table.Tbody>
+</Table>
+
+In a right-to-left layout the arrows are mirrored. Set `closeOnOverlayClick` to skip the tour with a click on the overlay around the highlighted element.
+
+## Step counter
+
+Set `withStepCounter` to show the position in the tour between the Skip and the navigation buttons. Use `stepCounterLabel` to translate it: it receives the current step (starting from 1) and the number of steps.
+
+```tsx
+<OnboardingTour
+  tour={onboardingSteps}
+  started={started}
+  withStepCounter
+  stepCounterLabel={(current, total) => `Passo ${current} di ${total}`}
+/>
+```
+
+## Steps without a target
+
+A step whose `id` matches no element, neither a child with `data-onboarding-tour-id` nor an `OnboardingTour.Target`, is shown in the middle of the screen, over the overlay. Use it for a welcome or a closing step.
+
+<Demo data={demos.centered} />
+
+## Accessibility
+
+- Every step popover is a dialog named by the step title and described by the step content
+- When a step opens, the focus moves into its popover (`withAutoFocus`, default `true`), so a keyboard or screen reader user lands on it
+- When the tour ends, the focus goes back to the element that had it when the tour started (`returnFocus`, default `true`)
+- With `withStepCounter`, each step change is announced (`aria-live="polite"`)
+
 ## Define the onboarding tour
 
 You can define your onboarding tour by using the `OnboardingTourStep` array.

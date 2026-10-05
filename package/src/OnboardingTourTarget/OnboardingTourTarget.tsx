@@ -39,6 +39,10 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
   const ctx = useOnboardingTourContext();
   const [focused, setFocused] = useState(false);
 
+  // Tell the tour this id has a target, so its step is not shown in the middle of the screen
+  const registerTarget = ctx?.registerTarget;
+  useEffect(() => registerTarget?.(id), [registerTarget, id]);
+
   useEffect(() => {
     if (ctx && ctx.selectedStepId === id) {
       setFocused(true);
@@ -72,10 +76,14 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
     withNextButton,
     withSkipButton,
     withStepper,
+    withStepCounter,
+    stepCounterLabel,
+    withAutoFocus,
     nextStepNavigation,
     endStepNavigation,
     prevStepNavigation,
     skipNavigation,
+    popoverDropdownProps,
   } = ctx;
 
   return (
@@ -85,6 +93,10 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
       popoverProps={{
         ...mergedFocusRevealProps.popoverProps,
         withinPortal: true,
+      }}
+      popoverDropdownProps={{
+        ...mergedFocusRevealProps.popoverDropdownProps,
+        ...popoverDropdownProps,
       }}
       popoverContent={
         <OnboardingTourPopoverContent
@@ -100,6 +112,9 @@ export function OnboardingTourTarget(props: OnboardingTourTargetProps) {
           withPrevButton={withPrevButton}
           withSkipButton={withSkipButton}
           withStepper={withStepper}
+          withStepCounter={withStepCounter}
+          stepCounterLabel={stepCounterLabel}
+          withAutoFocus={withAutoFocus}
           {...(others as unknown as OnboardingTourPopoverContentBaseProps)}
           tourController={ctx}
         />

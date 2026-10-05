@@ -15,15 +15,16 @@ import {
   useProps,
   useStyles,
 } from '@mantine/core';
-import React from 'react';
+import React, { useEffect, useId, useRef } from 'react';
 import {
   OnboardingTourStep,
   type OnboardingTourController,
   type OnboardingTourOptions,
 } from '../hooks/use-onboarding-tour/use-onboarding-tour';
+import { useOnboardingTourContext } from '../OnboardingTour.context';
 import classes from './OnboardingTourPopoverContent.module.css';
 
-export type OnboardingTourPopoverContentStylesNames = 'popoverContent';
+export type OnboardingTourPopoverContentStylesNames = 'popoverContent' | 'stepCounter';
 
 export interface OnboardingTourPopoverContentBaseProps extends Omit<
   OnboardingTourOptions,
@@ -55,6 +56,15 @@ export interface OnboardingTourPopoverContentBaseProps extends Omit<
 
   /** Show the stepper */
   withStepper?: boolean;
+
+  /** Show a step counter (e.g. "2 of 5") between the skip and the navigation buttons. Changes are announced to screen readers. */
+  withStepCounter?: boolean;
+
+  /** Step counter text. Receives the 1-based current step and the total number of steps. @default (current, total) => `${current} of ${total}` */
+  stepCounterLabel?: (current: number, total: number) => React.ReactNode;
+
+  /** Move the keyboard focus into the popover when a step opens, so keyboard and screen reader users land on it */
+  withAutoFocus?: boolean;
 
   /** Navigation next button label or Component */
   nextStepNavigation?:
@@ -103,6 +113,9 @@ export const defaultProps: Partial<OnboardingTourPopoverContentProps> = {
   withNextButton: true,
   withSkipButton: true,
   withStepper: true,
+  withStepCounter: false,
+  stepCounterLabel: (current, total) => `${current} of ${total}`,
+  withAutoFocus: true,
   nextStepNavigation: 'Next',
   endStepNavigation: 'End',
   prevStepNavigation: 'Prev',
@@ -134,6 +147,9 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
       withNextButton,
       withSkipButton,
       withStepper,
+      withStepCounter,
+      stepCounterLabel,
+      withAutoFocus,
       nextStepNavigation,
       endStepNavigation,
       prevStepNavigation,
@@ -179,6 +195,28 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
       nextStep: nextTour,
       prevStep: prevTour,
     } = tourController;
+
+    // Inside an `OnboardingTour` the ids come from the tour, which points the popover's
+    // `aria-labelledby` / `aria-describedby` at them; standalone, they are only local.
+    const tourContext = useOnboardingTourContext();
+    const fallbackId = useId();
+    const titleId = tourContext?.popoverTitleId ?? `${fallbackId}-title`;
+    const contentId = tourContext?.popoverContentId ?? `${fallbackId}-content`;
+
+    const rootRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (!withAutoFocus || currentStepIndex === undefined) {
+        return;
+      }
+      const root = rootRef.current;
+      // Focus the dialog itself (the Popover dropdown, or the centered step container) rather
+      // than its first button, so a screen reader announces the step before its controls.
+      const dialog = root?.closest<HTMLElement>('[role="dialog"]') ?? null;
+      if (dialog && !dialog.contains(document.activeElement)) {
+        dialog.focus({ preventScroll: true });
+      }
+    }, [withAutoFocus, currentStepIndex]);
 
     if (!tourController || !currentStep) {
       return null;
@@ -236,6 +274,20 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
     );
     /** Content */
     const contentComponent = withFunction(content || contentTourStep);
+
+    /** Step counter */
+    const stepCounterComponent =
+      withStepCounter && stepCounterLabel ? (
+        <Text
+          component="span"
+          size="xs"
+          c="dimmed"
+          aria-live="polite"
+          {...getStyles('stepCounter')}
+        >
+          {stepCounterLabel((currentStepIndex ?? 0) + 1, tour.length)}
+        </Text>
+      ) : null;
 
     /** Footer */
     const footerComponent = withFunction(footer || footerTourStep);
@@ -295,13 +347,14 @@ export const OnboardingTourPopoverContent = factory<OnboardingTourPopoverContent
       ));
 
     return (
-      <Box {...getStyles('popoverContent')} {...others}>
+      <Box ref={rootRef} {...getStyles('popoverContent')} {...others}>
         <Stack>
           {headerComponent}
-          {titleComponent}
-          {contentComponent}
+          {titleComponent && <div id={titleId}>{titleComponent}</div>}
+          {contentComponent && <div id={contentId}>{contentComponent}</div>}
           <Group justify="space-between">
             {skipNavigationComponent}
+            {stepCounterComponent}
             <Group justify="space-between">
               {prevNavigationComponent}
               {nextNavigationComponent}

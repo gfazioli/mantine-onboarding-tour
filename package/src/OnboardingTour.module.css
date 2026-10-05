@@ -7,6 +7,22 @@
     -webkit-backdrop-filter 300ms ease;
 }
 
+/* A step whose id matches no element: the popover content in the middle of the viewport */
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  width: max-content;
+  max-width: min(400px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+
+  &:focus {
+    outline: none;
+  }
+}
+
 .popoverContent {
   --onboarding-tour-popover-content-stepper-icon-size: 16px;
   position: relative;

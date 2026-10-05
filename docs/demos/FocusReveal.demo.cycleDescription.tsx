@@ -9,19 +9,22 @@ function Wrapper() {
   const [focusIndex, setFocusIndex] = useState(-1);
   const MAX_TESTIMONIALS = 3;
 
-  useHotkeys([
-    [
-      'ArrowRight',
-      () =>
-        focusIndex >= 0 && setFocusIndex(focusIndex + 1 < MAX_TESTIMONIALS ? focusIndex + 1 : 0),
-    ],
-    [
-      'ArrowLeft',
-      () =>
-        focusIndex >= 0 &&
-        setFocusIndex(focusIndex - 1 >= 0 ? focusIndex - 1 : MAX_TESTIMONIALS - 1),
-    ],
-  ]);
+  // Listen to the arrows only while cycling: a registered hotkey calls preventDefault on every
+  // press, and would take the arrows from the rest of the page even when it has nothing to do
+  useHotkeys(
+    focusIndex >= 0
+      ? [
+          [
+            'ArrowRight',
+            () => setFocusIndex(focusIndex + 1 < MAX_TESTIMONIALS ? focusIndex + 1 : 0),
+          ],
+          [
+            'ArrowLeft',
+            () => setFocusIndex(focusIndex - 1 >= 0 ? focusIndex - 1 : MAX_TESTIMONIALS - 1),
+          ],
+        ]
+      : []
+  );
 
   const descriptions = [
     'This is the first description.',
@@ -88,19 +91,19 @@ function Demo() {
   const [focusIndex, setFocusIndex] = useState(-1);
   const MAX_TESTIMONIALS = 3;
 
-  useHotkeys([
-    [
-      'ArrowRight',
-      () =>
-        focusIndex >= 0 && setFocusIndex(focusIndex + 1 < MAX_TESTIMONIALS ? focusIndex + 1 : 0),
-    ],
-    [
-      'ArrowLeft',
-      () =>
-        focusIndex >= 0 &&
-        setFocusIndex(focusIndex - 1 >= 0 ? focusIndex - 1 : MAX_TESTIMONIALS - 1),
-    ],
-  ]);
+  // Listen to the arrows only while cycling: a registered hotkey calls preventDefault on every
+  // press, and would take the arrows from the rest of the page even when it has nothing to do
+  useHotkeys(
+    focusIndex >= 0
+      ? [
+          ['ArrowRight', () => setFocusIndex(focusIndex + 1 < MAX_TESTIMONIALS ? focusIndex + 1 : 0)],
+          [
+            'ArrowLeft',
+            () => setFocusIndex(focusIndex - 1 >= 0 ? focusIndex - 1 : MAX_TESTIMONIALS - 1),
+          ],
+        ]
+      : []
+  );
 
   const descriptions = [
     'This is the first description.',
