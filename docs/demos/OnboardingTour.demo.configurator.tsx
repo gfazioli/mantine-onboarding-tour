@@ -190,6 +190,30 @@ export const configurator: MantineDemo = {
       libraryValue: true,
     },
     {
+      prop: 'withStepCounter',
+      type: 'boolean',
+      initialValue: false,
+      libraryValue: false,
+    },
+    {
+      prop: 'withKeyboardNavigation',
+      type: 'boolean',
+      initialValue: true,
+      libraryValue: true,
+    },
+    {
+      prop: 'closeOnEscape',
+      type: 'boolean',
+      initialValue: true,
+      libraryValue: true,
+    },
+    {
+      prop: 'closeOnOverlayClick',
+      type: 'boolean',
+      initialValue: false,
+      libraryValue: false,
+    },
+    {
       prop: 'header',
       type: 'string',
       initialValue: '',

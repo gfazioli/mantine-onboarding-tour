@@ -147,6 +147,12 @@
  */
 .dropdown {
   max-width: 400px;
+
+  /* The tour moves the focus onto the dialog itself when a step opens: it is a container, not a
+     control, so it gets no focus ring (its buttons keep theirs). */
+  &:focus {
+    outline: none;
+  }
 }
 
 .focused {

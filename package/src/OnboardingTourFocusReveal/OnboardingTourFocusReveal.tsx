@@ -6,6 +6,7 @@ import {
   Overlay,
   OverlayProps,
   Popover,
+  PopoverDropdownProps,
   PopoverProps,
   PopoverWidth,
   StylesApiProps,
@@ -137,6 +138,9 @@ export interface OnboardingTourFocusRevealBaseProps {
   /** Props passed down to the `Popover` component. Position, offset, width, and arrowSize accept responsive objects. */
   popoverProps?: ResponsivePopoverProps;
 
+  /** Props passed down to the `Popover.Dropdown` element, for example `aria-*` attributes or a `className` */
+  popoverDropdownProps?: Omit<PopoverDropdownProps, 'children'>;
+
   /** Disable interactions on the target component */
   disableTargetInteraction?: boolean;
 
@@ -234,6 +238,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     focusedMode,
     popoverContent,
     popoverProps,
+    popoverDropdownProps,
     focusedZIndex,
 
     scrollableRef,
@@ -381,7 +386,12 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
         <Popover.Target>{cloneElement(child, newProps)}</Popover.Target>
         {/* Default width cap via class so it survives consumer `styles.dropdown` overrides;
             Mantine merges this className with any `popoverProps.classNames.dropdown`. */}
-        <Popover.Dropdown className={classes.dropdown}>{popoverContent}</Popover.Dropdown>
+        <Popover.Dropdown
+          {...popoverDropdownProps}
+          className={[classes.dropdown, popoverDropdownProps?.className].filter(Boolean).join(' ')}
+        >
+          {popoverContent}
+        </Popover.Dropdown>
       </Popover>
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -397,6 +407,7 @@ export function OnboardingTourFocusReveal(_props: OnboardingTourFocusRevealProps
     resolvedArrowSize,
     focusedZIndex,
     popoverProps,
+    popoverDropdownProps,
   ]);
 
   if (ctx) {

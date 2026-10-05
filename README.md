@@ -22,6 +22,8 @@ It requires **Mantine 9.x** and **React 19**.
 
 [Mantine OnboardingTour](https://gfazioli.github.io/mantine-onboarding-tour/) is a flexible onboarding system for React apps built on Mantine. You declare an array of steps (OnboardingTourStep) where header, title, content, and footer can be strings, React nodes, or functions that receive the tour controller for dynamic rendering. Each step can customize focus and reveal behavior via FocusReveal props, including overlay, scroll-into-view, transitions, and popover configuration. Targets can be matched with data-onboarding-tour-id or wrapped using OnboardingTour.Target when elements live outside the tour’s children. A controller exposes current step state and actions (start, next, prev, end), while advanced hooks let you swap popover content, implement custom steppers, and tailor overlays or scroll containers for complex layouts, making product tours both accessible and highly customizable.
 
+The tour can be driven from the keyboard (arrow keys to move between steps, Escape to leave), each step popover is a dialog named by its title that receives the focus, the focus returns where it was when the tour ends, and a step whose id matches no element is shown as a centered welcome or closing dialog.
+
 
 > [!note]
 >

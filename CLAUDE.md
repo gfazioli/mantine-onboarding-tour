@@ -117,8 +117,16 @@ Custom fork (not `@mantine/hooks` version). Accepts an external `scrollableRef` 
 ## Testing
 Jest with `jsdom` environment, `esbuild-jest` transform, CSS mocked via `identity-obj-proxy`. Component tests use `@mantine-tests/core` render helper.
 
-## Known Issues
-- **No keyboard accessibility** — no focus trap, no Escape to close, no ARIA attributes.
+## Keyboard and accessibility
+
+- **Keys** are read on `window` in `OnboardingTour`: `Escape` in the capture phase (skips the tour; a control marked `data-mantine-stop-propagation` keeps it), the arrows in the bubble phase so a control that handles them first and calls `preventDefault` keeps them. Arrows are ignored with a modifier, in fields that use them (`ARROW_KEYS_OWNER_SELECTOR`) and inside the highlighted element; `←` on the first step never ends the tour. RTL mirrors them via `useDirection`.
+- **Dialog naming**: the tour generates `popoverTitleId` / `popoverContentId`, `OnboardingTourPopoverContent` puts them on the title and content wrappers (read from context, `useId` fallback standalone), and the step popover gets `aria-labelledby` / `aria-describedby` through FocusReveal's `popoverDropdownProps`. Only keys that point at something are set: an `undefined` key would erase Mantine's own `aria-labelledby`.
+- **Focus**: `withAutoFocus` (PopoverContent) focuses the enclosing `[role="dialog"]` on each step; `returnFocus` (OnboardingTour) gives it back to the element captured in the `started` effect — not when the tour becomes active, by then the first popover may hold the focus.
+- **Centered steps**: a step whose id matches neither a wrapped child (`selectedStepMatched`, set while `wrapChildren` walks) nor a registered `OnboardingTour.Target` (`registerTarget` in context) renders its PopoverContent in a portalled `Paper` (`centered` selector).
+
+## Invariant: `wrapChildren` always returns the same shape
+
+`React.Children.map` re-keys what it returns (`.0`, `.1`, …). Until 4.1 the raw `children` were returned while the tour was idle or between two steps, and the mapped ones while it ran, so React saw different keys and **remounted every child** on start, on each step change and on end (child state lost, focus dropped). Now the children are always mapped, targets are wrapped for the whole time the tour is active (only `focused` moves), and function children (render props) are passed through untouched. A regression test covers it.
 
 ## Ecosystem
 This repo is part of the Mantine Extensions ecosystem, derived from the `mantine-base-component` template. See the workspace (the parent directory) for:
