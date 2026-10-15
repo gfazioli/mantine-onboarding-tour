@@ -15,6 +15,11 @@
 
 </div>
 
+<div align="center">
+  <p><img src="https://raw.githubusercontent.com/gfazioli/gfazioli/master/glancecard/mantine-onboarding-tour.svg" width="880" alt="mantine-onboarding-tour at a glance, refreshed daily: commits, releases, stars, issues and pull requests, a year of commit activity, the weekly rhythm, languages, latest commits and releases, contributors" /><br>
+  <sub>Made with <a href="https://github.com/gfazioli/glancecard">glancecard</a> · refreshed daily</sub></p>
+</div>
+
 ## Overview
 
 This component is created on top of the [Mantine](https://mantine.dev/) library.
