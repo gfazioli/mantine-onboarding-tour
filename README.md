@@ -36,6 +36,12 @@ The tour can be driven from the keyboard (arrow keys to move between steps, Esca
 > 
 > → [Full page Demo](https://gfazioli.github.io/mantine-onboarding-tour/demo)
 
+## Video tutorial
+
+[![Add a first-run tour to your app | Mantine Extensions Tutorial 03](https://i.ytimg.com/vi/qjm3s25DSXw/maxresdefault.jpg)](https://www.youtube.com/watch?v=qjm3s25DSXw)
+
+**Add a first-run tour to your app** (1:50): install OnboardingTour, describe a tour as a list of steps, light up your elements one at a time, restart the tour, and show a step counter with keyboard navigation. More in the [Mantine Extensions Tutorials](https://www.youtube.com/playlist?list=PLdYqZHmBU1Bk) playlist.
+
 ## Installation
 
 ```sh
